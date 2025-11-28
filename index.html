@@ -1,0 +1,1830 @@
+<!doctype html>
+<html lang="th">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus Wear - Y2K Hip Hop Fashion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=Bebas+Neue&amp;display=swap" rel="stylesheet">
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #FFFFFF;
+            color: #000000;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .page-wrapper {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        /* Navigation */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #FFFFFF;
+            z-index: 1000;
+            border-bottom: 2px solid #000000;
+        }
+
+        .nav-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+        }
+
+        .logo-text {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 28px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-decoration: none;
+            color: #000000;
+            transition: all 0.3s ease;
+        }
+
+        .logo-text:hover {
+            transform: scale(1.05);
+        }
+
+        .main-nav-list {
+            display: flex;
+            gap: 48px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #000000;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: #000000;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .icon-btn {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: none;
+            border: none;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        .icon-btn:active {
+            transform: scale(0.95);
+        }
+
+        .burger-menu {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px;
+            position: relative;
+            width: 40px;
+            height: 40px;
+        }
+
+        .burger-line {
+            height: 2.5px;
+            background: #000000;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .burger-line:nth-child(1) {
+            width: 24px;
+        }
+
+        .burger-line:nth-child(2) {
+            width: 20px;
+        }
+
+        .burger-line:nth-child(3) {
+            width: 16px;
+        }
+
+        .burger-menu:hover .burger-line:nth-child(1) {
+            width: 26px;
+        }
+
+        .burger-menu:hover .burger-line:nth-child(2) {
+            width: 22px;
+        }
+
+        .burger-menu:hover .burger-line:nth-child(3) {
+            width: 18px;
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 80px;
+            left: -100%;
+            width: 100%;
+            height: calc(100% - 80px);
+            background: #FFFFFF;
+            z-index: 999;
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            border-top: 2px solid #000000;
+        }
+
+        .mobile-menu.active {
+            left: 0;
+        }
+
+        .mobile-nav-content {
+            padding: 60px 40px;
+        }
+
+        .mobile-nav-item {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+
+        .mobile-nav-link {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 48px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-decoration: none;
+            color: #000000;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav-link:hover {
+            color: #666666;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            margin-top: 80px;
+            position: relative;
+            width: 100%;
+            background: #000000;
+            overflow: hidden;
+        }
+
+        .hero-container {
+            position: relative;
+            width: 100%;
+            height: 90vh;
+            max-height: 900px;
+            min-height: 700px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-bg-pattern {
+            position: absolute;
+            inset: 0;
+            opacity: 0.1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 1200px;
+            padding: 0 40px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 12px 28px;
+            background: #FFFFFF;
+            color: #000000;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            clip-path: polygon(8% 0%, 92% 0%, 100% 50%, 92% 100%, 8% 100%, 0% 50%);
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.25),
+                        0 4px 12px rgba(255, 255, 255, 0.15),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            position: relative;
+        }
+
+        .hero-badge::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            clip-path: polygon(8% 0%, 92% 0%, 100% 50%, 92% 100%, 8% 100%, 0% 50%);
+            background: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 50%);
+            pointer-events: none;
+        }
+
+
+
+        .hero-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 120px;
+            font-weight: 400;
+            letter-spacing: 8px;
+            color: #FFFFFF;
+            line-height: 1;
+            margin-bottom: 24px;
+            text-shadow: 4px 4px 0px rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            font-weight: 300;
+            color: #CCCCCC;
+            margin-bottom: 48px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 60px;
+            background: #FFFFFF;
+            color: #000000;
+            border: none;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(8% 0%, 92% 0%, 100% 50%, 92% 100%, 8% 100%, 0% 50%);
+        }
+
+        .hero-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .hero-cta:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 32px rgba(255, 255, 255, 0.3);
+        }
+
+        .hero-cta:hover::before {
+            left: 100%;
+        }
+
+        .hero-cta:active {
+            transform: scale(1.02);
+        }
+
+
+
+        /* Featured Collections */
+        .collections-section {
+            padding: 120px 40px;
+            background: #F5F5F5;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-label {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #666666;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 72px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            color: #000000;
+            line-height: 1;
+        }
+
+        .collections-grid {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .collection-card {
+            position: relative;
+            background: #FFFFFF;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 3px solid #000000;
+            padding: 0;
+            width: 100%;
+            text-align: left;
+        }
+
+        .collection-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 12px 12px 0px #000000;
+        }
+
+        .collection-card:active {
+            transform: translateY(-6px);
+            box-shadow: 6px 6px 0px #000000;
+        }
+
+        .collection-image {
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .collection-card:hover .collection-image svg {
+            transform: scale(1.1);
+        }
+
+        .collection-image svg {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .collection-info {
+            padding: 32px;
+            background: #FFFFFF;
+        }
+
+        .collection-name {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 36px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: #000000;
+            margin-bottom: 8px;
+        }
+
+        .collection-count {
+            font-size: 14px;
+            font-weight: 600;
+            color: #666666;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* New Drops */
+        .drops-section {
+            padding: 120px 40px;
+            background: #000000;
+            color: #FFFFFF;
+        }
+
+        .drops-section .section-title {
+            color: #FFFFFF;
+        }
+
+        .drops-grid {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+        }
+
+        .drop-item {
+            background: #1A1A1A;
+            border: 2px solid #333333;
+            cursor: pointer;
+            padding: 0;
+            width: 100%;
+            text-align: left;
+        }
+
+        .drop-image {
+            width: 100%;
+            height: 350px;
+            overflow: hidden;
+            background: #2A2A2A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .drop-image svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .drop-details {
+            padding: 24px;
+        }
+
+        .drop-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #999999;
+            margin-bottom: 8px;
+        }
+
+        .drop-name {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 24px;
+            font-weight: 400;
+            letter-spacing: 1px;
+            color: #FFFFFF;
+            margin-bottom: 8px;
+        }
+
+        .drop-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+
+        /* Products Carousel Section */
+        .products-carousel-section {
+            padding: 120px 0;
+            background: #FFFFFF;
+            overflow: hidden;
+        }
+
+        .products-carousel-section .section-header {
+            padding: 0 40px;
+            margin-bottom: 60px;
+        }
+
+        .carousel-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 80px;
+            position: relative;
+        }
+
+        .carousel-container {
+            position: relative;
+        }
+
+        .carousel-row {
+            display: flex;
+            gap: 24px;
+            padding: 0 40px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+        }
+
+        .carousel-row::-webkit-scrollbar {
+            display: none;
+        }
+
+        .product-card-small {
+            flex: 0 0 calc((100% - 120px) / 4);
+            min-width: 280px;
+            background: #FFFFFF;
+            border: 2px solid #E0E0E0;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0;
+            text-align: left;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .product-card-small:active {
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 1400px) {
+            .product-card-small {
+                flex: 0 0 calc((100% - 96px) / 3);
+                min-width: 260px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .product-card-small {
+                flex: 0 0 calc((100% - 72px) / 2.5);
+                min-width: 240px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-card-small {
+                flex: 0 0 calc((100% - 48px) / 1.5);
+                min-width: 220px;
+            }
+
+            .carousel-row {
+                padding: 0 24px;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-card-small {
+                flex: 0 0 calc(100% - 48px);
+                min-width: 280px;
+            }
+
+            .carousel-row {
+                gap: 16px;
+            }
+        }
+
+        .product-thumb {
+            width: 100%;
+            height: 280px;
+            overflow: hidden;
+            background: #E5E5E5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-thumb svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .product-card-info {
+            padding: 18px 20px;
+            background: #FFFFFF;
+        }
+
+        .product-card-name {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 18px;
+            font-weight: 400;
+            letter-spacing: 1px;
+            color: #000000;
+            margin-bottom: 8px;
+        }
+
+        .product-card-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: #000000;
+        }
+
+        /* About Brand */
+        .about-section {
+            padding: 120px 40px;
+            background: #FFFFFF;
+        }
+
+        .about-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .about-visual {
+            position: relative;
+            height: 600px;
+            background: #F5F5F5;
+            border: 3px solid #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .about-text-content h2 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 64px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: #000000;
+            line-height: 1;
+            margin-bottom: 32px;
+        }
+
+        .about-text-content p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333333;
+            margin-bottom: 24px;
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .feature-text h4 {
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #000000;
+            margin-bottom: 4px;
+        }
+
+        .feature-text p {
+            font-size: 13px;
+            color: #666666;
+            margin: 0;
+        }
+
+        /* Footer */
+        .site-footer {
+            padding: 80px 40px 40px;
+            background: #000000;
+            color: #FFFFFF;
+        }
+
+        .footer-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+
+        .footer-brand h3 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 48px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: #FFFFFF;
+            margin-bottom: 24px;
+        }
+
+        .footer-brand p {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #999999;
+            margin-bottom: 32px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .social-btn {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #FFFFFF;
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            padding: 0;
+            text-decoration: none;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: #000000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .social-btn:hover::before {
+            opacity: 1;
+        }
+
+        .social-btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-btn svg {
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover svg {
+            transform: scale(1.15);
+            stroke: #FFFFFF;
+            fill: #FFFFFF;
+        }
+
+        .footer-column h4 {
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #FFFFFF;
+            margin-bottom: 24px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            font-size: 14px;
+            text-decoration: none;
+            color: #999999;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #FFFFFF;
+        }
+
+        .footer-bottom {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding-top: 40px;
+            border-top: 1px solid #333333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copyright {
+            font-size: 13px;
+            color: #666666;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .collections-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .drops-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-content {
+                padding: 0 24px;
+                height: 70px;
+            }
+
+            .logo-text {
+                font-size: 28px;
+            }
+
+            .main-nav-list {
+                display: none;
+            }
+
+            .burger-menu {
+                display: flex;
+            }
+
+            .mobile-menu {
+                top: 70px;
+                height: calc(100% - 70px);
+            }
+
+            .hero-section {
+                margin-top: 70px;
+            }
+
+            .hero-container {
+                height: 80vh;
+                min-height: 600px;
+            }
+
+            .hero-title {
+                font-size: 64px;
+                letter-spacing: 4px;
+            }
+
+            .hero-subtitle {
+                font-size: 16px;
+            }
+
+            .section-title {
+                font-size: 48px;
+            }
+
+            .collections-section,
+            .drops-section,
+            .about-section {
+                padding: 80px 24px;
+            }
+
+            .collections-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .drops-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .about-visual {
+                height: 400px;
+            }
+
+            .about-features {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 24px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .drops-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 48px;
+            }
+
+            .hero-cta {
+                padding: 18px 48px;
+                font-size: 12px;
+            }
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="page-wrapper"><!-- Navigation -->
+   <header class="top-nav" role="banner">
+    <nav class="nav-content"><a href="#home" class="logo-text" id="brandLogo">NEXUS WEAR</a>
+     <ul class="main-nav-list">
+      <li><a href="#new" class="nav-link">New Drops</a></li>
+      <li><a href="#collections" class="nav-link">Collections</a></li>
+      <li><a href="#about" class="nav-link">About</a></li>
+      <li><a href="#contact" class="nav-link">Contact</a></li>
+     </ul>
+     <div class="nav-icons"><button class="icon-btn" aria-label="Cart">
+       <svg width="26" height="26" viewbox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1" /> <circle cx="20" cy="21" r="1" /> <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+       </svg></button> <button class="icon-btn" aria-label="Account">
+       <svg width="26" height="26" viewbox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /> <circle cx="12" cy="7" r="4" />
+       </svg></button> <button class="burger-menu" id="burgerBtn" aria-label="Menu"> <span class="burger-line"></span> <span class="burger-line"></span> <span class="burger-line"></span> </button>
+     </div>
+    </nav>
+   </header><!-- Mobile Menu -->
+   <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-nav-content">
+     <ul>
+      <li class="mobile-nav-item"><a href="#new" class="mobile-nav-link">New Drops</a></li>
+      <li class="mobile-nav-item"><a href="#collections" class="mobile-nav-link">Collections</a></li>
+      <li class="mobile-nav-item"><a href="#about" class="mobile-nav-link">About</a></li>
+      <li class="mobile-nav-item"><a href="#contact" class="mobile-nav-link">Contact</a></li>
+     </ul>
+    </div>
+   </div><!-- Hero Section -->
+   <main>
+    <section class="hero-section" id="home">
+     <div class="hero-container">
+      <svg class="hero-bg-pattern" viewbox="0 0 1920 1080" preserveaspectratio="xMidYMid slice"><defs>
+        <pattern id="grid" width="100" height="100" patternunits="userSpaceOnUse">
+         <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2" />
+        </pattern>
+       </defs> <rect width="100%" height="100%" fill="url(#grid)" /> <circle cx="400" cy="300" r="200" fill="rgba(255,255,255,0.03)" /> <circle cx="1500" cy="700" r="300" fill="rgba(255,255,255,0.03)" /> <rect x="800" y="200" width="400" height="400" fill="rgba(255,255,255,0.02)" transform="rotate(45 1000 400)" />
+      </svg>
+      <div class="hero-content">
+       <div class="hero-badge" id="heroBadge">
+        NEW COLLECTION 2024
+       </div>
+       <h1 class="hero-title" id="heroTitle">STREET CULTURE</h1>
+       <p class="hero-subtitle" id="heroSubtitle">Y2K • HIP HOP • URBAN STYLE</p><a href="https://www.canva.com" target="_blank" rel="noopener noreferrer" class="hero-cta" id="heroCTA"> <span>SHOP NOW</span>
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12" /> <polyline points="12 5 19 12 12 19"></polyline>
+        </svg></a>
+      </div>
+     </div>
+    </section><!-- Featured Collections -->
+    <section class="collections-section" id="collections">
+     <div class="section-header">
+      <div class="section-label">
+       EXPLORE NOW
+      </div>
+      <h2 class="section-title">FEATURED COLLECTIONS</h2>
+     </div>
+     <div class="collections-grid"><button class="collection-card">
+       <div class="collection-image">
+        <svg viewbox="0 0 600 500" preserveaspectratio="xMidYMid slice"><defs>
+          <lineargradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+           <stop offset="0%" style="stop-color:#000000;stop-opacity:1" />
+           <stop offset="100%" style="stop-color:#333333;stop-opacity:1" />
+          </lineargradient>
+         </defs> <rect width="100%" height="100%" fill="url(#grad1)" /> <g opacity="0.3">
+          <path d="M150 200 L200 150 L250 200 L200 250 Z" fill="#FFFFFF" />
+          <path d="M350 300 L400 250 L450 300 L400 350 Z" fill="#FFFFFF" />
+          <circle cx="300" cy="250" r="80" fill="none" stroke="#FFFFFF" stroke-width="3" />
+         </g> <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-family="Bebas Neue, cursive" font-size="120" font-weight="700" fill="rgba(255,255,255,0.15)">
+          Y2K
+         </text>
+        </svg>
+       </div>
+       <div class="collection-info">
+        <h3 class="collection-name" id="collection1Name">Y2K ESSENTIALS</h3>
+        <p class="collection-count">48 Items</p>
+       </div></button> <button class="collection-card">
+       <div class="collection-image">
+        <svg viewbox="0 0 600 500" preserveaspectratio="xMidYMid slice"><defs>
+          <lineargradient id="grad2" x1="100%" y1="0%" x2="0%" y2="100%">
+           <stop offset="0%" style="stop-color:#1A1A1A;stop-opacity:1" />
+           <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+          </lineargradient>
+         </defs> <rect width="100%" height="100%" fill="url(#grad2)" /> <g opacity="0.3">
+          <rect x="150" y="150" width="100" height="100" fill="none" stroke="#FFFFFF" stroke-width="3" />
+          <rect x="350" y="250" width="100" height="100" fill="none" stroke="#FFFFFF" stroke-width="3" />
+          <line x1="100" y1="100" x2="500" y2="400" stroke="#FFFFFF" stroke-width="2" />
+         </g> <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-family="Bebas Neue, cursive" font-size="100" font-weight="700" fill="rgba(255,255,255,0.15)">
+          HIP HOP
+         </text>
+        </svg>
+       </div>
+       <div class="collection-info">
+        <h3 class="collection-name" id="collection2Name">HIP HOP CLASSICS</h3>
+        <p class="collection-count">62 Items</p>
+       </div></button> <button class="collection-card">
+       <div class="collection-image">
+        <svg viewbox="0 0 600 500" preserveaspectratio="xMidYMid slice"><defs>
+          <lineargradient id="grad3" x1="0%" y1="100%" x2="100%" y2="0%">
+           <stop offset="0%" style="stop-color:#2A2A2A;stop-opacity:1" />
+           <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+          </lineargradient>
+         </defs> <rect width="100%" height="100%" fill="url(#grad3)" /> <g opacity="0.3">
+          <polygon points="300,150 400,250 300,350 200,250" fill="none" stroke="#FFFFFF" stroke-width="3" />
+          <circle cx="150" cy="350" r="40" fill="none" stroke="#FFFFFF" stroke-width="2" />
+          <circle cx="450" cy="150" r="40" fill="none" stroke="#FFFFFF" stroke-width="2" />
+         </g> <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-family="Bebas Neue, cursive" font-size="100" font-weight="700" fill="rgba(255,255,255,0.15)">
+          STREET
+         </text>
+        </svg>
+       </div>
+       <div class="collection-info">
+        <h3 class="collection-name" id="collection3Name">STREETWEAR</h3>
+        <p class="collection-count">55 Items</p>
+       </div></button>
+     </div>
+    </section><!-- New Drops -->
+    <section class="drops-section" id="new">
+     <div class="section-header">
+      <div class="section-label" style="color: #666666;">
+       JUST DROPPED
+      </div>
+      <h2 class="section-title">NEW ARRIVALS</h2>
+     </div>
+     <div class="drops-grid"><button class="drop-item">
+       <div class="drop-image">
+        <svg viewbox="0 0 400 350" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#2A2A2A" /> <g transform="translate(200, 175)">
+          <rect x="-80" y="-100" width="160" height="180" rx="5" fill="#FFFFFF" />
+          <rect x="-70" y="-90" width="140" height="20" fill="#000000" />
+          <circle cx="0" cy="0" r="50" fill="#000000" opacity="0.3" />
+          <text x="0" y="10" text-anchor="middle" font-family="Bebas Neue" font-size="40" fill="#FFFFFF" opacity="0.5">
+           TEE
+          </text>
+         </g>
+        </svg>
+       </div>
+       <div class="drop-details">
+        <div class="drop-label">
+         GRAPHIC TEE
+        </div>
+        <div class="drop-name">
+         URBAN LEGENDS
+        </div>
+        <div class="drop-price">
+         ฿890
+        </div>
+       </div></button> <button class="drop-item">
+       <div class="drop-image">
+        <svg viewbox="0 0 400 350" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#2A2A2A" /> <g transform="translate(200, 175)">
+          <rect x="-90" y="-110" width="180" height="200" rx="5" fill="#1A1A1A" />
+          <rect x="-80" y="-100" width="160" height="30" fill="#333333" />
+          <line x1="-60" y1="0" x2="60" y2="0" stroke="#666666" stroke-width="3" />
+          <text x="0" y="10" text-anchor="middle" font-family="Bebas Neue" font-size="35" fill="#999999">
+           HOODIE
+          </text>
+         </g>
+        </svg>
+       </div>
+       <div class="drop-details">
+        <div class="drop-label">
+         OVERSIZED HOODIE
+        </div>
+        <div class="drop-name">
+         MIDNIGHT VIBES
+        </div>
+        <div class="drop-price">
+         ฿1,490
+        </div>
+       </div></button> <button class="drop-item">
+       <div class="drop-image">
+        <svg viewbox="0 0 400 350" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#2A2A2A" /> <g transform="translate(200, 175)">
+          <rect x="-70" y="-80" width="140" height="160" rx="3" fill="#E5E5E5" />
+          <rect x="-50" y="-60" width="100" height="20" fill="#000000" />
+          <rect x="-60" y="-30" width="50" height="100" fill="#CCCCCC" />
+          <rect x="10" y="-30" width="50" height="100" fill="#CCCCCC" />
+          <text x="0" y="95" text-anchor="middle" font-family="Bebas Neue" font-size="30" fill="#666666">
+           CARGO
+          </text>
+         </g>
+        </svg>
+       </div>
+       <div class="drop-details">
+        <div class="drop-label">
+         CARGO PANTS
+        </div>
+        <div class="drop-name">
+         TECH UTILITY
+        </div>
+        <div class="drop-price">
+         ฿1,790
+        </div>
+       </div></button> <button class="drop-item">
+       <div class="drop-image">
+        <svg viewbox="0 0 400 350" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#2A2A2A" /> <g transform="translate(200, 200)">
+          <ellipse cx="0" cy="0" rx="80" ry="30" fill="#FFFFFF" />
+          <ellipse cx="0" cy="0" rx="70" ry="25" fill="#F5F5F5" />
+          <rect x="-15" y="-60" width="30" height="60" fill="#E5E5E5" />
+          <circle cx="-30" cy="-30" r="8" fill="#333333" />
+          <circle cx="30" cy="-30" r="8" fill="#333333" />
+          <text x="0" y="50" text-anchor="middle" font-family="Bebas Neue" font-size="28" fill="#999999">
+           KICKS
+          </text>
+         </g>
+        </svg>
+       </div>
+       <div class="drop-details">
+        <div class="drop-label">
+         SNEAKERS
+        </div>
+        <div class="drop-name">
+         CLOUD RUNNER
+        </div>
+        <div class="drop-price">
+         ฿2,490
+        </div>
+       </div></button>
+     </div>
+    </section><!-- Scrollable Products Section -->
+    <section class="products-carousel-section">
+     <div class="section-header">
+      <div class="section-label">
+       EXPLORE MORE
+      </div>
+      <h2 class="section-title">TRENDING PRODUCTS</h2>
+     </div>
+     <div class="carousel-wrapper">
+      <div class="carousel-container">
+       <div class="carousel-row" id="carouselRow1"><button class="product-card-small">
+         <div class="product-thumb">
+          <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="100" y="80" width="100" height="140" rx="3" fill="#FFFFFF" /> <rect x="110" y="90" width="80" height="15" fill="#000000" /> <text x="150" y="170" text-anchor="middle" font-family="Arial" font-size="24" fill="#333333" font-weight="bold">
+            01
+           </text>
+          </svg>
+         </div>
+         <div class="product-card-info">
+          <div class="product-card-name">
+           OVERSIZED TEE
+          </div>
+          <div class="product-card-price">
+           ฿790
+          </div>
+         </div></button> <button class="product-card-small">
+         <div class="product-thumb">
+          <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="80" y="70" width="140" height="160" rx="4" fill="#333333" /> <rect x="90" y="80" width="120" height="25" fill="#666666" /> <line x1="110" y1="130" x2="190" y2="130" stroke="#999999" stroke-width="2" /> <text x="150" y="180" text-anchor="middle" font-family="Arial" font-size="24" fill="#AAAAAA" font-weight="bold">
+            02
+           </text>
+          </svg>
+         </div>
+         <div class="product-card-info">
+          <div class="product-card-name">
+           ZIP HOODIE
+          </div>
+          <div class="product-card-price">
+           ฿1,690
+          </div>
+         </div></button> <button class="product-card-small">
+         <div class="product-thumb">
+          <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="90" y="100" width="120" height="120" rx="2" fill="#E5E5E5" /> <rect x="110" y="110" width="80" height="15" fill="#000000" /> <rect x="100" y="135" width="40" height="70" fill="#CCCCCC" /> <rect x="160" y="135" width="40" height="70" fill="#CCCCCC" /> <text x="150" y="240" text-anchor="middle" font-family="Arial" font-size="24" fill="#666666" font-weight="bold">
+            03
+           </text>
+          </svg>
+         </div>
+         <div class="product-card-info">
+          <div class="product-card-name">
+           CARGO SHORTS
+          </div>
+          <div class="product-card-price">
+           ฿1,290
+          </div>
+         </div></button> <button class="product-card-small">
+         <div class="product-thumb">
+          <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <ellipse cx="150" cy="180" rx="70" ry="25" fill="#FFFFFF" /> <ellipse cx="150" cy="180" rx="60" ry="20" fill="#F5F5F5" /> <rect x="135" y="130" width="30" height="50" fill="#E5E5E5" /> <circle cx="125" cy="150" r="6" fill="#333333" /> <circle cx="175" cy="150" r="6" fill="#333333" /> <text x="150" y="230" text-anchor="middle" font-family="Arial" font-size="24" fill="#999999" font-weight="bold">
+            04
+           </text>
+          </svg>
+         </div>
+         <div class="product-card-info">
+          <div class="product-card-name">
+           RETRO SNEAKER
+          </div>
+          <div class="product-card-price">
+           ฿2,690
+          </div>
+         </div></button> <button class="product-card-small">
+         <div class="product-thumb">
+          <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="90" y="110" width="120" height="80" rx="40" fill="#FFFFFF" /> <circle cx="150" cy="150" r="50" fill="#F0F0F0" /> <circle cx="150" cy="150" r="35" fill="#000000" /> <text x="150" y="220" text-anchor="middle" font-family="Arial" font-size="24" fill="#CCCCCC" font-weight="bold">
+            05
+           </text>
+          </svg>
+         </div>
+         <div class="product-card-info">
+          <div class="product-card-name">
+           BUCKET HAT
+          </div>
+          <div class="product-card-price">
+           ฿690
+          </div>
+         </div></button> <button class="product-card-small">
+         <div class="product-thumb">
+          <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="80" y="120" width="140" height="60" rx="8" fill="#2A2A2A" /> <rect x="100" y="135" width="100" height="30" fill="#444444" /> <circle cx="190" cy="150" r="8" fill="#666666" /> <text x="150" y="210" text-anchor="middle" font-family="Arial" font-size="24" fill="#888888" font-weight="bold">
+            06
+           </text>
+          </svg>
+         </div>
+         <div class="product-card-info">
+          <div class="product-card-name">
+           CROSSBODY BAG
+          </div>
+          <div class="product-card-price">
+           ฿1,490
+          </div>
+         </div></button> <button class="product-card-small">
+         <div class="product-thumb">
+          <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="90" y="80" width="120" height="140" rx="3" fill="#FFFFFF" /> <rect x="100" y="90" width="100" height="18" fill="#000000" /> <circle cx="150" cy="140" r="35" fill="#000000" opacity="0.2" /> <text x="150" y="195" text-anchor="middle" font-family="Arial" font-size="28" fill="#333333" font-weight="bold">
+            07
+           </text>
+          </svg>
+         </div>
+         <div class="product-card-info">
+          <div class="product-card-name">
+           GRAPHIC LONG SLEEVE
+          </div>
+          <div class="product-card-price">
+           ฿990
+          </div>
+         </div></button> <button class="product-card-small">
+         <div class="product-thumb">
+          <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="70" y="90" width="160" height="120" rx="3" fill="#E5E5E5" /> <rect x="90" y="100" width="120" height="20" fill="#333333" /> <rect x="80" y="130" width="50" height="70" fill="#CCCCCC" /> <rect x="170" y="130" width="50" height="70" fill="#CCCCCC" /> <text x="150" y="235" text-anchor="middle" font-family="Arial" font-size="24" fill="#666666" font-weight="bold">
+            08
+           </text>
+          </svg>
+         </div>
+         <div class="product-card-info">
+          <div class="product-card-name">
+           WIDE LEG JEANS
+          </div>
+          <div class="product-card-price">
+           ฿1,990
+          </div>
+         </div></button>
+       </div>
+      </div>
+     </div>
+     <div class="carousel-container">
+      <div class="carousel-row" id="carouselRow2"><button class="product-card-small">
+        <div class="product-thumb">
+         <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="85" y="85" width="130" height="130" rx="4" fill="#2A2A2A" /> <rect x="95" y="95" width="110" height="25" fill="#444444" /> <circle cx="150" cy="150" r="40" fill="#666666" opacity="0.5" /> <text x="150" y="235" text-anchor="middle" font-family="Arial" font-size="24" fill="#AAAAAA" font-weight="bold">
+           09
+          </text>
+         </svg>
+        </div>
+        <div class="product-card-info">
+         <div class="product-card-name">
+          COACH JACKET
+         </div>
+         <div class="product-card-price">
+          ฿1,890
+         </div>
+        </div></button> <button class="product-card-small">
+        <div class="product-thumb">
+         <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <circle cx="150" cy="130" r="50" fill="#FFFFFF" /> <circle cx="150" cy="130" r="40" fill="#F5F5F5" /> <rect x="120" y="180" width="60" height="40" rx="2" fill="#E5E5E5" /> <text x="150" y="245" text-anchor="middle" font-family="Arial" font-size="24" fill="#999999" font-weight="bold">
+           10
+          </text>
+         </svg>
+        </div>
+        <div class="product-card-info">
+         <div class="product-card-name">
+          BEANIE
+         </div>
+         <div class="product-card-price">
+          ฿590
+         </div>
+        </div></button> <button class="product-card-small">
+        <div class="product-thumb">
+         <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="100" y="110" width="100" height="80" rx="2" fill="#333333" /> <rect x="110" y="120" width="80" height="15" fill="#555555" /> <circle cx="150" cy="155" r="20" fill="#777777" /> <text x="150" y="215" text-anchor="middle" font-family="Arial" font-size="24" fill="#AAAAAA" font-weight="bold">
+           11
+          </text>
+         </svg>
+        </div>
+        <div class="product-card-info">
+         <div class="product-card-name">
+          WAIST BAG
+         </div>
+         <div class="product-card-price">
+          ฿890
+         </div>
+        </div></button> <button class="product-card-small">
+        <div class="product-thumb">
+         <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="90" y="95" width="120" height="110" rx="3" fill="#FFFFFF" /> <rect x="100" y="105" width="100" height="18" fill="#000000" /> <polygon points="150,145 130,165 170,165" fill="#CCCCCC" /> <text x="150" y="230" text-anchor="middle" font-family="Arial" font-size="24" fill="#666666" font-weight="bold">
+           12
+          </text>
+         </svg>
+        </div>
+        <div class="product-card-info">
+         <div class="product-card-name">
+          POLO SHIRT
+         </div>
+         <div class="product-card-price">
+          ฿890
+         </div>
+        </div></button> <button class="product-card-small">
+        <div class="product-thumb">
+         <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <ellipse cx="150" cy="175" rx="65" ry="22" fill="#E5E5E5" /> <ellipse cx="150" cy="175" rx="55" ry="18" fill="#CCCCCC" /> <rect x="138" y="130" width="24" height="45" fill="#B8B8B8" /> <circle cx="130" cy="148" r="5" fill="#333333" /> <circle cx="170" cy="148" r="5" fill="#333333" /> <text x="150" y="220" text-anchor="middle" font-family="Arial" font-size="24" fill="#888888" font-weight="bold">
+           13
+          </text>
+         </svg>
+        </div>
+        <div class="product-card-info">
+         <div class="product-card-name">
+          SLIDES
+         </div>
+         <div class="product-card-price">
+          ฿990
+         </div>
+        </div></button> <button class="product-card-small">
+        <div class="product-thumb">
+         <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="75" y="100" width="150" height="100" rx="50" fill="#2A2A2A" /> <rect x="95" y="120" width="110" height="20" fill="#444444" /> <circle cx="150" cy="160" r="25" fill="#666666" /> <text x="150" y="225" text-anchor="middle" font-family="Arial" font-size="24" fill="#999999" font-weight="bold">
+           14
+          </text>
+         </svg>
+        </div>
+        <div class="product-card-info">
+         <div class="product-card-name">
+          BOMBER JACKET
+         </div>
+         <div class="product-card-price">
+          ฿2,290
+         </div>
+        </div></button> <button class="product-card-small">
+        <div class="product-thumb">
+         <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="95" y="105" width="110" height="90" rx="3" fill="#F5F5F5" /> <rect x="105" y="115" width="90" height="15" fill="#333333" /> <line x1="120" y1="150" x2="180" y2="150" stroke="#666666" stroke-width="2" /> <line x1="120" y1="165" x2="170" y2="165" stroke="#999999" stroke-width="2" /> <text x="150" y="220" text-anchor="middle" font-family="Arial" font-size="24" fill="#666666" font-weight="bold">
+           15
+          </text>
+         </svg>
+        </div>
+        <div class="product-card-info">
+         <div class="product-card-name">
+          TANK TOP
+         </div>
+         <div class="product-card-price">
+          ฿590
+         </div>
+        </div></button> <button class="product-card-small">
+        <div class="product-thumb">
+         <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="80" y="95" width="140" height="110" rx="3" fill="#E5E5E5" /> <rect x="95" y="105" width="110" height="18" fill="#000000" /> <rect x="90" y="133" width="45" height="62" fill="#CCCCCC" /> <rect x="165" y="133" width="45" height="62" fill="#CCCCCC" /> <text x="150" y="230" text-anchor="middle" font-family="Arial" font-size="24" fill="#666666" font-weight="bold">
+           16
+          </text>
+         </svg>
+        </div>
+        <div class="product-card-info">
+         <div class="product-card-name">
+          TRACK PANTS
+         </div>
+         <div class="product-card-price">
+          ฿1,390
+         </div>
+        </div></button>
+      </div>
+     </div>
+    </section>
+   </main>
+  </div> <!-- About Section -->
+  <section class="about-section" id="about">
+   <div class="about-content">
+    <div class="about-visual">
+     <svg viewbox="0 0 600 600" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#F5F5F5" /> <g transform="translate(300, 300)">
+       <circle r="200" fill="none" stroke="#000000" stroke-width="4" />
+       <circle r="150" fill="none" stroke="#000000" stroke-width="2" opacity="0.3" />
+       <circle r="100" fill="none" stroke="#000000" stroke-width="2" opacity="0.2" />
+       <text x="0" y="15" text-anchor="middle" font-family="Bebas Neue" font-size="70" fill="#000000">
+        NEXUS
+       </text>
+       <line x1="-250" y1="0" x2="-210" y2="0" stroke="#000000" stroke-width="3" />
+       <line x1="210" y1="0" x2="250" y2="0" stroke="#000000" stroke-width="3" />
+       <line x1="0" y1="-250" x2="0" y2="-210" stroke="#000000" stroke-width="3" />
+       <line x1="0" y1="210" x2="0" y2="250" stroke="#000000" stroke-width="3" />
+      </g>
+     </svg>
+    </div>
+    <div class="about-text-content">
+     <h2 id="aboutTitle">THE CULTURE<br>
+      THE MOVEMENT</h2>
+     <p>เราคือแบรนด์สตรีทแวร์ที่ผสมผสานวัฒนธรรมฮ����ปฮอป สไตล์ Y2K และความเป��นเมือง สร้างสรรค์เสื้อผ้า��ี่สะท้อนถึงวัฒนธรรมของคนรุ่นใหม่</p>
+     <p>We are a streetwear brand that blends hip-hop culture, Y2K style, and urban aesthetics. Creating clothing that reflects the culture of the new generation.</p>
+     <div class="about-features">
+      <div class="feature-item">
+       <div class="feature-icon">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+       </div>
+       <div class="feature-text">
+        <h4>Premium Quality</h4>
+        <p>คุณภาพระดับพรีเมี����ม</p>
+       </div>
+      </div>
+      <div class="feature-item">
+       <div class="feature-icon">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+        </svg>
+       </div>
+       <div class="feature-text">
+        <h4>Limited Drops</h4>
+        <p>คอลเลกชั���น���ำกัด</p>
+       </div>
+      </div>
+      <div class="feature-item">
+       <div class="feature-icon">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+        </svg>
+       </div>
+       <div class="feature-text">
+        <h4>Fast Delivery</h4>
+        <p>จัดส��งรวด����็ว</p>
+       </div>
+      </div>
+      <div class="feature-item">
+       <div class="feature-icon">
+        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /> <circle cx="9" cy="7" r="4" /> <path d="M23 21v-2a4 4 0 0 0-3-3.87" /> <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+       </div>
+       <div class="feature-text">
+        <h4>Community</h4>
+        <p>ชุมช��ส����รีทแวร์</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section> <!-- Footer -->
+  <footer class="site-footer" role="contentinfo">
+   <div class="footer-content">
+    <div class="footer-brand">
+     <h3 id="footerBrand">NEXUS WEAR</h3>
+     <p id="footerTagline">Authentic streetwear for the culture. Born from the streets, made for the streets.</p>
+     <div class="social-links"><a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Instagram">
+       <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4" /> <circle cx="12" cy="12" r="3.5" /> <circle cx="17" cy="7" r="0.5" fill="#000000" />
+       </svg></a> <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="TikTok">
+       <svg width="20" height="20" viewbox="0 0 24 24" fill="#000000" stroke="none"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+       </svg></a> <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Twitter">
+       <svg width="20" height="20" viewbox="0 0 24 24" fill="#000000" stroke="none"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+       </svg></a> <a href="https://t.me" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Telegram">
+       <svg width="20" height="20" viewbox="0 0 24 24" fill="#000000" stroke="none"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" />
+       </svg></a>
+     </div>
+    </div>
+    <div class="footer-column">
+     <h4>Shop</h4>
+     <ul class="footer-links">
+      <li><a href="#new">New Arrivals</a></li>
+      <li><a href="#collections">Collections</a></li>
+      <li><a href="#sale">Sale</a></li>
+      <li><a href="#bestsellers">Best Sellers</a></li>
+     </ul>
+    </div>
+    <div class="footer-column">
+     <h4>Support</h4>
+     <ul class="footer-links">
+      <li><a href="#contact">Contact Us</a></li>
+      <li><a href="#shipping">Shipping Info</a></li>
+      <li><a href="#returns">Returns</a></li>
+      <li><a href="#faq">FAQ</a></li>
+     </ul>
+    </div>
+    <div class="footer-column">
+     <h4>Company</h4>
+     <ul class="footer-links">
+      <li><a href="#about">About Us</a></li>
+      <li><a href="#stores">Store Locator</a></li>
+      <li><a href="#careers">Careers</a></li>
+      <li><a href="#privacy">Privacy Policy</a></li>
+     </ul>
+    </div>
+   </div>
+   <div class="footer-bottom">
+    <div class="copyright">
+     © 2024 NEXUS WEAR. All rights reserved.
+    </div>
+    <div class="payment-methods">
+     <svg width="50" height="32" viewbox="0 0 50 32" fill="none"><rect width="50" height="32" rx="4" fill="#1434CB" /> <text x="25" y="20" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="white">
+       VISA
+      </text>
+     </svg>
+     <svg width="50" height="32" viewbox="0 0 50 32" fill="none"><rect width="50" height="32" rx="4" fill="#EB001B" /> <circle cx="19" cy="16" r="10" fill="#FF5F00" /> <circle cx="31" cy="16" r="10" fill="#F79E1B" />
+     </svg>
+     <svg width="50" height="32" viewbox="0 0 50 32" fill="none"><rect width="50" height="32" rx="4" fill="#4E2A84" /> <rect x="8" y="7" width="34" height="18" rx="1.5" fill="white" /> <rect x="10" y="9" width="6" height="6" fill="#4E2A84" /> <rect x="17" y="9" width="6" height="6" fill="#4E2A84" /> <rect x="24" y="9" width="6" height="6" fill="#4E2A84" /> <rect x="31" y="9" width="6" height="6" fill="#4E2A84" /> <rect x="10" y="16" width="6" height="6" fill="#4E2A84" /> <rect x="17" y="16" width="6" height="6" fill="#4E2A84" /> <rect x="24" y="16" width="6" height="6" fill="#4E2A84" /> <rect x="31" y="16" width="6" height="6" fill="#4E2A84" /> <path d="M13 11.5 L13 13.5 M20 11.5 L20 13.5 M27 11.5 L27 13.5 M34 11.5 L34 13.5" stroke="white" stroke-width="0.8" /> <path d="M13 18.5 L13 20.5 M20 18.5 L20 20.5 M27 18.5 L27 20.5 M34 18.5 L34 20.5" stroke="white" stroke-width="0.8" />
+     </svg>
+    </div>
+   </div>
+  </footer>
+  <script>
+        const defaultConfig = {
+            brand_name: 'NEXUS WEAR',
+            tagline: 'Authentic streetwear for the culture',
+            hero_title: 'STREET CULTURE',
+            hero_subtitle: 'Y2K • HIP HOP • URBAN STYLE',
+            cta_button: 'SHOP NOW',
+            collection_1: 'Y2K ESSENTIALS',
+            collection_2: 'HIP HOP CLASSICS',
+            collection_3: 'STREETWEAR',
+            background_color: '#FFFFFF',
+            surface_color: '#F5F5F5',
+            text_color: '#000000',
+            primary_action_color: '#000000',
+            secondary_action_color: '#666666',
+            font_family: 'Inter',
+            font_size: 16
+        };
+
+        async function onConfigChange(config) {
+            const brandName = config.brand_name || defaultConfig.brand_name;
+            const tagline = config.tagline || defaultConfig.tagline;
+            const heroTitle = config.hero_title || defaultConfig.hero_title;
+            const heroSubtitle = config.hero_subtitle || defaultConfig.hero_subtitle;
+            const ctaButton = config.cta_button || defaultConfig.cta_button;
+            const col1 = config.collection_1 || defaultConfig.collection_1;
+            const col2 = config.collection_2 || defaultConfig.collection_2;
+            const col3 = config.collection_3 || defaultConfig.collection_3;
+
+            const bgColor = config.background_color || defaultConfig.background_color;
+            const surfaceColor = config.surface_color || defaultConfig.surface_color;
+            const textColor = config.text_color || defaultConfig.text_color;
+            const primaryColor = config.primary_action_color || defaultConfig.primary_action_color;
+            const secondaryColor = config.secondary_action_color || defaultConfig.secondary_action_color;
+
+            const customFont = config.font_family || defaultConfig.font_family;
+            const baseSize = config.font_size || defaultConfig.font_size;
+
+            // Update text content
+            document.getElementById('brandLogo').textContent = brandName;
+            document.getElementById('heroTitle').textContent = heroTitle;
+            document.getElementById('heroSubtitle').textContent = heroSubtitle;
+            const ctaBtns = document.querySelectorAll('#heroCTA span');
+            ctaBtns.forEach(btn => btn.textContent = ctaButton);
+            document.getElementById('collection1Name').textContent = col1;
+            document.getElementById('collection2Name').textContent = col2;
+            document.getElementById('collection3Name').textContent = col3;
+            document.getElementById('footerBrand').textContent = brandName;
+            document.getElementById('footerTagline').textContent = tagline;
+
+            // Apply colors
+            document.body.style.background = bgColor;
+            document.body.style.color = textColor;
+
+            const topNav = document.querySelector('.top-nav');
+            if (topNav) {
+                topNav.style.background = bgColor;
+                topNav.style.borderBottomColor = primaryColor;
+            }
+
+            const logoEl = document.querySelector('.logo-text');
+            if (logoEl) logoEl.style.color = primaryColor;
+
+            const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
+            navLinks.forEach(link => link.style.color = textColor);
+
+            const mobileMenu = document.querySelector('.mobile-menu');
+            if (mobileMenu) mobileMenu.style.background = bgColor;
+
+            const collectionsSec = document.querySelector('.collections-section');
+            if (collectionsSec) collectionsSec.style.background = surfaceColor;
+
+            const collCards = document.querySelectorAll('.collection-card');
+            collCards.forEach(card => {
+                card.style.background = bgColor;
+                card.style.borderColor = primaryColor;
+            });
+
+            const aboutSec = document.querySelector('.about-section');
+            if (aboutSec) aboutSec.style.background = bgColor;
+
+            // Apply fonts
+            const baseFontStack = `-apple-system, BlinkMacSystemFont, sans-serif`;
+            const bodyFontStack = `${customFont}, ${baseFontStack}`;
+
+            document.body.style.fontFamily = bodyFontStack;
+
+            // Apply font sizes
+            document.body.style.fontSize = `${baseSize}px`;
+            
+            const heroTitleEl = document.getElementById('heroTitle');
+            if (heroTitleEl) heroTitleEl.style.fontSize = `${baseSize * 7.5}px`;
+
+            const heroSubEl = document.getElementById('heroSubtitle');
+            if (heroSubEl) heroSubEl.style.fontSize = `${baseSize * 1.25}px`;
+
+            const sectionTitles = document.querySelectorAll('.section-title');
+            sectionTitles.forEach(el => el.style.fontSize = `${baseSize * 4.5}px`);
+
+            const collectionNames = document.querySelectorAll('.collection-name');
+            collectionNames.forEach(el => el.style.fontSize = `${baseSize * 2.25}px`);
+        }
+
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig,
+                onConfigChange,
+                mapToCapabilities: (config) => ({
+                    recolorables: [
+                        {
+                            get: () => config.background_color || defaultConfig.background_color,
+                            set: (value) => {
+                                config.background_color = value;
+                                window.elementSdk.setConfig({ background_color: value });
+                            }
+                        },
+                        {
+                            get: () => config.surface_color || defaultConfig.surface_color,
+                            set: (value) => {
+                                config.surface_color = value;
+                                window.elementSdk.setConfig({ surface_color: value });
+                            }
+                        },
+                        {
+                            get: () => config.text_color || defaultConfig.text_color,
+                            set: (value) => {
+                                config.text_color = value;
+                                window.elementSdk.setConfig({ text_color: value });
+                            }
+                        },
+                        {
+                            get: () => config.primary_action_color || defaultConfig.primary_action_color,
+                            set: (value) => {
+                                config.primary_action_color = value;
+                                window.elementSdk.setConfig({ primary_action_color: value });
+                            }
+                        },
+                        {
+                            get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+                            set: (value) => {
+                                config.secondary_action_color = value;
+                                window.elementSdk.setConfig({ secondary_action_color: value });
+                            }
+                        }
+                    ],
+                    borderables: [],
+                    fontEditable: {
+                        get: () => config.font_family || defaultConfig.font_family,
+                        set: (value) => {
+                            config.font_family = value;
+                            window.elementSdk.setConfig({ font_family: value });
+                        }
+                    },
+                    fontSizeable: {
+                        get: () => config.font_size || defaultConfig.font_size,
+                        set: (value) => {
+                            config.font_size = value;
+                            window.elementSdk.setConfig({ font_size: value });
+                        }
+                    }
+                }),
+                mapToEditPanelValues: (config) => new Map([
+                    ['brand_name', config.brand_name || defaultConfig.brand_name],
+                    ['tagline', config.tagline || defaultConfig.tagline],
+                    ['hero_title', config.hero_title || defaultConfig.hero_title],
+                    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+                    ['cta_button', config.cta_button || defaultConfig.cta_button],
+                    ['collection_1', config.collection_1 || defaultConfig.collection_1],
+                    ['collection_2', config.collection_2 || defaultConfig.collection_2],
+                    ['collection_3', config.collection_3 || defaultConfig.collection_3]
+                ])
+            });
+        }
+
+        // Mobile Menu
+        const burgerBtn = document.getElementById('burgerBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        let isMenuOpen = false;
+
+        burgerBtn.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            mobileMenu.classList.toggle('active', isMenuOpen);
+        });
+
+        // Close mobile menu on link click
+        const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                isMenuOpen = false;
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Icon buttons
+        const iconBtns = document.querySelectorAll('.icon-btn');
+        iconBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const label = btn.getAttribute('aria-label');
+                console.log('Action:', label);
+            });
+        });
+
+        // Collection cards
+        const collectionCards = document.querySelectorAll('.collection-card');
+        collectionCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const name = card.querySelector('.collection-name').textContent;
+                console.log('View collection:', name);
+            });
+        });
+
+        // Drop items
+        const dropItems = document.querySelectorAll('.drop-item');
+        dropItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const name = item.querySelector('.drop-name').textContent;
+                console.log('View product:', name);
+            });
+        });
+
+        // Product card small items with URL parameters
+        const productCards = document.querySelectorAll('.product-card-small');
+        productCards.forEach((card, index) => {
+            card.addEventListener('click', () => {
+                const name = card.querySelector('.product-card-name').textContent;
+                const price = card.querySelector('.product-card-price').textContent;
+                
+                // Create product ID from index
+                const productId = `product-${index + 1}`;
+                
+                // Create URL with parameters
+                const params = new URLSearchParams({
+                    id: productId,
+                    name: name,
+                    price: price
+                });
+                
+                // Open in new tab with parameters
+                window.open(`https://www.canva.com?${params.toString()}`, '_blank', 'noopener,noreferrer');
+            });
+        });
+
+
+
+        // Social links are now anchor tags with target="_blank", no event listener needed
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a58ae03a73f64f5',t:'MTc2NDMyMDQ3Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
