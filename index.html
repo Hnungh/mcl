@@ -526,7 +526,7 @@
         .carousel-wrapper {
             display: flex;
             flex-direction: column;
-            gap: 80px;
+            gap: 100px;
             position: relative;
         }
 
@@ -536,7 +536,7 @@
 
         .carousel-row {
             display: flex;
-            gap: 24px;
+            gap: 40px;
             padding: 0 40px;
             overflow-x: auto;
             scroll-behavior: smooth;
@@ -550,7 +550,7 @@
         }
 
         .product-card-small {
-            flex: 0 0 calc((100% - 120px) / 4);
+            flex: 0 0 calc((100% - 160px) / 4);
             min-width: 280px;
             background: #FFFFFF;
             border: 2px solid #E0E0E0;
@@ -571,27 +571,35 @@
 
         @media (max-width: 1400px) {
             .product-card-small {
-                flex: 0 0 calc((100% - 96px) / 3);
+                flex: 0 0 calc((100% - 120px) / 3);
                 min-width: 260px;
             }
         }
 
         @media (max-width: 1024px) {
             .product-card-small {
-                flex: 0 0 calc((100% - 72px) / 2.5);
+                flex: 0 0 calc((100% - 80px) / 2.5);
                 min-width: 240px;
+            }
+
+            .carousel-row {
+                gap: 32px;
             }
         }
 
         @media (max-width: 768px) {
             .product-card-small {
-                flex: 0 0 calc((100% - 48px) / 1.5);
+                flex: 0 0 calc((100% - 56px) / 1.5);
                 min-width: 220px;
             }
 
             .carousel-row {
                 padding: 0 24px;
-                gap: 20px;
+                gap: 28px;
+            }
+
+            .carousel-wrapper {
+                gap: 60px;
             }
         }
 
@@ -602,7 +610,7 @@
             }
 
             .carousel-row {
-                gap: 16px;
+                gap: 24px;
             }
         }
 
@@ -614,6 +622,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
 
         .product-thumb svg {
@@ -621,8 +630,24 @@
             height: 100%;
         }
 
+        .product-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: none;
+        }
+
+        .product-thumb img.loaded {
+            display: block;
+        }
+
+        .product-thumb svg.has-image {
+            display: none;
+        }
+
         .product-card-info {
-            padding: 18px 20px;
+            padding: 28px;
             background: #FFFFFF;
         }
 
@@ -632,7 +657,7 @@
             font-weight: 400;
             letter-spacing: 1px;
             color: #000000;
-            margin-bottom: 8px;
+            margin-bottom: 16px;
         }
 
         .product-card-price {
@@ -1456,7 +1481,7 @@
     <div class="about-text-content">
      <h2 id="aboutTitle">THE CULTURE<br>
       THE MOVEMENT</h2>
-     <p>เราคือแบรนด์สตรีทแวร์ที่ผสมผสานวัฒนธรรมฮ����ปฮอป สไตล์ Y2K และความเป��นเมือง สร้างสรรค์เสื้อผ้า��ี่สะท้อนถึงวัฒนธรรมของคนรุ่นใหม่</p>
+     <p>เราคือแบรนด���สตรีทแวร์ที่ผสมผสานวัฒนธรรมฮ����ปฮอป สไตล์ Y2K และความเป��นเมือง สร้างสรรค์เสื้อผ้า��ี่สะท้อนถึงวัฒนธรรมของคนรุ่นใหม่</p>
      <p>We are a streetwear brand that blends hip-hop culture, Y2K style, and urban aesthetics. Creating clothing that reflects the culture of the new generation.</p>
      <div class="about-features">
       <div class="feature-item">
@@ -1557,9 +1582,7 @@
       </text>
      </svg>
      <svg width="50" height="32" viewbox="0 0 50 32" fill="none"><rect width="50" height="32" rx="4" fill="#EB001B" /> <circle cx="19" cy="16" r="10" fill="#FF5F00" /> <circle cx="31" cy="16" r="10" fill="#F79E1B" />
-     </svg>
-     <svg width="50" height="32" viewbox="0 0 50 32" fill="none"><rect width="50" height="32" rx="4" fill="#4E2A84" /> <rect x="8" y="7" width="34" height="18" rx="1.5" fill="white" /> <rect x="10" y="9" width="6" height="6" fill="#4E2A84" /> <rect x="17" y="9" width="6" height="6" fill="#4E2A84" /> <rect x="24" y="9" width="6" height="6" fill="#4E2A84" /> <rect x="31" y="9" width="6" height="6" fill="#4E2A84" /> <rect x="10" y="16" width="6" height="6" fill="#4E2A84" /> <rect x="17" y="16" width="6" height="6" fill="#4E2A84" /> <rect x="24" y="16" width="6" height="6" fill="#4E2A84" /> <rect x="31" y="16" width="6" height="6" fill="#4E2A84" /> <path d="M13 11.5 L13 13.5 M20 11.5 L20 13.5 M27 11.5 L27 13.5 M34 11.5 L34 13.5" stroke="white" stroke-width="0.8" /> <path d="M13 18.5 L13 20.5 M20 18.5 L20 20.5 M27 18.5 L27 20.5 M34 18.5 L34 20.5" stroke="white" stroke-width="0.8" />
-     </svg>
+     </svg><img src="https://hnungh.github.io/mcl/KHQR-available-here-logo-with-bg-768x316.png" alt="KHQR Payment" style="height: 32px; width: auto; border-radius: 4px;" onerror="this.style.display='none'; this.alt='KHQR';">
     </div>
    </div>
   </footer>
@@ -1825,6 +1848,61 @@
 
 
         // Social links are now anchor tags with target="_blank", no event listener needed
+
+        // Product Image Management System
+        // ใช้สำหรับใส่รูปภาพจริงของสินค้าในอนาคต
+        const productImages = {
+            // ตัวอย่างการใช้งาน:
+            // 'product-1': 'https://example.com/image1.jpg',
+            // 'product-2': 'https://example.com/image2.jpg',
+        };
+
+        function loadProductImages() {
+            productCards.forEach((card, index) => {
+                const productId = `product-${index + 1}`;
+                const imageUrl = productImages[productId];
+                
+                if (imageUrl) {
+                    const thumbContainer = card.querySelector('.product-thumb');
+                    const svgElement = thumbContainer.querySelector('svg');
+                    
+                    // สร้าง img element
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.alt = card.querySelector('.product-card-name').textContent;
+                    
+                    // เมื่อรูปโหลดสำเร็จ
+                    img.onload = () => {
+                        img.classList.add('loaded');
+                        svgElement.classList.add('has-image');
+                    };
+                    
+                    // ถ้ารูปโหลดไม่ได้ให้ใช้ SVG
+                    img.onerror = () => {
+                        img.remove();
+                        console.log(`Failed to load image for ${productId}, using SVG fallback`);
+                    };
+                    
+                    thumbContainer.appendChild(img);
+                }
+            });
+        }
+
+        // เรียกใช้ฟังก์ชันโหลดรูปภาพ
+        loadProductImages();
+
+        // ฟังก์ชันสำหรับอัพเดทรูปภาพสินค้าแบบ dynamic
+        window.updateProductImage = function(productIndex, imageUrl) {
+            const productId = `product-${productIndex}`;
+            productImages[productId] = imageUrl;
+            loadProductImages();
+        };
+
+        // ฟังก์ชันสำหรับอัพเดทรูปภาพหลายสินค้าพร้อมกัน
+        window.updateMultipleProductImages = function(imagesObject) {
+            Object.assign(productImages, imagesObject);
+            loadProductImages();
+        };
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a58ae03a73f64f5',t:'MTc2NDMyMDQ3Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a67728695f945b4',t:'MTc2NDQ3NTMyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
