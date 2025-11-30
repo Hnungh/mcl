@@ -226,7 +226,7 @@
         .hero-container {
             position: relative;
             width: 100%;
-            height: 90vh;
+            height: 90%;
             max-height: 900px;
             min-height: 700px;
             display: flex;
@@ -273,8 +273,6 @@
             background: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 50%);
             pointer-events: none;
         }
-
-
 
         .hero-title {
             font-family: 'Bebas Neue', cursive;
@@ -339,8 +337,6 @@
         .hero-cta:active {
             transform: scale(1.02);
         }
-
-
 
         /* Featured Collections */
         .collections-section {
@@ -442,9 +438,13 @@
 
         /* New Drops */
         .drops-section {
-            padding: 120px 40px;
+            padding: 120px 40px 80px;
             background: #000000;
             color: #FFFFFF;
+        }
+
+        .drops-section .section-label {
+            color: #999999;
         }
 
         .drops-section .section-title {
@@ -462,10 +462,12 @@
         .drop-item {
             background: #1A1A1A;
             border: 2px solid #333333;
-            cursor: pointer;
             padding: 0;
             width: 100%;
             text-align: left;
+            text-decoration: none;
+            display: block;
+            color: inherit;
         }
 
         .drop-image {
@@ -511,159 +513,124 @@
             color: #FFFFFF;
         }
 
-        /* Products Carousel Section */
-        .products-carousel-section {
+        /* Trending Products Carousel */
+        .trending-section {
             padding: 80px 0;
-            background: #FFFFFF;
+            background: #000000;
             overflow: hidden;
         }
 
-        .products-carousel-section .section-header {
+        .trending-section .section-header {
             padding: 0 40px;
             margin-bottom: 60px;
+        }
+
+        .trending-section .section-label {
+            color: #999999;
+        }
+
+        .trending-section .section-title {
+            color: #FFFFFF;
         }
 
         .carousel-wrapper {
             display: flex;
             flex-direction: column;
-            gap: 100px;
-            position: relative;
+            gap: 24px;
         }
 
-        .carousel-container {
-            position: relative;
-        }
-
-        .carousel-row {
+        .carousel-track {
             display: flex;
-            gap: 40px;
-            padding: 0 40px;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-            scroll-snap-type: x mandatory;
-            scrollbar-width: none;
+            gap: 24px;
+            width: max-content;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
         }
 
-        .carousel-row::-webkit-scrollbar {
-            display: none;
+        .carousel-track[data-direction="left"] {
+            animation-name: scrollLeft;
+            animation-duration: 60s;
         }
 
-        .product-card-small {
-            flex: 0 0 calc((100% - 160px) / 4);
-            min-width: 280px;
-            background: #FFFFFF;
-            border: 2px solid #E0E0E0;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 0;
-            text-align: left;
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            border-radius: 12px;
-            overflow: hidden;
+        .carousel-track[data-direction="right"] {
+            animation-name: scrollRight;
+            animation-duration: 60s;
         }
 
-        .product-card-small:active {
-            transform: translateY(-2px);
-        }
-
-        @media (max-width: 1400px) {
-            .product-card-small {
-                flex: 0 0 calc((100% - 120px) / 3);
-                min-width: 260px;
+        @keyframes scrollLeft {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
             }
         }
 
-        @media (max-width: 1024px) {
-            .product-card-small {
-                flex: 0 0 calc((100% - 80px) / 2.5);
-                min-width: 240px;
+        @keyframes scrollRight {
+            0% {
+                transform: translateX(-50%);
             }
-
-            .carousel-row {
-                gap: 32px;
+            100% {
+                transform: translateX(0);
             }
         }
 
-        @media (max-width: 768px) {
-            .product-card-small {
-                flex: 0 0 calc((100% - 56px) / 1.5);
-                min-width: 220px;
-            }
-
-            .carousel-row {
-                padding: 0 24px;
-                gap: 28px;
-            }
-
-            .carousel-wrapper {
-                gap: 60px;
-            }
+        .carousel-track:hover {
+            animation-play-state: paused;
         }
 
-        @media (max-width: 480px) {
-            .product-card-small {
-                flex: 0 0 calc(100% - 48px);
-                min-width: 280px;
-            }
-
-            .carousel-row {
-                gap: 24px;
-            }
+        .product-card {
+            flex-shrink: 0;
+            width: 320px;
+            background: #1A1A1A;
+            border: 2px solid #333333;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: transform 0.3s ease, border-color 0.3s ease;
         }
 
-        .product-thumb {
+        .product-image {
             width: 100%;
-            height: 280px;
+            height: 320px;
             overflow: hidden;
-            background: #E5E5E5;
+            background: #2A2A2A;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
         }
 
-        .product-thumb svg {
+        .product-image svg {
             width: 100%;
             height: 100%;
         }
 
-        .product-thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            display: none;
+        .product-info {
+            padding: 20px;
         }
 
-        .product-thumb img.loaded {
-            display: block;
+        .product-category {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #999999;
+            margin-bottom: 8px;
         }
 
-        .product-thumb svg.has-image {
-            display: none;
-        }
-
-        .product-card-info {
-            padding: 28px;
-            background: #FFFFFF;
-        }
-
-        .product-card-name {
+        .product-name {
             font-family: 'Bebas Neue', cursive;
-            font-size: 18px;
+            font-size: 22px;
             font-weight: 400;
             letter-spacing: 1px;
-            color: #000000;
-            margin-bottom: 16px;
+            color: #FFFFFF;
+            margin-bottom: 8px;
         }
 
-        .product-card-price {
-            font-size: 16px;
+        .product-price {
+            font-size: 18px;
             font-weight: 700;
-            color: #000000;
+            color: #FFFFFF;
         }
 
         /* About Brand */
@@ -904,7 +871,7 @@
             }
 
             .logo-text {
-                font-size: 28px;
+                font-size: 24px;
             }
 
             .main-nav-list {
@@ -925,7 +892,7 @@
             }
 
             .hero-container {
-                height: 80vh;
+                height: 80%;
                 min-height: 600px;
             }
 
@@ -1039,11 +1006,11 @@
        </defs> <rect width="100%" height="100%" fill="url(#grid)" /> <circle cx="400" cy="300" r="200" fill="rgba(255,255,255,0.03)" /> <circle cx="1500" cy="700" r="300" fill="rgba(255,255,255,0.03)" /> <rect x="800" y="200" width="400" height="400" fill="rgba(255,255,255,0.02)" transform="rotate(45 1000 400)" />
       </svg>
       <div class="hero-content">
-       <div class="hero-badge" id="heroBadge">
+       <div class="hero-badge">
         NEW COLLECTION 2024
        </div>
        <h1 class="hero-title" id="heroTitle">STREET CULTURE</h1>
-       <p class="hero-subtitle" id="heroSubtitle">Y2K • HIP HOP • URBAN STYLE</p><a href="https://www.canva.com" target="_blank" rel="noopener noreferrer" class="hero-cta" id="heroCTA"> <span>SHOP NOW</span>
+       <p class="hero-subtitle" id="heroSubtitle">Y2K • HIP HOP • URBAN STYLE</p><a href="https://www.canva.com" target="_blank" rel="noopener noreferrer" class="hero-cta"> <span id="heroCTA">SHOP NOW</span>
         <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12" /> <polyline points="12 5 19 12 12 19"></polyline>
         </svg></a>
       </div>
@@ -1118,12 +1085,12 @@
     </section><!-- New Drops -->
     <section class="drops-section" id="new">
      <div class="section-header">
-      <div class="section-label" style="color: #666666;">
+      <div class="section-label">
        JUST DROPPED
       </div>
       <h2 class="section-title">NEW ARRIVALS</h2>
      </div>
-     <div class="drops-grid"><button class="drop-item">
+     <div class="drops-grid"><a href="https://www.canva.com" target="_blank" rel="noopener noreferrer" class="drop-item">
        <div class="drop-image">
         <svg viewbox="0 0 400 350" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#2A2A2A" /> <g transform="translate(200, 175)">
           <rect x="-80" y="-100" width="160" height="180" rx="5" fill="#FFFFFF" />
@@ -1145,7 +1112,7 @@
         <div class="drop-price">
          ฿890
         </div>
-       </div></button> <button class="drop-item">
+       </div></a> <a href="https://www.canva.com" target="_blank" rel="noopener noreferrer" class="drop-item">
        <div class="drop-image">
         <svg viewbox="0 0 400 350" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#2A2A2A" /> <g transform="translate(200, 175)">
           <rect x="-90" y="-110" width="180" height="200" rx="5" fill="#1A1A1A" />
@@ -1167,7 +1134,7 @@
         <div class="drop-price">
          ฿1,490
         </div>
-       </div></button> <button class="drop-item">
+       </div></a> <a href="https://www.canva.com" target="_blank" rel="noopener noreferrer" class="drop-item">
        <div class="drop-image">
         <svg viewbox="0 0 400 350" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#2A2A2A" /> <g transform="translate(200, 175)">
           <rect x="-70" y="-80" width="140" height="160" rx="3" fill="#E5E5E5" />
@@ -1190,7 +1157,7 @@
         <div class="drop-price">
          ฿1,790
         </div>
-       </div></button> <button class="drop-item">
+       </div></a> <a href="https://www.canva.com" target="_blank" rel="noopener noreferrer" class="drop-item">
        <div class="drop-image">
         <svg viewbox="0 0 400 350" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#2A2A2A" /> <g transform="translate(200, 200)">
           <ellipse cx="0" cy="0" rx="80" ry="30" fill="#FFFFFF" />
@@ -1214,378 +1181,491 @@
         <div class="drop-price">
          ฿2,490
         </div>
-       </div></button>
+       </div></a>
      </div>
-    </section><!-- Scrollable Products Section -->
-    <section class="products-carousel-section">
+    </section><!-- Trending Products Carousel -->
+    <section class="trending-section">
      <div class="section-header">
       <div class="section-label">
        EXPLORE MORE
       </div>
       <h2 class="section-title">TRENDING PRODUCTS</h2>
      </div>
-     <div class="carousel-wrapper">
-      <div class="carousel-container">
-       <div class="carousel-row" id="carouselRow1"><button class="product-card-small">
-         <div class="product-thumb">
-          <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="100" y="80" width="100" height="140" rx="3" fill="#FFFFFF" /> <rect x="110" y="90" width="80" height="15" fill="#000000" /> <text x="150" y="170" text-anchor="middle" font-family="Arial" font-size="24" fill="#333333" font-weight="bold">
-            01
-           </text>
-          </svg>
-         </div>
-         <div class="product-card-info">
-          <div class="product-card-name">
-           OVERSIZED TEE
-          </div>
-          <div class="product-card-price">
-           ฿790
-          </div>
-         </div></button> <button class="product-card-small">
-         <div class="product-thumb">
-          <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="80" y="70" width="140" height="160" rx="4" fill="#333333" /> <rect x="90" y="80" width="120" height="25" fill="#666666" /> <line x1="110" y1="130" x2="190" y2="130" stroke="#999999" stroke-width="2" /> <text x="150" y="180" text-anchor="middle" font-family="Arial" font-size="24" fill="#AAAAAA" font-weight="bold">
-            02
-           </text>
-          </svg>
-         </div>
-         <div class="product-card-info">
-          <div class="product-card-name">
-           ZIP HOODIE
-          </div>
-          <div class="product-card-price">
-           ฿1,690
-          </div>
-         </div></button> <button class="product-card-small">
-         <div class="product-thumb">
-          <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="90" y="100" width="120" height="120" rx="2" fill="#E5E5E5" /> <rect x="110" y="110" width="80" height="15" fill="#000000" /> <rect x="100" y="135" width="40" height="70" fill="#CCCCCC" /> <rect x="160" y="135" width="40" height="70" fill="#CCCCCC" /> <text x="150" y="240" text-anchor="middle" font-family="Arial" font-size="24" fill="#666666" font-weight="bold">
-            03
-           </text>
-          </svg>
-         </div>
-         <div class="product-card-info">
-          <div class="product-card-name">
-           CARGO SHORTS
-          </div>
-          <div class="product-card-price">
-           ฿1,290
-          </div>
-         </div></button> <button class="product-card-small">
-         <div class="product-thumb">
-          <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <ellipse cx="150" cy="180" rx="70" ry="25" fill="#FFFFFF" /> <ellipse cx="150" cy="180" rx="60" ry="20" fill="#F5F5F5" /> <rect x="135" y="130" width="30" height="50" fill="#E5E5E5" /> <circle cx="125" cy="150" r="6" fill="#333333" /> <circle cx="175" cy="150" r="6" fill="#333333" /> <text x="150" y="230" text-anchor="middle" font-family="Arial" font-size="24" fill="#999999" font-weight="bold">
-            04
-           </text>
-          </svg>
-         </div>
-         <div class="product-card-info">
-          <div class="product-card-name">
-           RETRO SNEAKER
-          </div>
-          <div class="product-card-price">
-           ฿2,690
-          </div>
-         </div></button> <button class="product-card-small">
-         <div class="product-thumb">
-          <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="90" y="110" width="120" height="80" rx="40" fill="#FFFFFF" /> <circle cx="150" cy="150" r="50" fill="#F0F0F0" /> <circle cx="150" cy="150" r="35" fill="#000000" /> <text x="150" y="220" text-anchor="middle" font-family="Arial" font-size="24" fill="#CCCCCC" font-weight="bold">
-            05
-           </text>
-          </svg>
-         </div>
-         <div class="product-card-info">
-          <div class="product-card-name">
-           BUCKET HAT
-          </div>
-          <div class="product-card-price">
-           ฿690
-          </div>
-         </div></button> <button class="product-card-small">
-         <div class="product-thumb">
-          <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="80" y="120" width="140" height="60" rx="8" fill="#2A2A2A" /> <rect x="100" y="135" width="100" height="30" fill="#444444" /> <circle cx="190" cy="150" r="8" fill="#666666" /> <text x="150" y="210" text-anchor="middle" font-family="Arial" font-size="24" fill="#888888" font-weight="bold">
-            06
-           </text>
-          </svg>
-         </div>
-         <div class="product-card-info">
-          <div class="product-card-name">
-           CROSSBODY BAG
-          </div>
-          <div class="product-card-price">
-           ฿1,490
-          </div>
-         </div></button> <button class="product-card-small">
-         <div class="product-thumb">
-          <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="90" y="80" width="120" height="140" rx="3" fill="#FFFFFF" /> <rect x="100" y="90" width="100" height="18" fill="#000000" /> <circle cx="150" cy="140" r="35" fill="#000000" opacity="0.2" /> <text x="150" y="195" text-anchor="middle" font-family="Arial" font-size="28" fill="#333333" font-weight="bold">
-            07
-           </text>
-          </svg>
-         </div>
-         <div class="product-card-info">
-          <div class="product-card-name">
-           GRAPHIC LONG SLEEVE
-          </div>
-          <div class="product-card-price">
-           ฿990
-          </div>
-         </div></button> <button class="product-card-small">
-         <div class="product-thumb">
-          <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="70" y="90" width="160" height="120" rx="3" fill="#E5E5E5" /> <rect x="90" y="100" width="120" height="20" fill="#333333" /> <rect x="80" y="130" width="50" height="70" fill="#CCCCCC" /> <rect x="170" y="130" width="50" height="70" fill="#CCCCCC" /> <text x="150" y="235" text-anchor="middle" font-family="Arial" font-size="24" fill="#666666" font-weight="bold">
-            08
-           </text>
-          </svg>
-         </div>
-         <div class="product-card-info">
-          <div class="product-card-name">
-           WIDE LEG JEANS
-          </div>
-          <div class="product-card-price">
-           ฿1,990
-          </div>
-         </div></button>
-       </div>
-      </div>
-     </div>
-     <div class="carousel-container">
-      <div class="carousel-row" id="carouselRow2"><button class="product-card-small">
-        <div class="product-thumb">
-         <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="85" y="85" width="130" height="130" rx="4" fill="#2A2A2A" /> <rect x="95" y="95" width="110" height="25" fill="#444444" /> <circle cx="150" cy="150" r="40" fill="#666666" opacity="0.5" /> <text x="150" y="235" text-anchor="middle" font-family="Arial" font-size="24" fill="#AAAAAA" font-weight="bold">
-           09
-          </text>
+     <div class="carousel-wrapper"><!-- First Row - Moving Left -->
+      <div class="carousel-track" data-direction="left"><a href="?product=oversized-tee-black" class="product-card">
+        <div class="product-image">
+         <svg viewbox="0 0 400 400" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#F5F5F5" /> <g transform="translate(200, 200)">
+           <rect x="-90" y="-110" width="180" height="200" rx="5" fill="#000000" />
+           <rect x="-80" y="-100" width="160" height="25" fill="#333333" />
+           <circle cx="0" cy="0" r="40" fill="#666666" opacity="0.3" />
+          </g>
          </svg>
         </div>
-        <div class="product-card-info">
-         <div class="product-card-name">
-          COACH JACKET
+        <div class="product-info">
+         <div class="product-category">
+          OVERSIZED TEE
          </div>
-         <div class="product-card-price">
+         <div class="product-name">
+          Classic Black
+         </div>
+         <div class="product-price">
+          ฿790
+         </div>
+        </div></a> <a href="?product=cargo-pants-olive" class="product-card">
+        <div class="product-image">
+         <svg viewbox="0 0 400 400" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#F5F5F5" /> <g transform="translate(200, 200)">
+           <rect x="-70" y="-100" width="140" height="180" rx="3" fill="#5A5A3D" />
+           <rect x="-60" y="-40" width="50" height="120" fill="#4A4A2D" />
+           <rect x="10" y="-40" width="50" height="120" fill="#4A4A2D" />
+           <rect x="-50" y="-70" width="30" height="40" fill="#3A3A1D" />
+           <rect x="20" y="-70" width="30" height="40" fill="#3A3A1D" />
+          </g>
+         </svg>
+        </div>
+        <div class="product-info">
+         <div class="product-category">
+          CARGO PANTS
+         </div>
+         <div class="product-name">
+          Military Olive
+         </div>
+         <div class="product-price">
+          ฿1,590
+         </div>
+        </div></a> <a href="?product=hoodie-grey" class="product-card">
+        <div class="product-image">
+         <svg viewbox="0 0 400 400" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#F5F5F5" /> <g transform="translate(200, 200)">
+           <rect x="-95" y="-120" width="190" height="220" rx="5" fill="#8E8E8E" />
+           <rect x="-85" y="-110" width="170" height="35" fill="#6E6E6E" />
+           <circle cx="-30" cy="-85" r="8" fill="#5E5E5E" />
+           <line x1="-70" y1="10" x2="70" y2="10" stroke="#5E5E5E" stroke-width="4" />
+          </g>
+         </svg>
+        </div>
+        <div class="product-info">
+         <div class="product-category">
+          PULLOVER HOODIE
+         </div>
+         <div class="product-name">
+          Stone Grey
+         </div>
+         <div class="product-price">
+          ฿1,290
+         </div>
+        </div></a> <a href="?product=jacket-denim" class="product-card">
+        <div class="product-image">
+         <svg viewbox="0 0 400 400" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#F5F5F5" /> <g transform="translate(200, 200)">
+           <rect x="-100" y="-110" width="200" height="200" rx="5" fill="#4A6FA5" />
+           <rect x="-90" y="-100" width="80" height="190" fill="#3A5F95" />
+           <rect x="10" y="-100" width="80" height="190" fill="#3A5F95" />
+           <circle cx="-50" cy="-50" r="6" fill="#2A4F85" />
+           <circle cx="-50" cy="0" r="6" fill="#2A4F85" />
+           <rect x="-95" y="-105" width="190" height="15" fill="#2A4F85" />
+          </g>
+         </svg>
+        </div>
+        <div class="product-info">
+         <div class="product-category">
+          DENIM JACKET
+         </div>
+         <div class="product-name">
+          Vintage Wash
+         </div>
+         <div class="product-price">
+          ฿2,190
+         </div>
+        </div></a> <a href="?product=sneakers-white" class="product-card">
+        <div class="product-image">
+         <svg viewbox="0 0 400 400" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#F5F5F5" /> <g transform="translate(200, 220)">
+           <ellipse cx="0" cy="0" rx="100" ry="35" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="3" />
+           <ellipse cx="0" cy="0" rx="88" ry="28" fill="#F8F8F8" />
+           <rect x="-20" y="-80" width="40" height="80" fill="#E8E8E8" />
+           <circle cx="-40" cy="-40" r="12" fill="#333333" />
+           <circle cx="40" cy="-40" r="12" fill="#333333" />
+           <path d="M -60,-20 Q 0,-35 60,-20" stroke="#D0D0D0" stroke-width="4" fill="none" />
+          </g>
+         </svg>
+        </div>
+        <div class="product-info">
+         <div class="product-category">
+          LOW-TOP SNEAKERS
+         </div>
+         <div class="product-name">
+          Pure White
+         </div>
+         <div class="product-price">
+          ฿2,390
+         </div>
+        </div></a> <a href="?product=cap-black" class="product-card">
+        <div class="product-image">
+         <svg viewbox="0 0 400 400" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#F5F5F5" /> <g transform="translate(200, 200)">
+           <ellipse cx="0" cy="30" rx="110" ry="25" fill="#1A1A1A" />
+           <ellipse cx="0" cy="-10" rx="90" ry="50" fill="#000000" />
+           <rect x="-15" y="-60" width="30" height="50" fill="#0A0A0A" />
+           <ellipse cx="0" cy="-60" rx="15" ry="8" fill="#0A0A0A" />
+           <text x="0" y="0" text-anchor="middle" font-family="Arial" font-size="24" font-weight="bold" fill="#FFFFFF">
+            N
+           </text>
+          </g>
+         </svg>
+        </div>
+        <div class="product-info">
+         <div class="product-category">
+          SNAPBACK CAP
+         </div>
+         <div class="product-name">
+          Essential Black
+         </div>
+         <div class="product-price">
+          ฿590
+         </div>
+        </div></a> <a href="?product=tee-white-graphic" class="product-card">
+        <div class="product-image">
+         <svg viewbox="0 0 400 400" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#F5F5F5" /> <g transform="translate(200, 200)">
+           <rect x="-85" y="-100" width="170" height="180" rx="5" fill="#FFFFFF" stroke="#E0E0E0" stroke-width="2" />
+           <rect x="-75" y="-90" width="150" height="20" fill="#000000" />
+           <circle cx="0" cy="10" r="35" fill="#000000" opacity="0.15" />
+           <text x="0" y="20" text-anchor="middle" font-family="Arial" font-size="32" font-weight="bold" fill="#000000" opacity="0.8">
+            NX
+           </text>
+          </g>
+         </svg>
+        </div>
+        <div class="product-info">
+         <div class="product-category">
+          GRAPHIC TEE
+         </div>
+         <div class="product-name">
+          Logo White
+         </div>
+         <div class="product-price">
+          ฿890
+         </div>
+        </div></a> <a href="?product=shorts-grey" class="product-card">
+        <div class="product-image">
+         <svg viewbox="0 0 400 400" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#F5F5F5" /> <g transform="translate(200, 200)">
+           <rect x="-75" y="-60" width="150" height="120" rx="3" fill="#9E9E9E" />
+           <rect x="-65" y="-50" width="60" height="110" fill="#8E8E8E" />
+           <rect x="5" y="-50" width="60" height="110" fill="#8E8E8E" />
+           <line x1="-75" y1="-45" x2="75" y2="-45" stroke="#7E7E7E" stroke-width="3" />
+          </g>
+         </svg>
+        </div>
+        <div class="product-info">
+         <div class="product-category">
+          SWEAT SHORTS
+         </div>
+         <div class="product-name">
+          Heather Grey
+         </div>
+         <div class="product-price">
+          ฿790
+         </div>
+        </div></a>
+      </div><!-- Second Row - Moving Right -->
+      <div class="carousel-track" data-direction="right"><a href="?product=backpack-black" class="product-card">
+        <div class="product-image">
+         <svg viewbox="0 0 400 400" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#F5F5F5" /> <g transform="translate(200, 200)">
+           <rect x="-70" y="-100" width="140" height="180" rx="8" fill="#1A1A1A" />
+           <rect x="-60" y="-90" width="120" height="20" fill="#0A0A0A" />
+           <rect x="-50" y="-50" width="100" height="80" rx="5" fill="#2A2A2A" />
+           <circle cx="0" cy="-10" r="8" fill="#3A3A3A" />
+           <rect x="-25" y="-115" width="50" height="20" rx="5" fill="#2A2A2A" />
+          </g>
+         </svg>
+        </div>
+        <div class="product-info">
+         <div class="product-category">
+          BACKPACK
+         </div>
+         <div class="product-name">
+          Urban Explorer
+         </div>
+         <div class="product-price">
           ฿1,890
          </div>
-        </div></button> <button class="product-card-small">
-        <div class="product-thumb">
-         <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <circle cx="150" cy="130" r="50" fill="#FFFFFF" /> <circle cx="150" cy="130" r="40" fill="#F5F5F5" /> <rect x="120" y="180" width="60" height="40" rx="2" fill="#E5E5E5" /> <text x="150" y="245" text-anchor="middle" font-family="Arial" font-size="24" fill="#999999" font-weight="bold">
-           10
-          </text>
+        </div></a> <a href="?product=joggers-navy" class="product-card">
+        <div class="product-image">
+         <svg viewbox="0 0 400 400" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#F5F5F5" /> <g transform="translate(200, 200)">
+           <rect x="-70" y="-90" width="140" height="170" rx="3" fill="#1E3A5F" />
+           <rect x="-60" y="-30" width="50" height="110" fill="#162E4F" />
+           <rect x="10" y="-30" width="50" height="110" fill="#162E4F" />
+           <line x1="-70" y1="-75" x2="70" y2="-75" stroke="#0E1E3F" stroke-width="3" />
+           <rect x="-60" y="75" width="50" height="15" fill="#0E1E3F" />
+           <rect x="10" y="75" width="50" height="15" fill="#0E1E3F" />
+          </g>
          </svg>
         </div>
-        <div class="product-card-info">
-         <div class="product-card-name">
-          BEANIE
+        <div class="product-info">
+         <div class="product-category">
+          JOGGER PANTS
          </div>
-         <div class="product-card-price">
-          ฿590
+         <div class="product-name">
+          Navy Blue
          </div>
-        </div></button> <button class="product-card-small">
-        <div class="product-thumb">
-         <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="100" y="110" width="100" height="80" rx="2" fill="#333333" /> <rect x="110" y="120" width="80" height="15" fill="#555555" /> <circle cx="150" cy="155" r="20" fill="#777777" /> <text x="150" y="215" text-anchor="middle" font-family="Arial" font-size="24" fill="#AAAAAA" font-weight="bold">
-           11
-          </text>
-         </svg>
-        </div>
-        <div class="product-card-info">
-         <div class="product-card-name">
-          WAIST BAG
-         </div>
-         <div class="product-card-price">
-          ฿890
-         </div>
-        </div></button> <button class="product-card-small">
-        <div class="product-thumb">
-         <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="90" y="95" width="120" height="110" rx="3" fill="#FFFFFF" /> <rect x="100" y="105" width="100" height="18" fill="#000000" /> <polygon points="150,145 130,165 170,165" fill="#CCCCCC" /> <text x="150" y="230" text-anchor="middle" font-family="Arial" font-size="24" fill="#666666" font-weight="bold">
-           12
-          </text>
-         </svg>
-        </div>
-        <div class="product-card-info">
-         <div class="product-card-name">
-          POLO SHIRT
-         </div>
-         <div class="product-card-price">
-          ฿890
-         </div>
-        </div></button> <button class="product-card-small">
-        <div class="product-thumb">
-         <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <ellipse cx="150" cy="175" rx="65" ry="22" fill="#E5E5E5" /> <ellipse cx="150" cy="175" rx="55" ry="18" fill="#CCCCCC" /> <rect x="138" y="130" width="24" height="45" fill="#B8B8B8" /> <circle cx="130" cy="148" r="5" fill="#333333" /> <circle cx="170" cy="148" r="5" fill="#333333" /> <text x="150" y="220" text-anchor="middle" font-family="Arial" font-size="24" fill="#888888" font-weight="bold">
-           13
-          </text>
-         </svg>
-        </div>
-        <div class="product-card-info">
-         <div class="product-card-name">
-          SLIDES
-         </div>
-         <div class="product-card-price">
-          ฿990
-         </div>
-        </div></button> <button class="product-card-small">
-        <div class="product-thumb">
-         <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="75" y="100" width="150" height="100" rx="50" fill="#2A2A2A" /> <rect x="95" y="120" width="110" height="20" fill="#444444" /> <circle cx="150" cy="160" r="25" fill="#666666" /> <text x="150" y="225" text-anchor="middle" font-family="Arial" font-size="24" fill="#999999" font-weight="bold">
-           14
-          </text>
-         </svg>
-        </div>
-        <div class="product-card-info">
-         <div class="product-card-name">
-          BOMBER JACKET
-         </div>
-         <div class="product-card-price">
-          ฿2,290
-         </div>
-        </div></button> <button class="product-card-small">
-        <div class="product-thumb">
-         <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="95" y="105" width="110" height="90" rx="3" fill="#F5F5F5" /> <rect x="105" y="115" width="90" height="15" fill="#333333" /> <line x1="120" y1="150" x2="180" y2="150" stroke="#666666" stroke-width="2" /> <line x1="120" y1="165" x2="170" y2="165" stroke="#999999" stroke-width="2" /> <text x="150" y="220" text-anchor="middle" font-family="Arial" font-size="24" fill="#666666" font-weight="bold">
-           15
-          </text>
-         </svg>
-        </div>
-        <div class="product-card-info">
-         <div class="product-card-name">
-          TANK TOP
-         </div>
-         <div class="product-card-price">
-          ฿590
-         </div>
-        </div></button> <button class="product-card-small">
-        <div class="product-thumb">
-         <svg viewbox="0 0 300 300" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#1A1A1A" /> <rect x="80" y="95" width="140" height="110" rx="3" fill="#E5E5E5" /> <rect x="95" y="105" width="110" height="18" fill="#000000" /> <rect x="90" y="133" width="45" height="62" fill="#CCCCCC" /> <rect x="165" y="133" width="45" height="62" fill="#CCCCCC" /> <text x="150" y="230" text-anchor="middle" font-family="Arial" font-size="24" fill="#666666" font-weight="bold">
-           16
-          </text>
-         </svg>
-        </div>
-        <div class="product-card-info">
-         <div class="product-card-name">
-          TRACK PANTS
-         </div>
-         <div class="product-card-price">
+         <div class="product-price">
           ฿1,390
          </div>
-        </div></button>
+        </div></a> <a href="?product=windbreaker-neon" class="product-card">
+        <div class="product-image">
+         <svg viewbox="0 0 400 400" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#F5F5F5" /> <g transform="translate(200, 200)">
+           <rect x="-100" y="-110" width="200" height="200" rx="5" fill="#00FF88" opacity="0.9" />
+           <rect x="-90" y="-100" width="80" height="190" fill="#00EE77" opacity="0.7" />
+           <rect x="10" y="-100" width="80" height="190" fill="#00EE77" opacity="0.7" />
+           <rect x="-5" y="-105" width="10" height="195" fill="#000000" opacity="0.3" />
+           <rect x="-100" y="-50" width="200" height="8" fill="#000000" opacity="0.2" />
+          </g>
+         </svg>
+        </div>
+        <div class="product-info">
+         <div class="product-category">
+          WINDBREAKER
+         </div>
+         <div class="product-name">
+          Neon Flash
+         </div>
+         <div class="product-price">
+          ฿1,990
+         </div>
+        </div></a> <a href="?product=beanie-grey" class="product-card">
+        <div class="product-image">
+         <svg viewbox="0 0 400 400" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#F5F5F5" /> <g transform="translate(200, 180)">
+           <ellipse cx="0" cy="40" rx="85" ry="20" fill="#7A7A7A" />
+           <path d="M -85,40 Q -85,-20 0,-60 Q 85,-20 85,40 Z" fill="#8A8A8A" />
+           <circle cx="0" cy="-50" r="15" fill="#6A6A6A" />
+           <path d="M -60,0 Q -60,-5 -55,-8 M 60,0 Q 60,-5 55,-8" stroke="#6A6A6A" stroke-width="2" fill="none" />
+          </g>
+         </svg>
+        </div>
+        <div class="product-info">
+         <div class="product-category">
+          BEANIE
+         </div>
+         <div class="product-name">
+          Winter Essential
+         </div>
+         <div class="product-price">
+          ฿490
+         </div>
+        </div></a> <a href="?product=bomber-jacket-black" class="product-card">
+        <div class="product-image">
+         <svg viewbox="0 0 400 400" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#F5F5F5" /> <g transform="translate(200, 200)">
+           <rect x="-105" y="-100" width="210" height="180" rx="5" fill="#0A0A0A" />
+           <rect x="-95" y="-90" width="85" height="170" fill="#1A1A1A" />
+           <rect x="10" y="-90" width="85" height="170" fill="#1A1A1A" />
+           <rect x="-105" y="-95" width="210" height="20" rx="8" fill="#2A2A2A" />
+           <rect x="-105" y="70" width="210" height="15" rx="8" fill="#2A2A2A" />
+           <line x1="-5" y1="-90" x2="-5" y2="70" stroke="#FFD700" stroke-width="5" />
+          </g>
+         </svg>
+        </div>
+        <div class="product-info">
+         <div class="product-category">
+          BOMBER JACKET
+         </div>
+         <div class="product-name">
+          Classic Black
+         </div>
+         <div class="product-price">
+          ฿2,590
+         </div>
+        </div></a> <a href="?product=tote-bag-canvas" class="product-card">
+        <div class="product-image">
+         <svg viewbox="0 0 400 400" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#F5F5F5" /> <g transform="translate(200, 200)">
+           <rect x="-75" y="-60" width="150" height="140" rx="3" fill="#E8D7C3" stroke="#D0BFA5" stroke-width="3" />
+           <path d="M -50,-60 Q -50,-90 -25,-95 L 25,-95 Q 50,-90 50,-60" stroke="#D0BFA5" stroke-width="4" fill="none" />
+           <text x="0" y="20" text-anchor="middle" font-family="Arial" font-size="28" font-weight="bold" fill="#8A7A6A">
+            NEXUS
+           </text>
+          </g>
+         </svg>
+        </div>
+        <div class="product-info">
+         <div class="product-category">
+          TOTE BAG
+         </div>
+         <div class="product-name">
+          Canvas Natural
+         </div>
+         <div class="product-price">
+          ฿690
+         </div>
+        </div></a> <a href="?product=track-pants-stripe" class="product-card">
+        <div class="product-image">
+         <svg viewbox="0 0 400 400" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#F5F5F5" /> <g transform="translate(200, 200)">
+           <rect x="-70" y="-90" width="140" height="170" rx="3" fill="#2A2A2A" />
+           <rect x="-60" y="-30" width="50" height="110" fill="#1A1A1A" />
+           <rect x="10" y="-30" width="50" height="110" fill="#1A1A1A" />
+           <rect x="-75" y="-90" width="5" height="170" fill="#FFFFFF" />
+           <rect x="70" y="-90" width="5" height="170" fill="#FFFFFF" />
+           <line x1="-70" y1="-75" x2="70" y2="-75" stroke="#3A3A3A" stroke-width="3" />
+          </g>
+         </svg>
+        </div>
+        <div class="product-info">
+         <div class="product-category">
+          TRACK PANTS
+         </div>
+         <div class="product-name">
+          Side Stripe
+         </div>
+         <div class="product-price">
+          ฿1,290
+         </div>
+        </div></a> <a href="?product=sunglasses-retro" class="product-card">
+        <div class="product-image">
+         <svg viewbox="0 0 400 400" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#F5F5F5" /> <g transform="translate(200, 200)">
+           <rect x="-90" y="-25" width="70" height="50" rx="8" fill="#1A1A1A" />
+           <rect x="20" y="-25" width="70" height="50" rx="8" fill="#1A1A1A" />
+           <rect x="-85" y="-20" width="60" height="40" rx="5" fill="#000000" opacity="0.8" />
+           <rect x="25" y="-20" width="60" height="40" rx="5" fill="#000000" opacity="0.8" />
+           <line x1="-20" y1="0" x2="20" y2="0" stroke="#1A1A1A" stroke-width="5" />
+           <path d="M -90,0 L -120,10" stroke="#1A1A1A" stroke-width="4" />
+           <path d="M 90,0 L 120,10" stroke="#1A1A1A" stroke-width="4" />
+          </g>
+         </svg>
+        </div>
+        <div class="product-info">
+         <div class="product-category">
+          SUNGLASSES
+         </div>
+         <div class="product-name">
+          Retro Square
+         </div>
+         <div class="product-price">
+          ฿890
+         </div>
+        </div></a>
+      </div>
+     </div>
+    </section><!-- About Section -->
+    <section class="about-section" id="about">
+     <div class="about-content">
+      <div class="about-visual">
+       <svg viewbox="0 0 600 600" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#F5F5F5" /> <g transform="translate(300, 300)">
+         <circle r="200" fill="none" stroke="#000000" stroke-width="4" />
+         <circle r="150" fill="none" stroke="#000000" stroke-width="2" opacity="0.3" />
+         <circle r="100" fill="none" stroke="#000000" stroke-width="2" opacity="0.2" />
+         <text x="0" y="15" text-anchor="middle" font-family="Bebas Neue" font-size="70" fill="#000000">
+          NEXUS
+         </text>
+         <line x1="-250" y1="0" x2="-210" y2="0" stroke="#000000" stroke-width="3" />
+         <line x1="210" y1="0" x2="250" y2="0" stroke="#000000" stroke-width="3" />
+         <line x1="0" y1="-250" x2="0" y2="-210" stroke="#000000" stroke-width="3" />
+         <line x1="0" y1="210" x2="0" y2="250" stroke="#000000" stroke-width="3" />
+        </g>
+       </svg>
+      </div>
+      <div class="about-text-content">
+       <h2>THE CULTURE<br>
+        THE MOVEMENT</h2>
+       <p>เร���คื���แบรนด์สตร��ทแวร์ที่ผสมผสานว��ฒน��รรมฮิปฮอป สไตล์ Y2K และความเป็นเมือง สร้างสรรค์เสื้อผ้าที่สะท้อนถึงวัฒนธรรมของคนรุ่นใหม่</p>
+       <p>We are a streetwear brand that blends hip-hop culture, Y2K style, and urban aesthetics. Creating clothing that reflects the culture of the new generation.</p>
+       <div class="about-features">
+        <div class="feature-item">
+         <div class="feature-icon">
+          <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+         </div>
+         <div class="feature-text">
+          <h4>Premium Quality</h4>
+          <p>คุณภาพระดับพรีเมี่ยม</p>
+         </div>
+        </div>
+        <div class="feature-item">
+         <div class="feature-icon">
+          <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+          </svg>
+         </div>
+         <div class="feature-text">
+          <h4>Limited Drops</h4>
+          <p>คอลเลกชันจ���กัด</p>
+         </div>
+        </div>
+        <div class="feature-item">
+         <div class="feature-icon">
+          <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+          </svg>
+         </div>
+         <div class="feature-text">
+          <h4>Fast Delivery</h4>
+          <p>จัดส่งรวดเร็ว</p>
+         </div>
+        </div>
+        <div class="feature-item">
+         <div class="feature-icon">
+          <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /> <circle cx="9" cy="7" r="4" /> <path d="M23 21v-2a4 4 0 0 0-3-3.87" /> <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+         </div>
+         <div class="feature-text">
+          <h4>Community</h4>
+          <p>ชุมชนสตรีท��วร์</p>
+         </div>
+        </div>
+       </div>
       </div>
      </div>
     </section>
-   </main>
-  </div> <!-- About Section -->
-  <section class="about-section" id="about">
-   <div class="about-content">
-    <div class="about-visual">
-     <svg viewbox="0 0 600 600" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#F5F5F5" /> <g transform="translate(300, 300)">
-       <circle r="200" fill="none" stroke="#000000" stroke-width="4" />
-       <circle r="150" fill="none" stroke="#000000" stroke-width="2" opacity="0.3" />
-       <circle r="100" fill="none" stroke="#000000" stroke-width="2" opacity="0.2" />
-       <text x="0" y="15" text-anchor="middle" font-family="Bebas Neue" font-size="70" fill="#000000">
-        NEXUS
+   </main><!-- Footer -->
+   <footer class="site-footer" role="contentinfo">
+    <div class="footer-content">
+     <div class="footer-brand">
+      <h3 id="footerBrand">NEXUS WEAR</h3>
+      <p id="footerTagline">Authentic streetwear for the culture. Born from the streets, made for the streets.</p>
+      <div class="social-links"><a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Instagram">
+        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4" /> <circle cx="12" cy="12" r="3.5" /> <circle cx="17" cy="7" r="0.5" fill="#000000" />
+        </svg></a> <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="TikTok">
+        <svg width="20" height="20" viewbox="0 0 24 24" fill="#000000" stroke="none"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+        </svg></a> <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Twitter">
+        <svg width="20" height="20" viewbox="0 0 24 24" fill="#000000" stroke="none"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+        </svg></a> <a href="https://t.me" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Telegram">
+        <svg width="20" height="20" viewbox="0 0 24 24" fill="#000000" stroke="none"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" />
+        </svg></a>
+      </div>
+     </div>
+     <div class="footer-column">
+      <h4>Shop</h4>
+      <ul class="footer-links">
+       <li><a href="#new">New Arrivals</a></li>
+       <li><a href="#collections">Collections</a></li>
+       <li><a href="#sale">Sale</a></li>
+       <li><a href="#bestsellers">Best Sellers</a></li>
+      </ul>
+     </div>
+     <div class="footer-column">
+      <h4>Support</h4>
+      <ul class="footer-links">
+       <li><a href="#contact">Contact Us</a></li>
+       <li><a href="#shipping">Shipping Info</a></li>
+       <li><a href="#returns">Returns</a></li>
+       <li><a href="#faq">FAQ</a></li>
+      </ul>
+     </div>
+     <div class="footer-column">
+      <h4>Company</h4>
+      <ul class="footer-links">
+       <li><a href="#about">About Us</a></li>
+       <li><a href="#stores">Store Locator</a></li>
+       <li><a href="#careers">Careers</a></li>
+       <li><a href="#privacy">Privacy Policy</a></li>
+      </ul>
+     </div>
+    </div>
+    <div class="footer-bottom">
+     <div class="copyright">
+      © 2024 NEXUS WEAR. All rights reserved.
+     </div>
+     <div class="payment-methods">
+      <svg width="50" height="32" viewbox="0 0 50 32" fill="none"><rect width="50" height="32" rx="4" fill="#1434CB" /> <text x="25" y="20" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="white">
+        VISA
        </text>
-       <line x1="-250" y1="0" x2="-210" y2="0" stroke="#000000" stroke-width="3" />
-       <line x1="210" y1="0" x2="250" y2="0" stroke="#000000" stroke-width="3" />
-       <line x1="0" y1="-250" x2="0" y2="-210" stroke="#000000" stroke-width="3" />
-       <line x1="0" y1="210" x2="0" y2="250" stroke="#000000" stroke-width="3" />
-      </g>
-     </svg>
-    </div>
-    <div class="about-text-content">
-     <h2 id="aboutTitle">THE CULTURE<br>
-      THE MOVEMENT</h2>
-     <p>เราคือแบรนด���สตรีทแวร์ที่ผสมผสานวัฒนธรรมฮ����ปฮอป สไตล์ Y2K และความเป��นเมือง สร้างสรรค์เสื้อผ้า��ี่สะท้อนถึงวัฒนธรรมของคนรุ่นใหม่</p>
-     <p>We are a streetwear brand that blends hip-hop culture, Y2K style, and urban aesthetics. Creating clothing that reflects the culture of the new generation.</p>
-     <div class="about-features">
-      <div class="feature-item">
-       <div class="feature-icon">
-        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
-       </div>
-       <div class="feature-text">
-        <h4>Premium Quality</h4>
-        <p>คุณภาพระดับพรีเมี����ม</p>
-       </div>
-      </div>
-      <div class="feature-item">
-       <div class="feature-icon">
-        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-        </svg>
-       </div>
-       <div class="feature-text">
-        <h4>Limited Drops</h4>
-        <p>คอลเลกชั���น���ำกัด</p>
-       </div>
-      </div>
-      <div class="feature-item">
-       <div class="feature-icon">
-        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-        </svg>
-       </div>
-       <div class="feature-text">
-        <h4>Fast Delivery</h4>
-        <p>จัดส��งรวด����็ว</p>
-       </div>
-      </div>
-      <div class="feature-item">
-       <div class="feature-icon">
-        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /> <circle cx="9" cy="7" r="4" /> <path d="M23 21v-2a4 4 0 0 0-3-3.87" /> <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-        </svg>
-       </div>
-       <div class="feature-text">
-        <h4>Community</h4>
-        <p>ชุมช��ส����รีทแวร์</p>
-       </div>
-      </div>
+      </svg>
+      <svg width="50" height="32" viewbox="0 0 50 32" fill="none"><rect width="50" height="32" rx="4" fill="#EB001B" /> <circle cx="19" cy="16" r="10" fill="#FF5F00" /> <circle cx="31" cy="16" r="10" fill="#F79E1B" />
+      </svg>
      </div>
     </div>
-   </div>
-  </section> <!-- Footer -->
-  <footer class="site-footer" role="contentinfo">
-   <div class="footer-content">
-    <div class="footer-brand">
-     <h3 id="footerBrand">NEXUS WEAR</h3>
-     <p id="footerTagline">Authentic streetwear for the culture. Born from the streets, made for the streets.</p>
-     <div class="social-links"><a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Instagram">
-       <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4" /> <circle cx="12" cy="12" r="3.5" /> <circle cx="17" cy="7" r="0.5" fill="#000000" />
-       </svg></a> <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="TikTok">
-       <svg width="20" height="20" viewbox="0 0 24 24" fill="#000000" stroke="none"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
-       </svg></a> <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Twitter">
-       <svg width="20" height="20" viewbox="0 0 24 24" fill="#000000" stroke="none"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-       </svg></a> <a href="https://t.me" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Telegram">
-       <svg width="20" height="20" viewbox="0 0 24 24" fill="#000000" stroke="none"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z" />
-       </svg></a>
-     </div>
-    </div>
-    <div class="footer-column">
-     <h4>Shop</h4>
-     <ul class="footer-links">
-      <li><a href="#new">New Arrivals</a></li>
-      <li><a href="#collections">Collections</a></li>
-      <li><a href="#sale">Sale</a></li>
-      <li><a href="#bestsellers">Best Sellers</a></li>
-     </ul>
-    </div>
-    <div class="footer-column">
-     <h4>Support</h4>
-     <ul class="footer-links">
-      <li><a href="#contact">Contact Us</a></li>
-      <li><a href="#shipping">Shipping Info</a></li>
-      <li><a href="#returns">Returns</a></li>
-      <li><a href="#faq">FAQ</a></li>
-     </ul>
-    </div>
-    <div class="footer-column">
-     <h4>Company</h4>
-     <ul class="footer-links">
-      <li><a href="#about">About Us</a></li>
-      <li><a href="#stores">Store Locator</a></li>
-      <li><a href="#careers">Careers</a></li>
-      <li><a href="#privacy">Privacy Policy</a></li>
-     </ul>
-    </div>
-   </div>
-   <div class="footer-bottom">
-    <div class="copyright">
-     © 2024 NEXUS WEAR. All rights reserved.
-    </div>
-    <div class="payment-methods">
-     <svg width="50" height="32" viewbox="0 0 50 32" fill="none"><rect width="50" height="32" rx="4" fill="#1434CB" /> <text x="25" y="20" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="white">
-       VISA
-      </text>
-     </svg>
-     <svg width="50" height="32" viewbox="0 0 50 32" fill="none"><rect width="50" height="32" rx="4" fill="#EB001B" /> <circle cx="19" cy="16" r="10" fill="#FF5F00" /> <circle cx="31" cy="16" r="10" fill="#F79E1B" />
-     </svg><img src="https://hnungh.github.io/mcl/KHQR-available-here-logo-with-bg-768x316.png" alt="KHQR Payment" style="height: 32px; width: auto; border-radius: 4px;" onerror="this.style.display='none'; this.alt='KHQR';">
-    </div>
-   </div>
-  </footer>
+   </footer>
+  </div>
   <script>
         const defaultConfig = {
             brand_name: 'NEXUS WEAR',
@@ -1625,16 +1705,32 @@
             const baseSize = config.font_size || defaultConfig.font_size;
 
             // Update text content
-            document.getElementById('brandLogo').textContent = brandName;
-            document.getElementById('heroTitle').textContent = heroTitle;
-            document.getElementById('heroSubtitle').textContent = heroSubtitle;
-            const ctaBtns = document.querySelectorAll('#heroCTA span');
-            ctaBtns.forEach(btn => btn.textContent = ctaButton);
-            document.getElementById('collection1Name').textContent = col1;
-            document.getElementById('collection2Name').textContent = col2;
-            document.getElementById('collection3Name').textContent = col3;
-            document.getElementById('footerBrand').textContent = brandName;
-            document.getElementById('footerTagline').textContent = tagline;
+            const brandLogoEl = document.getElementById('brandLogo');
+            if (brandLogoEl) brandLogoEl.textContent = brandName;
+            
+            const heroTitleEl = document.getElementById('heroTitle');
+            if (heroTitleEl) heroTitleEl.textContent = heroTitle;
+            
+            const heroSubEl = document.getElementById('heroSubtitle');
+            if (heroSubEl) heroSubEl.textContent = heroSubtitle;
+            
+            const heroCTAEl = document.getElementById('heroCTA');
+            if (heroCTAEl) heroCTAEl.textContent = ctaButton;
+            
+            const col1El = document.getElementById('collection1Name');
+            if (col1El) col1El.textContent = col1;
+            
+            const col2El = document.getElementById('collection2Name');
+            if (col2El) col2El.textContent = col2;
+            
+            const col3El = document.getElementById('collection3Name');
+            if (col3El) col3El.textContent = col3;
+            
+            const footerBrandEl = document.getElementById('footerBrand');
+            if (footerBrandEl) footerBrandEl.textContent = brandName;
+            
+            const footerTaglineEl = document.getElementById('footerTagline');
+            if (footerTaglineEl) footerTaglineEl.textContent = tagline;
 
             // Apply colors
             document.body.style.background = bgColor;
@@ -1652,8 +1748,17 @@
             const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
             navLinks.forEach(link => link.style.color = textColor);
 
+            const iconBtns = document.querySelectorAll('.icon-btn svg');
+            iconBtns.forEach(icon => icon.setAttribute('stroke', textColor));
+
+            const burgerLines = document.querySelectorAll('.burger-line');
+            burgerLines.forEach(line => line.style.background = textColor);
+
             const mobileMenu = document.querySelector('.mobile-menu');
-            if (mobileMenu) mobileMenu.style.background = bgColor;
+            if (mobileMenu) {
+                mobileMenu.style.background = bgColor;
+                mobileMenu.style.borderTopColor = primaryColor;
+            }
 
             const collectionsSec = document.querySelector('.collections-section');
             if (collectionsSec) collectionsSec.style.background = surfaceColor;
@@ -1664,8 +1769,47 @@
                 card.style.borderColor = primaryColor;
             });
 
+            const collInfos = document.querySelectorAll('.collection-info');
+            collInfos.forEach(info => info.style.background = bgColor);
+
+            const collNames = document.querySelectorAll('.collection-name');
+            collNames.forEach(name => name.style.color = textColor);
+
+            const collCounts = document.querySelectorAll('.collection-count');
+            collCounts.forEach(count => count.style.color = secondaryColor);
+
+            const sectionLabels = document.querySelectorAll('.section-label');
+            sectionLabels.forEach(label => label.style.color = secondaryColor);
+
+            const sectionTitles = document.querySelectorAll('.section-title');
+            sectionTitles.forEach(title => {
+                if (title.closest('.drops-section')) {
+                    title.style.color = '#FFFFFF';
+                } else {
+                    title.style.color = textColor;
+                }
+            });
+
             const aboutSec = document.querySelector('.about-section');
             if (aboutSec) aboutSec.style.background = bgColor;
+
+            const aboutVisual = document.querySelector('.about-visual');
+            if (aboutVisual) {
+                aboutVisual.style.background = surfaceColor;
+                aboutVisual.style.borderColor = primaryColor;
+            }
+
+            const aboutTextH2 = document.querySelector('.about-text-content h2');
+            if (aboutTextH2) aboutTextH2.style.color = textColor;
+
+            const featureIcons = document.querySelectorAll('.feature-icon');
+            featureIcons.forEach(icon => icon.style.background = primaryColor);
+
+            const featureH4 = document.querySelectorAll('.feature-text h4');
+            featureH4.forEach(h4 => h4.style.color = textColor);
+
+            const featureP = document.querySelectorAll('.feature-text p');
+            featureP.forEach(p => p.style.color = secondaryColor);
 
             // Apply fonts
             const baseFontStack = `-apple-system, BlinkMacSystemFont, sans-serif`;
@@ -1676,17 +1820,11 @@
             // Apply font sizes
             document.body.style.fontSize = `${baseSize}px`;
             
-            const heroTitleEl = document.getElementById('heroTitle');
             if (heroTitleEl) heroTitleEl.style.fontSize = `${baseSize * 7.5}px`;
-
-            const heroSubEl = document.getElementById('heroSubtitle');
             if (heroSubEl) heroSubEl.style.fontSize = `${baseSize * 1.25}px`;
 
-            const sectionTitles = document.querySelectorAll('.section-title');
             sectionTitles.forEach(el => el.style.fontSize = `${baseSize * 4.5}px`);
-
-            const collectionNames = document.querySelectorAll('.collection-name');
-            collectionNames.forEach(el => el.style.fontSize = `${baseSize * 2.25}px`);
+            collNames.forEach(el => el.style.fontSize = `${baseSize * 2.25}px`);
         }
 
         if (window.elementSdk) {
@@ -1765,17 +1903,21 @@
         const mobileMenu = document.getElementById('mobileMenu');
         let isMenuOpen = false;
 
-        burgerBtn.addEventListener('click', () => {
-            isMenuOpen = !isMenuOpen;
-            mobileMenu.classList.toggle('active', isMenuOpen);
-        });
+        if (burgerBtn && mobileMenu) {
+            burgerBtn.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                mobileMenu.classList.toggle('active', isMenuOpen);
+            });
+        }
 
         // Close mobile menu on link click
         const mobileLinks = document.querySelectorAll('.mobile-nav-link');
         mobileLinks.forEach(link => {
             link.addEventListener('click', () => {
-                mobileMenu.classList.remove('active');
-                isMenuOpen = false;
+                if (mobileMenu) {
+                    mobileMenu.classList.remove('active');
+                    isMenuOpen = false;
+                }
             });
         });
 
@@ -1796,113 +1938,66 @@
             });
         });
 
-        // Icon buttons
-        const iconBtns = document.querySelectorAll('.icon-btn');
-        iconBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const label = btn.getAttribute('aria-label');
-                console.log('Action:', label);
-            });
-        });
-
         // Collection cards
         const collectionCards = document.querySelectorAll('.collection-card');
         collectionCards.forEach(card => {
             card.addEventListener('click', () => {
-                const name = card.querySelector('.collection-name').textContent;
-                console.log('View collection:', name);
-            });
-        });
-
-        // Drop items
-        const dropItems = document.querySelectorAll('.drop-item');
-        dropItems.forEach(item => {
-            item.addEventListener('click', () => {
-                const name = item.querySelector('.drop-name').textContent;
-                console.log('View product:', name);
-            });
-        });
-
-        // Product card small items with URL parameters
-        const productCards = document.querySelectorAll('.product-card-small');
-        productCards.forEach((card, index) => {
-            card.addEventListener('click', () => {
-                const name = card.querySelector('.product-card-name').textContent;
-                const price = card.querySelector('.product-card-price').textContent;
-                
-                // Create product ID from index
-                const productId = `product-${index + 1}`;
-                
-                // Create URL with parameters
-                const params = new URLSearchParams({
-                    id: productId,
-                    name: name,
-                    price: price
-                });
-                
-                // Open in new tab with parameters
-                window.open(`https://www.canva.com?${params.toString()}`, '_blank', 'noopener,noreferrer');
-            });
-        });
-
-
-
-        // Social links are now anchor tags with target="_blank", no event listener needed
-
-        // Product Image Management System
-        // ใช้สำหรับใส่รูปภาพจริงของสินค้าในอนาคต
-        const productImages = {
-            // ตัวอย่างการใช้งาน:
-            // 'product-1': 'https://example.com/image1.jpg',
-            // 'product-2': 'https://example.com/image2.jpg',
-        };
-
-        function loadProductImages() {
-            productCards.forEach((card, index) => {
-                const productId = `product-${index + 1}`;
-                const imageUrl = productImages[productId];
-                
-                if (imageUrl) {
-                    const thumbContainer = card.querySelector('.product-thumb');
-                    const svgElement = thumbContainer.querySelector('svg');
-                    
-                    // สร้าง img element
-                    const img = document.createElement('img');
-                    img.src = imageUrl;
-                    img.alt = card.querySelector('.product-card-name').textContent;
-                    
-                    // เมื่อรูปโหลดสำเร็จ
-                    img.onload = () => {
-                        img.classList.add('loaded');
-                        svgElement.classList.add('has-image');
-                    };
-                    
-                    // ถ้ารูปโหลดไม่ได้ให้ใช้ SVG
-                    img.onerror = () => {
-                        img.remove();
-                        console.log(`Failed to load image for ${productId}, using SVG fallback`);
-                    };
-                    
-                    thumbContainer.appendChild(img);
+                const nameEl = card.querySelector('.collection-name');
+                if (nameEl) {
+                    console.log('View collection:', nameEl.textContent);
                 }
+            });
+        });
+
+        // Infinite carousel - duplicate items for seamless loop
+        function setupInfiniteCarousel() {
+            const tracks = document.querySelectorAll('.carousel-track');
+            
+            tracks.forEach(track => {
+                const items = Array.from(track.children);
+                
+                // Clone all items and append to create seamless loop
+                items.forEach(item => {
+                    const clone = item.cloneNode(true);
+                    track.appendChild(clone);
+                });
             });
         }
 
-        // เรียกใช้ฟังก์ชันโหลดรูปภาพ
-        loadProductImages();
+        // Initialize carousel on load
+        setupInfiniteCarousel();
 
-        // ฟังก์ชันสำหรับอัพเดทรูปภาพสินค้าแบบ dynamic
-        window.updateProductImage = function(productIndex, imageUrl) {
-            const productId = `product-${productIndex}`;
-            productImages[productId] = imageUrl;
-            loadProductImages();
+        // Product card URL handling - prepare for future product detail pages
+        window.getProductFromUrl = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('product');
         };
 
-        // ฟังก์ชันสำหรับอัพเดทรูปภาพหลายสินค้าพร้อมกัน
-        window.updateMultipleProductImages = function(imagesObject) {
-            Object.assign(productImages, imagesObject);
-            loadProductImages();
+        window.setProductImage = function(productCardSelector, imageUrl) {
+            const productCard = document.querySelector(productCardSelector);
+            if (productCard) {
+                const imgContainer = productCard.querySelector('.product-image');
+                if (imgContainer) {
+                    // Clear existing content
+                    imgContainer.innerHTML = '';
+                    
+                    // Create and append image element
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.alt = 'Product Image';
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'cover';
+                    img.onerror = function() {
+                        this.style.display = 'none';
+                        this.alt = 'Image failed to load';
+                    };
+                    
+                    imgContainer.appendChild(img);
+                }
+            }
         };
+
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a67728695f945b4',t:'MTc2NDQ3NTMyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a6947a433eb9102',t:'MTc2NDQ5NDU0MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
