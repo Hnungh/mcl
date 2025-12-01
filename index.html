@@ -468,6 +468,7 @@
             text-decoration: none;
             display: block;
             color: inherit;
+            position: relative;
         }
 
         .drop-image {
@@ -487,6 +488,14 @@
 
         .drop-details {
             padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .drop-info-left {
+            flex: 1;
         }
 
         .drop-label {
@@ -511,6 +520,37 @@
             font-size: 18px;
             font-weight: 700;
             color: #FFFFFF;
+            margin-bottom: 0;
+        }
+
+        .preorder-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #FFFFFF;
+            color: #000000;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            clip-path: polygon(6% 0%, 94% 0%, 100% 50%, 94% 100%, 6% 100%, 0% 50%);
+            flex-shrink: 0;
+            align-self: flex-end;
+            margin-bottom: 4px;
+        }
+
+        .preorder-btn:hover {
+            background: #000000;
+            color: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+        }
+
+        .preorder-btn:active {
+            transform: translateY(0);
         }
 
         /* Trending Products Carousel */
@@ -1090,7 +1130,8 @@
       </div>
       <h2 class="section-title">NEW ARRIVALS</h2>
      </div>
-     <div class="drops-grid"><a href="https://www.canva.com" target="_blank" rel="noopener noreferrer" class="drop-item">
+     <div class="drops-grid">
+      <div class="drop-item">
        <div class="drop-image">
         <svg viewbox="0 0 400 350" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#2A2A2A" /> <g transform="translate(200, 175)">
           <rect x="-80" y="-100" width="160" height="180" rx="5" fill="#FFFFFF" />
@@ -1103,16 +1144,20 @@
         </svg>
        </div>
        <div class="drop-details">
-        <div class="drop-label">
-         GRAPHIC TEE
-        </div>
-        <div class="drop-name">
-         URBAN LEGENDS
-        </div>
-        <div class="drop-price">
-         ฿890
-        </div>
-       </div></a> <a href="https://www.canva.com" target="_blank" rel="noopener noreferrer" class="drop-item">
+        <div class="drop-info-left">
+         <div class="drop-label">
+          GRAPHIC TEE
+         </div>
+         <div class="drop-name">
+          URBAN LEGENDS
+         </div>
+         <div class="drop-price">
+          ฿890
+         </div>
+        </div><a href="?preorder=URBAN-TEE-001" class="preorder-btn" onclick="event.stopPropagation()">PRE-ORDER</a>
+       </div>
+      </div>
+      <div class="drop-item">
        <div class="drop-image">
         <svg viewbox="0 0 400 350" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#2A2A2A" /> <g transform="translate(200, 175)">
           <rect x="-90" y="-110" width="180" height="200" rx="5" fill="#1A1A1A" />
@@ -1125,16 +1170,20 @@
         </svg>
        </div>
        <div class="drop-details">
-        <div class="drop-label">
-         OVERSIZED HOODIE
-        </div>
-        <div class="drop-name">
-         MIDNIGHT VIBES
-        </div>
-        <div class="drop-price">
-         ฿1,490
-        </div>
-       </div></a> <a href="https://www.canva.com" target="_blank" rel="noopener noreferrer" class="drop-item">
+        <div class="drop-info-left">
+         <div class="drop-label">
+          OVERSIZED HOODIE
+         </div>
+         <div class="drop-name">
+          MIDNIGHT VIBES
+         </div>
+         <div class="drop-price">
+          ฿1,490
+         </div>
+        </div><a href="?preorder=MIDNIGHT-HOODIE-002" class="preorder-btn" onclick="event.stopPropagation()">PRE-ORDER</a>
+       </div>
+      </div>
+      <div class="drop-item">
        <div class="drop-image">
         <svg viewbox="0 0 400 350" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#2A2A2A" /> <g transform="translate(200, 175)">
           <rect x="-70" y="-80" width="140" height="160" rx="3" fill="#E5E5E5" />
@@ -1148,16 +1197,20 @@
         </svg>
        </div>
        <div class="drop-details">
-        <div class="drop-label">
-         CARGO PANTS
-        </div>
-        <div class="drop-name">
-         TECH UTILITY
-        </div>
-        <div class="drop-price">
-         ฿1,790
-        </div>
-       </div></a> <a href="https://www.canva.com" target="_blank" rel="noopener noreferrer" class="drop-item">
+        <div class="drop-info-left">
+         <div class="drop-label">
+          CARGO PANTS
+         </div>
+         <div class="drop-name">
+          TECH UTILITY
+         </div>
+         <div class="drop-price">
+          ฿1,790
+         </div>
+        </div><a href="?preorder=TECH-CARGO-003" class="preorder-btn" onclick="event.stopPropagation()">PRE-ORDER</a>
+       </div>
+      </div>
+      <div class="drop-item">
        <div class="drop-image">
         <svg viewbox="0 0 400 350" preserveaspectratio="xMidYMid meet"><rect width="100%" height="100%" fill="#2A2A2A" /> <g transform="translate(200, 200)">
           <ellipse cx="0" cy="0" rx="80" ry="30" fill="#FFFFFF" />
@@ -1172,16 +1225,19 @@
         </svg>
        </div>
        <div class="drop-details">
-        <div class="drop-label">
-         SNEAKERS
-        </div>
-        <div class="drop-name">
-         CLOUD RUNNER
-        </div>
-        <div class="drop-price">
-         ฿2,490
-        </div>
-       </div></a>
+        <div class="drop-info-left">
+         <div class="drop-label">
+          SNEAKERS
+         </div>
+         <div class="drop-name">
+          CLOUD RUNNER
+         </div>
+         <div class="drop-price">
+          ฿2,490
+         </div>
+        </div><a href="?preorder=CLOUD-SNEAKER-004" class="preorder-btn" onclick="event.stopPropagation()">PRE-ORDER</a>
+       </div>
+      </div>
      </div>
     </section><!-- Trending Products Carousel -->
     <section class="trending-section">
@@ -1559,7 +1615,7 @@
       <div class="about-text-content">
        <h2>THE CULTURE<br>
         THE MOVEMENT</h2>
-       <p>เร���คื���แบรนด์สตร��ทแวร์ที่ผสมผสานว��ฒน��รรมฮิปฮอป สไตล์ Y2K และความเป็นเมือง สร้างสรรค์เสื้อผ้าที่สะท้อนถึงวัฒนธรรมของคนรุ่นใหม่</p>
+       <p>เร���คื���แบรน�����์สตร��ทแวร์ที่ผสมผสานว��ฒน��รรมฮ����ฮอป สไตล์ Y2K และความเป็นเมือง สร้างสรรค์เสื้อผ้าที���สะท้อนถ��งวัฒนธรรมของคนรุ่นใหม่</p>
        <p>We are a streetwear brand that blends hip-hop culture, Y2K style, and urban aesthetics. Creating clothing that reflects the culture of the new generation.</p>
        <div class="about-features">
         <div class="feature-item">
@@ -1579,7 +1635,7 @@
          </div>
          <div class="feature-text">
           <h4>Limited Drops</h4>
-          <p>คอลเลกชันจ���กัด</p>
+          <p>คอลเลกชันจ�����ัด</p>
          </div>
         </div>
         <div class="feature-item">
@@ -1999,5 +2055,5 @@
         };
 
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a6947a433eb9102',t:'MTc2NDQ5NDU0MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a70299e247464f5',t:'MTc2NDU2NjcxMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
