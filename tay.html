@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Web Film Camera — ถ่ายรูปสไตล์กล้องดิจิทัล</title>
+  <meta name="description" content="เว็บถ่ายรูปให้ฟิล์มละมุน แบบ Canon / Sony / Samsung — ถ่ายแล้วดาวน์โหลดได้ทันที" />
+  <style>
+    :root{
+      --bg:#0f1724; --card:#0b1220; --accent:#6d28d9; --muted:#9ba8bf; --glass: rgba(255,255,255,0.04);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial; background:linear-gradient(160deg,#071029 0%, #081427 100%); color:#e6eef8; padding:18px;}
+    .app{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 360px;gap:18px}
+    header{grid-column:1/-1;display:flex;gap:12px;align-items:center}
+    h1{font-size:18px;margin:0}
+    .camera-card{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6);}
+    video{width:100%;height:auto;border-radius:10px;background:#000;display:block}
+    canvas{display:none}
+
+    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .btn{background:linear-gradient(90deg,var(--accent),#4c1d95);border:0;padding:8px 12px;border-radius:10px;color:white;cursor:pointer}
+    .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06)}
+    label.range{display:flex;flex-direction:column;font-size:13px;color:var(--muted)}
+    input[type=range]{width:160px;margin-top:6px}
+
+    .sidebar{background:var(--card);padding:12px;border-radius:12px;height:fit-content}
+    .preset{display:flex;gap:6px;align-items:center;padding:8px;border-radius:8px;cursor:pointer}
+    .preset:hover{background:var(--glass)}
+    .preset.active{outline:2px solid rgba(109,40,217,0.25)}
+    .row{display:flex;gap:8px;align-items:center}
+    .small{font-size:12px;color:var(--muted)}
+
+    .status{font-size:13px;color:var(--muted);margin-left:auto}
+    .toggle{display:inline-flex;align-items:center;gap:6px}
+    .grid-lines{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none}
+    .grid-lines .line{position:absolute;background:rgba(255,255,255,0.06)}
+    .grid-lines .h{height:1px;left:0;right:0}
+    .grid-lines .v{width:1px;top:0;bottom:0}
+
+    footer{grid-column:1/-1;margin-top:8px;color:var(--muted);font-size:13px}
+
+    /* simple responsive */
+    @media(max-width:980px){.app{grid-template-columns:1fr;}.sidebar{order:2}.camera-card{order:1}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>Web Film Camera — ถ่ายรูปฟิล์มละมุน (ลองกดถ่ายได้เลยครับ)</h1>
+      <div class="status">ประสิทธิภาพ: <span id="statusTxt">พร้อม</span></div>
+    </header>
+
+    <section class="camera-card" aria-label="Camera area">
+      <div style="position:relative">
+        <video id="video" playsinline autoplay muted></video>
+        <div class="grid-lines" id="grid" style="display:none">
+          <div class="line h" style="top:33.3333%"></div>
+          <div class="line h" style="top:66.6666%"></div>
+          <div class="line v" style="left:33.3333%"></div>
+          <div class="line v" style="left:66.6666%"></div>
+        </div>
+      </div>
+
+      <canvas id="canvas"></canvas>
+
+      <div class="controls">
+        <button class="btn" id="shutter">📸 ถ่าย</button>
+        <a id="downloadLink" class="btn secondary" download="shot.jpg" style="display:inline-block;line-height:28px;">⬇️ บันทึก</a>
+        <button class="btn secondary" id="swapCam">🔁 กล้องหน้า/หลัง</button>
+        <button class="btn secondary" id="flashBtn">💡 Flash</button>
+
+        <div class="row" style="margin-left:auto">
+          <label class="small toggle"><input type="checkbox" id="gridToggle"> ตะแกรง</label>
+        </div>
+      </div>
+
+      <div class="controls" style="margin-top:6px">
+        <label class="range">Timer (วินาที)<input type="range" id="timer" min="0" max="10" step="1" value="0"></label>
+        <label class="range">Zoom<input type="range" id="zoom" min="1" max="3" step="0.01" value="1"></label>
+        <label class="range">Aspect<select id="aspect" style="margin-top:6px; background:transparent; color:inherit; border-radius:6px; border:1px solid rgba(255,255,255,0.04); padding:6px">
+          <option value="auto">Auto</option>
+          <option value="4:3">4:3</option>
+          <option value="3:2">3:2</option>
+          <option value="16:9">16:9</option>
+          <option value="1:1">1:1</option>
+        </select></label>
+      </div>
+
+      <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <div class="small">ปรับแบบละเอียด</div>
+        <label class="range">Exposure<input type="range" id="exposure" min="-60" max="60" step="1" value="0"></label>
+        <label class="range">Warm/Cool<input type="range" id="wb" min="-40" max="40" step="1" value="6"></label>
+        <label class="range">Grain<input type="range" id="grain" min="0" max="0.6" step="0.01" value="0.12"></label>
+      </div>
+
+    </section>
+
+    <aside class="sidebar">
+      <h3 style="margin-top:0">Presets (กล้อง/ฟิล์ม)</h3>
+      <div id="presets">
+        <!-- presets will be injected -->
+      </div>
+
+      <hr style="border:none;height:1px;background:rgba(255,255,255,0.04);margin:10px 0">
+      <div class="small">คำแนะนำสั้น ๆ</div>
+      <ul class="small">
+        <li>เว็บนี้ต้องรันผ่าน HTTPS (GitHub Pages ใช้ได้) หรือ localhost</li>
+        <li>อนุญาตการเข้าถึงกล้องเมื่อระบบขอ</li>
+        <li>ถ้าจะเอาไปขึ้น GitHub: ใส่ไฟล์ `index.html` ใน repo แล้วเปิด GitHub Pages</li>
+      </ul>
+
+      <hr style="border:none;height:1px;background:rgba(255,255,255,0.04);margin:10px 0">
+      <div class="small">ตัวเลือกขั้นสูง</div>
+      <div style="display:flex;gap:8px;margin-top:6px">
+        <button id="savePreset" class="btn secondary">บันทึก Preset</button>
+        <button id="resetBtn" class="btn secondary">รีเซ็ต</button>
+      </div>
+    </aside>
+
+    <footer>
+      สร้างโดย ChatGPT — โหลดไฟล์แล้วอัปโหลดไปที่ GitHub, เปิด Pages แล้วลองบนมือถือครับ. บอกผมได้เลยถ้าอยากให้ผมปรับโทน Canon / Sony แบบแม่นยำขึ้นครับ 😊
+    </footer>
+  </div>
+
+<script>
+// ------------ Core camera + UI logic ------------
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d', { willReadFrequently: true });
+const shutter = document.getElementById('shutter');
+const downloadLink = document.getElementById('downloadLink');
+const swapCam = document.getElementById('swapCam');
+const flashBtn = document.getElementById('flashBtn');
+const gridToggle = document.getElementById('gridToggle');
+const gridEl = document.getElementById('grid');
+const statusTxt = document.getElementById('statusTxt');
+
+// controls
+const timerRange = document.getElementById('timer');
+const zoomRange = document.getElementById('zoom');
+const aspectSelect = document.getElementById('aspect');
+const exposureRange = document.getElementById('exposure');
+const wbRange = document.getElementById('wb');
+const grainRange = document.getElementById('grain');
+
+let currentStream = null;
+let useBack = true;
+let trackCapabilities = null;
+let deviceId = null;
+let videoSettings = { width:1280, height:720 };
+
+// preset definitions (simple mapping of parameters)
+const PRESETS = [
+  { id:'canon', name:'Canon - Warm Film', warm:10, exposure:6, grain:0.14, vignette:0.45, saturation:1.06 },
+  { id:'sony', name:'Sony - Clean Contrast', warm:2, exposure:4, grain:0.09, vignette:0.35, saturation:1.08 },
+  { id:'samsung', name:'Samsung - Soft & Warm', warm:8, exposure:2, grain:0.16, vignette:0.48, saturation:1.02 },
+  { id:'mono', name:'Monochrome', warm:0, exposure:0, grain:0.18, vignette:0.55, saturation:0 },
+  { id:'vintage', name:'Vintage', warm:18, exposure:8, grain:0.28, vignette:0.6, saturation:0.9 }
+];
+
+// populate preset UI
+const presetsContainer = document.getElementById('presets');
+PRESETS.forEach(p=>{
+  const el = document.createElement('div');
+  el.className='preset';
+  el.innerHTML= `<div style="width:46px;height:34px;border-radius:6px;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.2));display:flex;align-items:center;justify-content:center;font-size:12px">${p.name.split(' ')[0]}</div><div style='flex:1'><div style='font-size:13px'>${p.name}</div><div class='small'>warm ${p.warm}, grain ${p.grain}</div></div>`;
+  el.onclick = ()=>applyPreset(p, el);
+  presetsContainer.appendChild(el);
+});
+
+function applyPreset(p, el){
+  // set controls
+  wbRange.value = p.warm; exposureRange.value = p.exposure; grainRange.value = p.grain;
+  // mark active
+  Array.from(presetsContainer.children).forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// camera start
+async function startCamera(){
+  stopCamera();
+  const constraints = { video: { facingMode: useBack? 'environment':'user', width:{ideal:1280}, height:{ideal:720} }, audio:false };
+  try{
+    currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+    video.srcObject = currentStream;
+    await video.play();
+    const settings = currentStream.getVideoTracks()[0].getSettings();
+    deviceId = currentStream.getVideoTracks()[0].getSettings().deviceId || null;
+    videoSettings.width = settings.width || 1280;
+    videoSettings.height = settings.height || 720;
+    updateCanvasSize();
+    statusTxt.textContent = 'กล้องพร้อม';
+  } catch(err){
+    console.error(err);
+    statusTxt.textContent = 'ไม่สามารถเข้าถึงกล้องได้';
+    alert('ไม่สามารถเข้าถึงกล้อง: ' + err.message + '\nเว็บต้องรันบน HTTPS หรือ localhost');
+  }
+}
+
+function stopCamera(){
+  if(currentStream){
+    currentStream.getTracks().forEach(t=>t.stop());
+    currentStream = null;
+  }
+}
+
+function updateCanvasSize(){
+  // determine aspect
+  const aspect = aspectSelect.value;
+  let w = video.videoWidth || videoSettings.width || 1280;
+  let h = video.videoHeight || videoSettings.height || 720;
+  if(aspect !== 'auto'){
+    const parts = aspect.split(':').map(Number);
+    const tar = parts[0]/parts[1];
+    if(w/h > tar) w = Math.round(h * tar);
+    else h = Math.round(w / tar);
+  }
+  canvas.width = w; canvas.height = h;
+}
+
+// shutter logic
+shutter.addEventListener('click', async ()=>{
+  const t = parseInt(timerRange.value,10);
+  if(t>0){
+    statusTxt.textContent = `ถ่ายใน ${t} วินาที`;
+    await new Promise(r=>setTimeout(r,t*1000));
+  }
+  takePhoto();
+});
+
+async function takePhoto(){
+  updateCanvasSize();
+  // draw video to canvas with zoom
+  const z = parseFloat(zoomRange.value);
+  const w = canvas.width, h = canvas.height;
+  // calculate source rect from video to implement zoom
+  const vw = video.videoWidth, vh = video.videoHeight;
+  const sw = vw / z, sh = vh / z;
+  const sx = (vw - sw)/2, sy = (vh - sh)/2;
+
+  ctx.save();
+  ctx.drawImage(video, sx, sy, sw, sh, 0, 0, w, h);
+  ctx.restore();
+
+  // apply pixel-level filters: exposure, wb, saturation, contrast
+  let image = ctx.getImageData(0,0,w,h);
+  const data = image.data;
+  const exposure = parseFloat(exposureRange.value);
+  const warm = parseFloat(wbRange.value);
+  const grainAmount = parseFloat(grainRange.value);
+  // quick color adjustments
+  for(let i=0;i<data.length;i+=4){
+    // exposure (simple add)
+    data[i] = clamp(data[i] + exposure);
+    data[i+1] = clamp(data[i+1] + exposure*0.9);
+    data[i+2] = clamp(data[i+2] + exposure*0.6);
+    // warm: add red, reduce blue
+    data[i] = clamp(data[i] + warm * 1.2);
+    data[i+2] = clamp(data[i+2] - warm * 0.6);
+    // small contrast curve
+    data[i] = clamp((data[i]-128)*1.03 + 128);
+    data[i+1] = clamp((data[i+1]-128)*1.02 + 128);
+    data[i+2] = clamp((data[i+2]-128)*1.01 + 128);
+  }
+  ctx.putImageData(image,0,0);
+
+  // vignette overlay
+  const vg = ctx.createRadialGradient(w/2, h/2, Math.min(w,h)*0.2, w/2, h/2, Math.max(w,h)/1.05);
+  vg.addColorStop(0,'rgba(0,0,0,0)');
+  vg.addColorStop(1,'rgba(0,0,0,0.45)');
+  ctx.fillStyle = vg;
+  ctx.fillRect(0,0,w,h);
+
+  // grain overlay using imageData draw
+  if(grainAmount > 0.001){
+    const g = generateGrain(w,h,grainAmount);
+    ctx.globalCompositeOperation = 'overlay';
+    ctx.drawImage(g,0,0);
+    ctx.globalCompositeOperation = 'source-over';
+  }
+
+  // optional flash effect
+  if(flashBtn.classList.contains('active')){
+    await flashAnimation();
+  }
+
+  // prepare download
+  const dataUrl = canvas.toDataURL('image/jpeg',0.92);
+  downloadLink.href = dataUrl;
+  downloadLink.style.display = 'inline-block';
+  statusTxt.textContent = 'ถ่ายแล้ว — ดาวน์โหลดได้ที่ปุ่มบันทึก';
+  // open in new tab preview
+  window.open(dataUrl, '_blank');
+}
+
+function clamp(v){return Math.max(0, Math.min(255, Math.round(v)))}
+
+function generateGrain(w,h,amount){
+  const g = document.createElement('canvas'); g.width=w; g.height=h;
+  const gx = g.getContext('2d');
+  const img = gx.createImageData(w,h);
+  const d = img.data;
+  const alpha = Math.round(amount*255);
+  for(let i=0;i<d.length;i+=4){
+    const v = Math.floor(Math.random()*255);
+    d[i]=d[i+1]=d[i+2]=v;
+    d[i+3]=alpha;
+  }
+  gx.putImageData(img,0,0);
+  return g;
+}
+
+function flashAnimation(){
+  return new Promise(res=>{
+    const flash = document.createElement('div');
+    flash.style.position='absolute'; flash.style.left=0; flash.style.top=0; flash.style.right=0; flash.style.bottom=0;
+    flash.style.background='rgba(255,255,255,0.9)'; flash.style.zIndex=9999; flash.style.pointerEvents='none';
+    document.querySelector('.camera-card').appendChild(flash);
+    setTimeout(()=>{ flash.style.transition='opacity 220ms'; flash.style.opacity=0; setTimeout(()=>{ flash.remove(); res(); },260) },80);
+  });
+}
+
+// swap camera
+swapCam.addEventListener('click', ()=>{ useBack = !useBack; startCamera(); });
+
+// flash toggle
+flashBtn.addEventListener('click', ()=>{ flashBtn.classList.toggle('active'); flashBtn.textContent = flashBtn.classList.contains('active')? '💡 Flash ✓' : '💡 Flash'; });
+
+// grid
+gridToggle.addEventListener('change', ()=>{ gridEl.style.display = gridToggle.checked? 'block':'none'; });
+
+// zoom live (transform video element)
+zoomRange.addEventListener('input', ()=>{ const z = parseFloat(zoomRange.value); video.style.transform = `scale(${z})`; video.style.transformOrigin='center center'; });
+
+// aspect change
+aspectSelect.addEventListener('change', updateCanvasSize);
+
+// helpers: save preset / reset
+document.getElementById('savePreset').addEventListener('click', ()=>{
+  const newP = { id: 'custom'+Date.now(), name: 'Custom', warm: parseFloat(wbRange.value), exposure: parseFloat(exposureRange.value), grain: parseFloat(grainRange.value) };
+  PRESETS.push(newP);
+  const el = document.createElement('div'); el.className='preset active'; el.innerHTML=`<div style=\"width:46px;height:34px;border-radius:6px;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.2));display:flex;align-items:center;justify-content:center;font-size:12px\">C</div><div style='flex:1'><div style='font-size:13px'>Custom</div><div class='small'>warm ${newP.warm}, grain ${newP.grain}</div></div>`;
+  el.onclick = ()=>applyPreset(newP, el);
+  Array.from(presetsContainer.children).forEach(c=>c.classList.remove('active'));
+  presetsContainer.appendChild(el);
+  statusTxt.textContent = 'บันทึก Preset แล้ว';
+});
+
+document.getElementById('resetBtn').addEventListener('click', ()=>{ wbRange.value=6; exposureRange.value=0; grainRange.value=0.12; zoomRange.value=1; aspectSelect.value='auto'; statusTxt.textContent='รีเซ็ตค่าแล้ว'; });
+
+// utility: handle page visibility & stop camera when unload
+window.addEventListener('beforeunload', ()=>stopCamera());
+
+// start on load
+startCamera();
+
+// Set default active preset
+applyPreset(PRESETS[0], presetsContainer.children[0]);
+
+</script>
+</body>
+</html>
