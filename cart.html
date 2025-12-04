@@ -1,0 +1,1256 @@
+<!doctype html>
+<html lang="th">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart - Nexus Wear</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=Bebas+Neue&amp;display=swap" rel="stylesheet">
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #FFFFFF;
+            color: #000000;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .page-wrapper {
+            width: 100%;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navigation */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #FFFFFF;
+            z-index: 1000;
+            border-bottom: 2px solid #000000;
+        }
+
+        .nav-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+        }
+
+        .logo-text {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 28px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-decoration: none;
+            color: #000000;
+            transition: all 0.3s ease;
+        }
+
+        .logo-text:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .icon-btn {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: none;
+            border: none;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            margin-top: 80px;
+            padding: 20px 40px 120px;
+            background: #F5F5F5;
+        }
+
+        .cart-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .cart-header {
+            margin-bottom: 24px;
+        }
+
+        .page-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 42px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: #000000;
+            margin-bottom: 4px;
+        }
+
+        .cart-count-text {
+            font-size: 13px;
+            font-weight: 500;
+            color: #666666;
+        }
+
+        /* Cart Items */
+        .cart-items-section {
+            background: #FFFFFF;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            border-bottom: 1px solid #F0F0F0;
+            align-items: flex-start;
+            position: relative;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-checkbox {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #D0D0D0;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-top: 8px;
+            flex-shrink: 0;
+            position: relative;
+            transition: all 0.2s ease;
+            background: #FFFFFF;
+        }
+
+        .item-checkbox:hover {
+            border-color: #999999;
+        }
+
+        .item-checkbox:checked {
+            background: #000000;
+            border-color: #000000;
+        }
+
+        .item-checkbox:checked::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .item-image {
+            width: 100px;
+            height: 100px;
+            background: #F5F5F5;
+            border: 1px solid #E0E0E0;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .item-image svg {
+            width: 60%;
+            height: 60%;
+        }
+
+        .item-image img {
+             width: 100%;
+             height: 100%;
+             object-fit: cover;
+        }
+
+        .item-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .item-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #000000;
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
+        .item-options {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .item-option {
+            font-size: 12px;
+            font-weight: 400;
+            color: #999999;
+        }
+
+        .item-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .item-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #FF4500;
+        }
+
+        .item-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .qty-control {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            border: 1px solid #D0D0D0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .qty-btn {
+            width: 28px;
+            height: 28px;
+            background: #FFFFFF;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666666;
+        }
+
+        .qty-btn:hover {
+            background: #F5F5F5;
+            color: #000000;
+        }
+
+        .qty-btn:active {
+            transform: scale(0.95);
+        }
+
+        .qty-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .qty-btn:disabled:hover {
+            background: #FFFFFF;
+            color: #666666;
+        }
+
+        .qty-display {
+            min-width: 40px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            border-left: 1px solid #D0D0D0;
+            border-right: 1px solid #D0D0D0;
+            padding: 0 8px;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #999999;
+            font-size: 12px;
+            font-weight: 400;
+            cursor: pointer;
+            padding: 4px 8px;
+            transition: all 0.2s ease;
+        }
+
+        .remove-btn:hover {
+            color: #FF4500;
+        }
+
+        /* Fixed Bottom Bar */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #FFFFFF;
+            border-top: 1px solid #E0E0E0;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+            z-index: 999;
+            padding: 12px 40px;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .bottom-bar.hidden {
+            transform: translateY(100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .bottom-bar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .select-all-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .select-all-checkbox {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #D0D0D0;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+            background: #FFFFFF;
+            flex-shrink: 0;
+        }
+
+        .select-all-checkbox:hover {
+            border-color: #999999;
+        }
+
+        .select-all-checkbox:checked {
+            background: #000000;
+            border-color: #000000;
+        }
+
+        .select-all-checkbox:checked::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .select-all-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #000000;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .bar-divider {
+            width: 1px;
+            height: 24px;
+            background: #E0E0E0;
+        }
+
+        .total-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        .total-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #999999;
+        }
+
+        .total-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: #000000;
+        }
+
+        .checkout-btn {
+            padding: 12px 32px;
+            background: #000000;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .checkout-btn:hover {
+            background: #333333;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .checkout-btn:active {
+            transform: translateY(0);
+        }
+
+        .checkout-btn:disabled,
+        .checkout-btn.disabled {
+            background: #E0E0E0;
+            color: #999999;
+            cursor: not-allowed;
+            transform: none;
+            pointer-events: none;
+        }
+
+        .checkout-btn:disabled:hover,
+        .checkout-btn.disabled:hover {
+            box-shadow: none;
+        }
+
+        /* Empty Cart */
+        .empty-cart {
+            text-align: center;
+            padding: 120px 40px;
+            background: #FFFFFF;
+            border: 3px solid #000000;
+        }
+
+        .empty-cart-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 32px;
+            opacity: 0.2;
+        }
+
+        .empty-cart-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 48px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: #000000;
+            margin-bottom: 16px;
+        }
+
+        .empty-cart-text {
+            font-size: 16px;
+            color: #666666;
+            margin-bottom: 32px;
+        }
+
+        /* Loading State */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #F0F0F0;
+            border-top: 4px solid #000000;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Toast Message */
+        .toast {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #000000;
+            color: #FFFFFF;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast.error {
+            background: #CC0000;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-content {
+                padding: 0 20px;
+                height: 70px;
+            }
+
+            main {
+                margin-top: 70px;
+                padding: 16px 16px 120px;
+            }
+
+            .page-title {
+                font-size: 32px;
+            }
+
+            .cart-item {
+                gap: 12px;
+                padding: 12px;
+            }
+
+            .item-image {
+                width: 80px;
+                height: 80px;
+            }
+
+            .item-name {
+                font-size: 14px;
+            }
+
+            .item-price {
+                font-size: 16px;
+            }
+
+            .bottom-bar {
+                padding: 10px 16px;
+            }
+
+            .bottom-bar-content {
+                gap: 12px;
+            }
+
+            .total-label {
+                font-size: 12px;
+            }
+
+            .total-price {
+                font-size: 18px;
+            }
+
+            .checkout-btn {
+                padding: 10px 24px;
+                font-size: 13px;
+            }
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="page-wrapper"><header class="top-nav" role="banner">
+    <nav class="nav-content"><a href="index.html" class="logo-text" id="brandLogo">NEXUS WEAR</a>
+     <div class="nav-icons"><button class="icon-btn" aria-label="Menu">
+       <svg width="26" height="26" viewbox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line> <line x1="3" y1="6" x2="21" y2="6"></line> <line x1="3" y1="18" x2="21" y2="18"></line>
+       </svg></button> <button class="icon-btn" aria-label="Account">
+       <svg width="26" height="26" viewbox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path> <circle cx="12" cy="7" r="4"></circle>
+       </svg></button>
+     </div>
+    </nav>
+   </header><div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner"></div>
+   </div><div class="toast" id="toast"></div><main>
+    <div class="cart-container">
+     <div class="cart-header">
+      <h1 class="page-title" id="pageTitle">SHOPPING CART</h1>
+      <p class="cart-count-text" id="cartCountText">0 items</p>
+     </div><div class="cart-items-section" id="cartItemsList"></div>
+    </div>
+   </main><div class="bottom-bar hidden" id="bottomBar">
+    <div class="bottom-bar-content">
+     <div class="select-all-wrapper"><input type="checkbox" id="selectAllCheckbox" class="select-all-checkbox"> <label for="selectAllCheckbox" class="select-all-label" id="selectAllLabel">เลือกทั้งหมด</label>
+     </div>
+     <div class="bar-divider"></div>
+     <div class="total-wrapper"><span class="total-label" id="totalLabel">ยอดรวม</span> <span class="total-price" id="totalPrice">฿0.00</span>
+     </div><button class="checkout-btn disabled" id="checkoutBtnBottom"> <span id="checkoutBtnText">ชำระเงิน (0)</span> </button>
+    </div>
+   </div>
+  </div>
+  <script>
+        // ============================================
+        // CART SYSTEM - Data SDK Integration
+        // ============================================
+        
+        let cartItems = [];
+        let selectedItems = new Set();
+        let isCartInitialized = false;
+
+        // Data SDK Handler (เมื่อข้อมูลตะกร้ามีการเปลี่ยนแปลง)
+        const cartDataHandler = {
+            onDataChanged(data) {
+                // อัปเดตข้อมูลสินค้าในตะกร้า
+                cartItems = data.filter(item => item.qty > 0) || []; 
+                
+                // ตรวจสอบว่าสินค้าที่ถูกเลือกยังอยู่ในตะกร้าหรือไม่
+                const validIds = new Set(cartItems.map(item => item.__backendId));
+                selectedItems = new Set(Array.from(selectedItems).filter(id => validIds.has(id)));
+
+                // แสดงผลหน้าตะกร้าใหม่
+                renderCartPage();
+            }
+        };
+
+        // Initialize Data SDK
+        async function initializeCartSystem() {
+            if (!window.dataSdk) {
+                showToast('ไม่สามารถเชื่อมต่อระบบตะกร้าได้', 'error');
+                return;
+            }
+            
+            showLoading();
+            const initResult = await window.dataSdk.init(cartDataHandler);
+            hideLoading();
+            
+            if (initResult.isOk) {
+                isCartInitialized = true;
+            } else {
+                showToast('เกิดข้อผิดพลาดในการโหลดตะกร้า', 'error');
+            }
+        }
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+
+        // Show loading
+        function showLoading() {
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) overlay.classList.add('active');
+        }
+
+        function hideLoading() {
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) overlay.classList.remove('active');
+        }
+
+        // Show toast message
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            if (!toast) return;
+
+            toast.textContent = message;
+            toast.className = 'toast show';
+            
+            if (type === 'error') {
+                toast.classList.add('error');
+            } else {
+                 toast.classList.remove('error');
+            }
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Format price: ฿0.00
+        function formatPrice(price) {
+            // ตรวจสอบว่าเป็นตัวเลขและแปลงเป็นทศนิยม 2 ตำแหน่ง พร้อมเครื่องหมาย ฿
+            const number = typeof price === 'number' ? price : parseFloat(price);
+            if (isNaN(number)) return '฿0.00';
+            return `฿${number.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        }
+
+        // ============================================
+        // CART INTERACTION LOGIC
+        // ============================================
+
+        // Toggle item selection
+        function toggleItemSelection(backendId) {
+            if (selectedItems.has(backendId)) {
+                selectedItems.delete(backendId);
+            } else {
+                selectedItems.add(backendId);
+            }
+            
+            updateCheckboxes();
+            updateBottomBar();
+        }
+
+        // Toggle select all
+        function toggleSelectAll() {
+            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            
+            if (selectAllCheckbox && selectAllCheckbox.checked) {
+                // เลือกสินค้าทั้งหมดที่มีในตะกร้า
+                selectedItems = new Set(cartItems.map(item => item.__backendId));
+            } else {
+                // ยกเลิกการเลือกสินค้าทั้งหมด
+                selectedItems.clear();
+            }
+            
+            updateCheckboxes();
+            updateBottomBar();
+        }
+
+        // Update checkboxes state
+        function updateCheckboxes() {
+            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            
+            // ตั้งค่าสถานะของ Checkbox "เลือกทั้งหมด"
+            if (selectAllCheckbox) {
+                selectAllCheckbox.checked = cartItems.length > 0 && selectedItems.size === cartItems.length;
+                selectAllCheckbox.disabled = cartItems.length === 0;
+            }
+
+            // ตั้งค่าสถานะของ Checkbox สินค้าแต่ละรายการ
+            document.querySelectorAll('.item-checkbox').forEach(checkbox => {
+                const backendId = checkbox.dataset.backendId;
+                checkbox.checked = selectedItems.has(backendId);
+            });
+        }
+
+        // Update bottom bar (คำนวณราคารวมและจำนวน)
+        function updateBottomBar() {
+            const totalPriceEl = document.getElementById('totalPrice');
+            const checkoutBtnText = document.getElementById('checkoutBtnText');
+            const checkoutBtn = document.getElementById('checkoutBtnBottom');
+
+            let total = 0;
+            let selectedCount = 0; // จำนวนชิ้นสินค้าที่ถูกเลือก
+
+            cartItems.forEach(item => {
+                if (selectedItems.has(item.__backendId)) {
+                    // ใช้ parseFloat เพื่อให้แน่ใจว่าราคาเป็นตัวเลข
+                    const price = parseFloat(item.price) || 0;
+                    const qty = parseInt(item.qty) || 0;
+
+                    if (!isNaN(price) && !isNaN(qty)) {
+                        total += price * qty;
+                        selectedCount += qty;
+                    }
+                }
+            });
+
+            if (totalPriceEl) {
+                totalPriceEl.textContent = formatPrice(total);
+            }
+
+            if (checkoutBtnText) {
+                const checkoutBaseText = document.getElementById('checkoutBtnText').getAttribute('data-base-text') || 'ชำระเงิน';
+                checkoutBtnText.textContent = `${checkoutBaseText} (${selectedCount})`;
+            }
+
+            // เปิด/ปิดปุ่ม Checkout
+            if (checkoutBtn) {
+                if (selectedCount === 0) {
+                    checkoutBtn.classList.add('disabled');
+                } else {
+                    checkoutBtn.classList.remove('disabled');
+                }
+            }
+        }
+
+        // Update quantity (ใช้ Data SDK.update)
+        async function updateQuantity(backendId, newQty) {
+            if (!isCartInitialized) return;
+
+            if (newQty < 1) {
+                // ถ้าจำนวนน้อยกว่า 1 ให้ลบสินค้าออกจากตะกร้า
+                await removeItem(backendId);
+                return;
+            }
+
+            const item = cartItems.find(cartItem => cartItem.__backendId === backendId);
+            
+            if (!item) {
+                showToast('ไม่พบสินค้า', 'error');
+                return;
+            }
+            
+            // จำกัดจำนวนสูงสุดที่ 99
+            newQty = Math.min(newQty, 99); 
+
+            showLoading();
+            const updatedItem = { ...item, qty: newQty };
+            const updateResult = await window.dataSdk.update(updatedItem);
+            hideLoading();
+
+            if (!updateResult.isOk) {
+                showToast('ไม่สามารถอัพเดทจำนวนได้', 'error');
+            }
+        }
+
+        // Remove item (ใช้ Data SDK.delete)
+        async function removeItem(backendId) {
+            if (!isCartInitialized) return;
+
+            const item = cartItems.find(cartItem => cartItem.__backendId === backendId);
+            
+            if (!item) {
+                showToast('ไม่พบสินค้าที่ต้องการลบ', 'error');
+                return;
+            }
+
+            selectedItems.delete(backendId); // ลบออกจากรายการที่ถูกเลือกก่อน
+            
+            showLoading();
+            const deleteResult = await window.dataSdk.delete(item);
+            hideLoading();
+
+            if (deleteResult.isOk) {
+                showToast('ลบสินค้าออกจากตะกร้าแล้ว');
+            } else {
+                showToast('ไม่สามารถลบสินค้าได้', 'error');
+            }
+        }
+
+        // ============================================
+        // RENDERING
+        // ============================================
+        
+        // Render cart page (เรียกใช้เมื่อข้อมูลมีการเปลี่ยนแปลง)
+        function renderCartPage() {
+            const cartItemsListEl = document.getElementById('cartItemsList');
+            const countTextEl = document.getElementById('cartCountText');
+            const bottomBar = document.getElementById('bottomBar');
+            
+            if (!cartItemsListEl) return;
+
+            const totalItems = cartItems.reduce((total, item) => total + (parseInt(item.qty) || 0), 0);
+            
+            if (countTextEl) {
+                countTextEl.textContent = `${totalItems} items`;
+            }
+
+            if (cartItems.length === 0) {
+                cartItemsListEl.innerHTML = renderEmptyCart();
+                if (bottomBar) {
+                    bottomBar.classList.add('hidden');
+                }
+                updateCheckboxes();
+                updateBottomBar();
+                return;
+            }
+
+            if (bottomBar) {
+                bottomBar.classList.remove('hidden');
+            }
+
+            // สร้าง HTML สำหรับรายการสินค้าทั้งหมด
+            cartItemsListEl.innerHTML = cartItems.map(item => renderCartItem(item)).join('');
+            
+            attachCartItemListeners();
+            updateCheckboxes();
+            updateBottomBar();
+        }
+
+        // Render single cart item
+        function renderCartItem(item) {
+            const itemPrice = parseFloat(item.price) || 0;
+            const itemQty = parseInt(item.qty) || 1;
+            
+            // สร้าง SVG Placeholder หากไม่มีรูปภาพ
+            const placeholderSvg = `<svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet"><rect width="100%" height="100%" fill="#E0E0E0"/><text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-family="Bebas Neue, cursive" font-size="60" fill="#999999">${item.name.substring(0, 2)}</text></svg>`;
+            
+            const itemImageContent = item.image && item.image !== 'YOUR_CAROUSEL_IMAGE_X'
+                                     ? `<img src="${item.image}" alt="${item.name}" onerror="this.outerHTML = '${placeholderSvg(item.name.substring(0, 2))}'">` 
+                                     : placeholderSvg(item.name.substring(0, 2));
+
+            return `
+                <div class="cart-item" data-backend-id="${item.__backendId}">
+                    <input type="checkbox" class="item-checkbox" data-backend-id="${item.__backendId}">
+                    
+                    <div class="item-image">
+                        ${itemImageContent}
+                    </div>
+
+                    <div class="item-details">
+                        <h3 class="item-name">${item.name}</h3>
+                        <div class="item-options">
+                            ${item.size ? `<div class="item-option">Size: <span>${item.size}</span></div>` : ''}
+                            ${item.color ? `<div class="item-option">Color: <span>${item.color}</span></div>` : ''}
+                        </div>
+                        <div class="item-bottom">
+                            <div class="item-price">${formatPrice(itemPrice)}</div>
+                            <div class="item-actions">
+                                <div class="qty-control">
+                                    <button class="qty-btn qty-decrease" data-backend-id="${item.__backendId}" ${itemQty <= 1 ? 'disabled' : ''}>−</button>
+                                    <div class="qty-display">${itemQty}</div>
+                                    <button class="qty-btn qty-increase" data-backend-id="${item.__backendId}" ${itemQty >= 99 ? 'disabled' : ''}>+</button>
+                                </div>
+                                <button class="remove-btn" data-backend-id="${item.__backendId}">ลบ</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render empty cart (โค้ดเดิม)
+        function renderEmptyCart() {
+            return `
+                <div class="empty-cart">
+                    <svg class="empty-cart-icon" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <h2 class="empty-cart-title" id="emptyCartTitle">ตะกร้าว่างเปล่า</h2>
+                    <p class="empty-cart-text" id="emptyCartMessage">คุณยังไม่มีสินค้าในตะกร้า เริ่มช้อปปิ้งเลย!</p>
+                    <a href="index.html" class="checkout-btn" style="pointer-events: auto;">เริ่มช้อปปิ้ง</a>
+                </div>
+            `;
+        }
+
+        // Attach event listeners to cart items (หลังจาก Render ใหม่)
+        function attachCartItemListeners() {
+            // Item checkboxes
+            document.querySelectorAll('.item-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    const backendId = e.target.dataset.backendId;
+                    toggleItemSelection(backendId);
+                });
+            });
+
+            // Quantity decrease buttons
+            document.querySelectorAll('.qty-decrease').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const backendId = e.target.dataset.backendId;
+                    const item = cartItems.find(i => i.__backendId === backendId);
+                    if (item) {
+                        await updateQuantity(backendId, item.qty - 1);
+                    }
+                });
+            });
+
+            // Quantity increase buttons
+            document.querySelectorAll('.qty-increase').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const backendId = e.target.dataset.backendId;
+                    const item = cartItems.find(i => i.__backendId === backendId);
+                    if (item) {
+                        await updateQuantity(backendId, item.qty + 1);
+                    }
+                });
+            });
+
+            // Remove buttons
+            document.querySelectorAll('.remove-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const backendId = e.target.dataset.backendId;
+                    await removeItem(backendId);
+                });
+            });
+        }
+
+        // ============================================
+        // ELEMENT SDK - Editable Features (โค้ดเดิม)
+        // ============================================
+
+        const defaultConfig = {
+            page_title: 'SHOPPING CART',
+            empty_cart_message: 'คุณยังไม่มีสินค้าในตะกร้า เริ่มช้อปปิ้งเลย!',
+            checkout_button_text: 'Checkout',
+            brand_name: 'NEXUS WEAR',
+            background_color: '#FFFFFF',
+            surface_color: '#F5F5F5',
+            text_color: '#000000',
+            primary_action_color: '#FF4500',
+            secondary_action_color: '#666666',
+            font_family: 'Inter',
+            font_size: 16
+        };
+
+        async function onConfigChange(config) {
+            const pageTitle = config.page_title || defaultConfig.page_title;
+            const emptyMessage = config.empty_cart_message || defaultConfig.empty_cart_message;
+            const checkoutText = config.checkout_button_text || defaultConfig.checkout_button_text;
+            const brandName = config.brand_name || defaultConfig.brand_name;
+
+            const bgColor = config.background_color || defaultConfig.background_color;
+            const surfaceColor = config.surface_color || defaultConfig.surface_color;
+            const textColor = config.text_color || defaultConfig.text_color;
+            const primaryColor = config.primary_action_color || defaultConfig.primary_action_color;
+            const secondaryColor = config.secondary_action_color || defaultConfig.secondary_action_color;
+
+            const customFont = config.font_family || defaultConfig.font_family;
+            const baseSize = config.font_size || defaultConfig.font_size;
+
+            // Update text content
+            const pageTitleEl = document.getElementById('pageTitle');
+            if (pageTitleEl) pageTitleEl.textContent = pageTitle;
+
+            const brandLogoEl = document.getElementById('brandLogo');
+            if (brandLogoEl) brandLogoEl.textContent = brandName;
+
+            const emptyCartTitleEl = document.getElementById('emptyCartTitle');
+            if (emptyCartTitleEl) emptyCartTitleEl.textContent = pageTitle;
+
+            const emptyCartMessageEl = document.getElementById('emptyCartMessage');
+            if (emptyCartMessageEl) emptyCartMessageEl.textContent = emptyMessage;
+            
+            // Update Checkout Button Text in Element SDK
+            const checkoutBtnText = document.getElementById('checkoutBtnText');
+            if (checkoutBtnText) {
+                // Ensure the dynamic count is preserved
+                const currentCountMatch = checkoutBtnText.textContent.match(/\((\d+)\)/);
+                const currentCount = currentCountMatch ? currentCountMatch[1] : '0';
+                checkoutBtnText.textContent = `${checkoutText} (${currentCount})`;
+                checkoutBtnText.setAttribute('data-base-text', checkoutText); // Store base text
+            }
+
+
+            // Apply colors
+            document.body.style.background = bgColor;
+            document.body.style.color = textColor;
+
+            const mainEl = document.querySelector('main');
+            if (mainEl) mainEl.style.background = surfaceColor;
+
+            const topNav = document.querySelector('.top-nav');
+            if (topNav) {
+                topNav.style.background = bgColor;
+                topNav.style.borderBottomColor = textColor;
+            }
+
+            const logoEl = document.querySelector('.logo-text');
+            if (logoEl) logoEl.style.color = textColor;
+
+            const iconBtns = document.querySelectorAll('.icon-btn svg');
+            iconBtns.forEach(icon => icon.setAttribute('stroke', textColor));
+
+            const pagesTitleEl = document.querySelector('.page-title');
+            if (pagesTitleEl) pagesTitleEl.style.color = textColor;
+
+            const countTextEl = document.querySelector('.cart-count-text');
+            if (countTextEl) countTextEl.style.color = secondaryColor;
+
+            const cartItemsSection = document.querySelector('.cart-items-section');
+            if (cartItemsSection) cartItemsSection.style.background = bgColor;
+
+            const itemNames = document.querySelectorAll('.item-name, .empty-cart-title');
+            itemNames.forEach(name => name.style.color = textColor);
+
+            const itemOptions = document.querySelectorAll('.item-option');
+            itemOptions.forEach(opt => opt.style.color = secondaryColor);
+
+            const itemPrices = document.querySelectorAll('.item-price');
+            itemPrices.forEach(price => price.style.color = primaryColor);
+
+            const totalPriceEl = document.querySelector('.total-price');
+            if (totalPriceEl) totalPriceEl.style.color = textColor;
+
+            const qtyControls = document.querySelectorAll('.qty-control');
+            qtyControls.forEach(ctrl => ctrl.style.borderColor = secondaryColor);
+
+            const removeBtns = document.querySelectorAll('.remove-btn');
+            removeBtns.forEach(btn => btn.style.color = secondaryColor);
+
+            const checkoutBtns = document.querySelectorAll('.checkout-btn');
+            checkoutBtns.forEach(btn => {
+                if (!btn.classList.contains('disabled')) {
+                    btn.style.background = textColor;
+                    btn.style.color = bgColor;
+                }
+            });
+
+            const bottomBar = document.querySelector('.bottom-bar');
+            if (bottomBar) {
+                bottomBar.style.background = bgColor;
+                bottomBar.style.borderTopColor = secondaryColor;
+            }
+
+            const selectAllLabel = document.querySelector('.select-all-label');
+            if (selectAllLabel) selectAllLabel.style.color = textColor;
+
+            const totalLabel = document.querySelector('.total-label');
+            if (totalLabel) totalLabel.style.color = secondaryColor;
+
+            const emptyCartText = document.querySelector('.empty-cart-text');
+            if (emptyCartText) emptyCartText.style.color = secondaryColor;
+
+            const emptyCartIcon = document.querySelector('.empty-cart-icon');
+            if (emptyCartIcon) emptyCartIcon.setAttribute('stroke', textColor);
+
+            // Apply fonts
+            const baseFontStack = `-apple-system, BlinkMacSystemFont, sans-serif`;
+            const bodyFontStack = `${customFont}, ${baseFontStack}`;
+
+            document.body.style.fontFamily = bodyFontStack;
+            document.body.style.fontSize = `${baseSize}px`;
+
+            if (pagesTitleEl) pagesTitleEl.style.fontSize = `${baseSize * 2.6}px`;
+            itemNames.forEach(el => el.style.fontSize = `${baseSize * 0.94}px`);
+        }
+
+        // Initialize Element SDK
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig,
+                onConfigChange,
+                mapToCapabilities: (config) => ({
+                    recolorables: [
+                        {
+                            get: () => config.background_color || defaultConfig.background_color,
+                            set: (value) => {
+                                config.background_color = value;
+                                window.elementSdk.setConfig({ background_color: value });
+                            }
+                        },
+                        {
+                            get: () => config.surface_color || defaultConfig.surface_color,
+                            set: (value) => {
+                                config.surface_color = value;
+                                window.elementSdk.setConfig({ surface_color: value });
+                            }
+                        },
+                        {
+                            get: () => config.text_color || defaultConfig.text_color,
+                            set: (value) => {
+                                config.text_color = value;
+                                window.elementSdk.setConfig({ text_color: value });
+                            }
+                        },
+                        {
+                            get: () => config.primary_action_color || defaultConfig.primary_action_color,
+                            set: (value) => {
+                                config.primary_action_color = value;
+                                window.elementSdk.setConfig({ primary_action_color: value });
+                            }
+                        },
+                        {
+                            get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+                            set: (value) => {
+                                config.secondary_action_color = value;
+                                window.elementSdk.setConfig({ secondary_action_color: value });
+                            }
+                        }
+                    ],
+                    borderables: [],
+                    fontEditable: {
+                        get: () => config.font_family || defaultConfig.font_family,
+                        set: (value) => {
+                            config.font_family = value;
+                            window.elementSdk.setConfig({ font_family: value });
+                        }
+                    },
+                    fontSizeable: {
+                        get: () => config.font_size || defaultConfig.font_size,
+                        set: (value) => {
+                            config.font_size = value;
+                            window.elementSdk.setConfig({ font_size: value });
+                        }
+                    }
+                }),
+                mapToEditPanelValues: (config) => new Map([
+                    ['page_title', config.page_title || defaultConfig.page_title],
+                    ['empty_cart_message', config.empty_cart_message || defaultConfig.empty_cart_message],
+                    ['checkout_button_text', config.checkout_button_text || defaultConfig.checkout_button_text],
+                    ['brand_name', config.brand_name || defaultConfig.brand_name]
+                ])
+            });
+        }
+
+        // ============================================
+        // PAGE INITIALIZATION
+        // ============================================
+
+        // Setup select all checkbox
+        const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+        if (selectAllCheckbox) {
+            selectAllCheckbox.addEventListener('change', toggleSelectAll);
+        }
+
+        // Checkout button handler
+        const checkoutBtn = document.getElementById('checkoutBtnBottom');
+        if (checkoutBtn) {
+            checkoutBtn.addEventListener('click', (e) => {
+                if (checkoutBtn.classList.contains('disabled')) {
+                    e.preventDefault();
+                    showToast('กรุณาเลือกสินค้าอย่างน้อย 1 รายการ');
+                } else {
+                    // ในระบบจริง จะนำสินค้าที่ถูกเลือก (selectedItems) ไปสร้างหน้า Checkout
+                    showToast('กำลังไปหน้าชำระเงิน...');
+                }
+            });
+        }
+        
+        // กลับไปหน้าหลักเมื่อคลิกโลโก้
+        const brandLogoEl = document.getElementById('brandLogo');
+        if (brandLogoEl) {
+            brandLogoEl.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.location.href = 'index.html';
+            });
+        }
+
+        initializeCartSystem();
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a82cc0c95304b8e',t:'MTc2NDc2MjEwOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
