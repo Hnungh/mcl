@@ -1,4 +1,3 @@
-// mock data_sdk.js สำหรับตะกร้าสินค้า ใช้ localStorage เก็บข้อมูลบน browser
 (function() {
   const CART_KEY = "mycart";
   let _handler = null;
@@ -12,6 +11,9 @@
       _handler.onDataChanged(cart);
     }
   }
+  function genBackendId(item) {
+    return `${item.product_id}_${item.size || ''}_${item.color || ''}`;
+  }
   window.dataSdk = {
     async init(handler) {
       _handler = handler;
@@ -23,7 +25,6 @@
     },
     async create(item) {
       let cart = _readCart();
-      // ใช้ product_id, size, color เป็น key แยกชิ้น
       let idx = cart.findIndex(
         x => x.product_id === item.product_id &&
              x.size === item.size &&
@@ -32,8 +33,7 @@
       if (idx > -1) {
         cart[idx].quantity += item.quantity || 1;
       } else {
-       const backendId = `${item.product_id}_${item.size}_${item.color}`; 
-        cart.push({ ...item, quantity: item.quantity || 1 });
+        cart.push({ ...item, quantity: item.quantity || 1, __backendId: genBackendId(item) });
       }
       _saveCart(cart);
       return { isOk: true };
@@ -46,7 +46,7 @@
              x.color === item.color
       );
       if (idx > -1) {
-        cart[idx] = { ...item };
+        cart[idx] = { ...item, __backendId: genBackendId(item) };
         _saveCart(cart);
         return { isOk: true };
       }
