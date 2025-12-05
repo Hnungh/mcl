@@ -205,12 +205,6 @@
             height: 60%;
         }
 
-        .item-image img {
-             width: 100%;
-             height: 100%;
-             object-fit: cover;
-        }
-
         .item-details {
             flex: 1;
             min-width: 0;
@@ -614,8 +608,9 @@
   <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
  </head>
  <body>
-  <div class="page-wrapper"><header class="top-nav" role="banner">
-    <nav class="nav-content"><a href="index.html" class="logo-text" id="brandLogo">NEXUS WEAR</a>
+  <div class="page-wrapper"><!-- Navigation -->
+   <header class="top-nav" role="banner">
+    <nav class="nav-content"><a href="#" class="logo-text" id="brandLogo">NEXUS WEAR</a>
      <div class="nav-icons"><button class="icon-btn" aria-label="Menu">
        <svg width="26" height="26" viewbox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line> <line x1="3" y1="6" x2="21" y2="6"></line> <line x1="3" y1="18" x2="21" y2="18"></line>
        </svg></button> <button class="icon-btn" aria-label="Account">
@@ -623,22 +618,27 @@
        </svg></button>
      </div>
     </nav>
-   </header><div class="loading-overlay" id="loadingOverlay">
+   </header><!-- Loading Overlay -->
+   <div class="loading-overlay" id="loadingOverlay">
     <div class="loading-spinner"></div>
-   </div><div class="toast" id="toast"></div><main>
+   </div><!-- Toast Message -->
+   <div class="toast" id="toast"></div><!-- Main Content -->
+   <main>
     <div class="cart-container">
      <div class="cart-header">
       <h1 class="page-title" id="pageTitle">SHOPPING CART</h1>
       <p class="cart-count-text" id="cartCountText">0 items</p>
-     </div><div class="cart-items-section" id="cartItemsList"></div>
+     </div><!-- Cart Items -->
+     <div class="cart-items-section" id="cartItemsList"></div>
     </div>
-   </main><div class="bottom-bar hidden" id="bottomBar">
+   </main><!-- Fixed Bottom Bar -->
+   <div class="bottom-bar" id="bottomBar">
     <div class="bottom-bar-content">
-     <div class="select-all-wrapper"><input type="checkbox" id="selectAllCheckbox" class="select-all-checkbox"> <label for="selectAllCheckbox" class="select-all-label" id="selectAllLabel">เลือกทั้งหมด</label>
+     <div class="select-all-wrapper"><input type="checkbox" id="selectAllCheckbox" class="select-all-checkbox"> <label for="selectAllCheckbox" class="select-all-label" id="selectAllLabel">All</label>
      </div>
      <div class="bar-divider"></div>
-     <div class="total-wrapper"><span class="total-label" id="totalLabel">ยอดรวม</span> <span class="total-price" id="totalPrice">฿0.00</span>
-     </div><button class="checkout-btn disabled" id="checkoutBtnBottom"> <span id="checkoutBtnText">ชำระเงิน (0)</span> </button>
+     <div class="total-wrapper"><span class="total-label" id="totalLabel">Total</span> <span class="total-price" id="totalPrice">฿0.00</span>
+     </div><button class="checkout-btn disabled" id="checkoutBtnBottom"> <span id="checkoutBtnText">Checkout (0)</span> </button>
     </div>
    </div>
   </div>
@@ -651,17 +651,10 @@
         let selectedItems = new Set();
         let isCartInitialized = false;
 
-        // Data SDK Handler (เมื่อข้อมูลตะกร้ามีการเปลี่ยนแปลง)
+        // Data SDK Handler
         const cartDataHandler = {
             onDataChanged(data) {
-                // อัปเดตข้อมูลสินค้าในตะกร้า
-                cartItems = data.filter(item => item.qty > 0) || []; 
-                
-                // ตรวจสอบว่าสินค้าที่ถูกเลือกยังอยู่ในตะกร้าหรือไม่
-                const validIds = new Set(cartItems.map(item => item.__backendId));
-                selectedItems = new Set(Array.from(selectedItems).filter(id => validIds.has(id)));
-
-                // แสดงผลหน้าตะกร้าใหม่
+                cartItems = data;
                 renderCartPage();
             }
         };
@@ -672,10 +665,8 @@
                 showToast('ไม่สามารถเชื่อมต่อระบบตะกร้าได้', 'error');
                 return;
             }
-            
-            showLoading();
+
             const initResult = await window.dataSdk.init(cartDataHandler);
-            hideLoading();
             
             if (initResult.isOk) {
                 isCartInitialized = true;
@@ -683,10 +674,6 @@
                 showToast('เกิดข้อผิดพลาดในการโหลดตะกร้า', 'error');
             }
         }
-
-        // ============================================
-        // UTILITY FUNCTIONS
-        // ============================================
 
         // Show loading
         function showLoading() {
@@ -709,26 +696,12 @@
             
             if (type === 'error') {
                 toast.classList.add('error');
-            } else {
-                 toast.classList.remove('error');
             }
 
             setTimeout(() => {
                 toast.classList.remove('show');
             }, 3000);
         }
-
-        // Format price: ฿0.00
-        function formatPrice(price) {
-            // ตรวจสอบว่าเป็นตัวเลขและแปลงเป็นทศนิยม 2 ตำแหน่ง พร้อมเครื่องหมาย ฿
-            const number = typeof price === 'number' ? price : parseFloat(price);
-            if (isNaN(number)) return '฿0.00';
-            return `฿${number.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-        }
-
-        // ============================================
-        // CART INTERACTION LOGIC
-        // ============================================
 
         // Toggle item selection
         function toggleItemSelection(backendId) {
@@ -747,10 +720,8 @@
             const selectAllCheckbox = document.getElementById('selectAllCheckbox');
             
             if (selectAllCheckbox && selectAllCheckbox.checked) {
-                // เลือกสินค้าทั้งหมดที่มีในตะกร้า
                 selectedItems = new Set(cartItems.map(item => item.__backendId));
             } else {
-                // ยกเลิกการเลือกสินค้าทั้งหมด
                 selectedItems.clear();
             }
             
@@ -761,39 +732,29 @@
         // Update checkboxes state
         function updateCheckboxes() {
             const selectAllCheckbox = document.getElementById('selectAllCheckbox');
-            
-            // ตั้งค่าสถานะของ Checkbox "เลือกทั้งหมด"
             if (selectAllCheckbox) {
                 selectAllCheckbox.checked = cartItems.length > 0 && selectedItems.size === cartItems.length;
-                selectAllCheckbox.disabled = cartItems.length === 0;
             }
 
-            // ตั้งค่าสถานะของ Checkbox สินค้าแต่ละรายการ
             document.querySelectorAll('.item-checkbox').forEach(checkbox => {
                 const backendId = checkbox.dataset.backendId;
                 checkbox.checked = selectedItems.has(backendId);
             });
         }
 
-        // Update bottom bar (คำนวณราคารวมและจำนวน)
+        // Update bottom bar
         function updateBottomBar() {
             const totalPriceEl = document.getElementById('totalPrice');
             const checkoutBtnText = document.getElementById('checkoutBtnText');
             const checkoutBtn = document.getElementById('checkoutBtnBottom');
 
             let total = 0;
-            let selectedCount = 0; // จำนวนชิ้นสินค้าที่ถูกเลือก
+            let selectedCount = 0;
 
             cartItems.forEach(item => {
                 if (selectedItems.has(item.__backendId)) {
-                    // ใช้ parseFloat เพื่อให้แน่ใจว่าราคาเป็นตัวเลข
-                    const price = parseFloat(item.price) || 0;
-                    const qty = parseInt(item.qty) || 0;
-
-                    if (!isNaN(price) && !isNaN(qty)) {
-                        total += price * qty;
-                        selectedCount += qty;
-                    }
+                    total += item.price * item.qty;
+                    selectedCount += item.qty;
                 }
             });
 
@@ -802,11 +763,9 @@
             }
 
             if (checkoutBtnText) {
-                const checkoutBaseText = document.getElementById('checkoutBtnText').getAttribute('data-base-text') || 'ชำระเงิน';
-                checkoutBtnText.textContent = `${checkoutBaseText} (${selectedCount})`;
+                checkoutBtnText.textContent = `Checkout (${selectedCount})`;
             }
 
-            // เปิด/ปิดปุ่ม Checkout
             if (checkoutBtn) {
                 if (selectedCount === 0) {
                     checkoutBtn.classList.add('disabled');
@@ -816,29 +775,29 @@
             }
         }
 
-        // Update quantity (ใช้ Data SDK.update)
+        // Update quantity
         async function updateQuantity(backendId, newQty) {
             if (!isCartInitialized) return;
 
+            showLoading();
+
             if (newQty < 1) {
-                // ถ้าจำนวนน้อยกว่า 1 ให้ลบสินค้าออกจากตะกร้า
                 await removeItem(backendId);
+                hideLoading();
                 return;
             }
 
             const item = cartItems.find(cartItem => cartItem.__backendId === backendId);
             
             if (!item) {
+                hideLoading();
                 showToast('ไม่พบสินค้า', 'error');
                 return;
             }
-            
-            // จำกัดจำนวนสูงสุดที่ 99
-            newQty = Math.min(newQty, 99); 
 
-            showLoading();
             const updatedItem = { ...item, qty: newQty };
             const updateResult = await window.dataSdk.update(updatedItem);
+
             hideLoading();
 
             if (!updateResult.isOk) {
@@ -846,21 +805,24 @@
             }
         }
 
-        // Remove item (ใช้ Data SDK.delete)
+        // Remove item
         async function removeItem(backendId) {
             if (!isCartInitialized) return;
+
+            showLoading();
 
             const item = cartItems.find(cartItem => cartItem.__backendId === backendId);
             
             if (!item) {
-                showToast('ไม่พบสินค้าที่ต้องการลบ', 'error');
+                hideLoading();
+                showToast('ไม่พบสินค้า', 'error');
                 return;
             }
 
-            selectedItems.delete(backendId); // ลบออกจากรายการที่ถูกเลือกก่อน
+            selectedItems.delete(backendId);
             
-            showLoading();
             const deleteResult = await window.dataSdk.delete(item);
+
             hideLoading();
 
             if (deleteResult.isOk) {
@@ -870,11 +832,12 @@
             }
         }
 
-        // ============================================
-        // RENDERING
-        // ============================================
-        
-        // Render cart page (เรียกใช้เมื่อข้อมูลมีการเปลี่ยนแปลง)
+        // Format price
+        function formatPrice(price) {
+            return `฿${price.toFixed(2)}`;
+        }
+
+        // Render cart page
         function renderCartPage() {
             const cartItemsListEl = document.getElementById('cartItemsList');
             const countTextEl = document.getElementById('cartCountText');
@@ -882,7 +845,7 @@
             
             if (!cartItemsListEl) return;
 
-            const totalItems = cartItems.reduce((total, item) => total + (parseInt(item.qty) || 0), 0);
+            const totalItems = cartItems.reduce((total, item) => total + item.qty, 0);
             
             if (countTextEl) {
                 countTextEl.textContent = `${totalItems} items`;
@@ -902,7 +865,6 @@
                 bottomBar.classList.remove('hidden');
             }
 
-            // สร้าง HTML สำหรับรายการสินค้าทั้งหมด
             cartItemsListEl.innerHTML = cartItems.map(item => renderCartItem(item)).join('');
             
             attachCartItemListeners();
@@ -912,22 +874,18 @@
 
         // Render single cart item
         function renderCartItem(item) {
-            const itemPrice = parseFloat(item.price) || 0;
-            const itemQty = parseInt(item.qty) || 1;
-            
-            // สร้าง SVG Placeholder หากไม่มีรูปภาพ
-            const placeholderSvg = `<svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet"><rect width="100%" height="100%" fill="#E0E0E0"/><text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-family="Bebas Neue, cursive" font-size="60" fill="#999999">${item.name.substring(0, 2)}</text></svg>`;
-            
-            const itemImageContent = item.image && item.image !== 'YOUR_CAROUSEL_IMAGE_X'
-                                     ? `<img src="${item.image}" alt="${item.name}" onerror="this.outerHTML = '${placeholderSvg(item.name.substring(0, 2))}'">` 
-                                     : placeholderSvg(item.name.substring(0, 2));
-
             return `
                 <div class="cart-item" data-backend-id="${item.__backendId}">
                     <input type="checkbox" class="item-checkbox" data-backend-id="${item.__backendId}">
                     
                     <div class="item-image">
-                        ${itemImageContent}
+                        <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
+                            <rect width="100%" height="100%" fill="#E0E0E0"/>
+                            <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" 
+                                  font-family="Bebas Neue, cursive" font-size="60" fill="#999999">
+                                ${item.name.substring(0, 2)}
+                            </text>
+                        </svg>
                     </div>
 
                     <div class="item-details">
@@ -937,14 +895,14 @@
                             ${item.color ? `<div class="item-option">Color: <span>${item.color}</span></div>` : ''}
                         </div>
                         <div class="item-bottom">
-                            <div class="item-price">${formatPrice(itemPrice)}</div>
+                            <div class="item-price">${formatPrice(item.price)}</div>
                             <div class="item-actions">
                                 <div class="qty-control">
-                                    <button class="qty-btn qty-decrease" data-backend-id="${item.__backendId}" ${itemQty <= 1 ? 'disabled' : ''}>−</button>
-                                    <div class="qty-display">${itemQty}</div>
-                                    <button class="qty-btn qty-increase" data-backend-id="${item.__backendId}" ${itemQty >= 99 ? 'disabled' : ''}>+</button>
+                                    <button class="qty-btn qty-decrease" data-backend-id="${item.__backendId}" ${item.qty <= 1 ? 'disabled' : ''}>−</button>
+                                    <div class="qty-display">${item.qty}</div>
+                                    <button class="qty-btn qty-increase" data-backend-id="${item.__backendId}">+</button>
                                 </div>
-                                <button class="remove-btn" data-backend-id="${item.__backendId}">ลบ</button>
+                                <button class="remove-btn" data-backend-id="${item.__backendId}">Delete</button>
                             </div>
                         </div>
                     </div>
@@ -952,7 +910,7 @@
             `;
         }
 
-        // Render empty cart (โค้ดเดิม)
+        // Render empty cart
         function renderEmptyCart() {
             return `
                 <div class="empty-cart">
@@ -962,13 +920,12 @@
                         <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                     </svg>
                     <h2 class="empty-cart-title" id="emptyCartTitle">ตะกร้าว่างเปล่า</h2>
-                    <p class="empty-cart-text" id="emptyCartMessage">คุณยังไม่มีสินค้าในตะกร้า เริ่มช้อปปิ้งเลย!</p>
-                    <a href="index.html" class="checkout-btn" style="pointer-events: auto;">เริ่มช้อปปิ้ง</a>
+                    <p class="empty-cart-text" id="emptyCartMessage">ค���ณยั��ไม่มีสินค้าในตะกร้า เริ่มช้อปปิ้งเลย!</p>
                 </div>
             `;
         }
 
-        // Attach event listeners to cart items (หลังจาก Render ใหม่)
+        // Attach event listeners to cart items
         function attachCartItemListeners() {
             // Item checkboxes
             document.querySelectorAll('.item-checkbox').forEach(checkbox => {
@@ -1010,7 +967,7 @@
         }
 
         // ============================================
-        // ELEMENT SDK - Editable Features (โค้ดเดิม)
+        // ELEMENT SDK - Editable Features
         // ============================================
 
         const defaultConfig = {
@@ -1054,17 +1011,6 @@
 
             const emptyCartMessageEl = document.getElementById('emptyCartMessage');
             if (emptyCartMessageEl) emptyCartMessageEl.textContent = emptyMessage;
-            
-            // Update Checkout Button Text in Element SDK
-            const checkoutBtnText = document.getElementById('checkoutBtnText');
-            if (checkoutBtnText) {
-                // Ensure the dynamic count is preserved
-                const currentCountMatch = checkoutBtnText.textContent.match(/\((\d+)\)/);
-                const currentCount = currentCountMatch ? currentCountMatch[1] : '0';
-                checkoutBtnText.textContent = `${checkoutText} (${currentCount})`;
-                checkoutBtnText.setAttribute('data-base-text', checkoutText); // Store base text
-            }
-
 
             // Apply colors
             document.body.style.background = bgColor;
@@ -1235,22 +1181,12 @@
                     e.preventDefault();
                     showToast('กรุณาเลือกสินค้าอย่างน้อย 1 รายการ');
                 } else {
-                    // ในระบบจริง จะนำสินค้าที่ถูกเลือก (selectedItems) ไปสร้างหน้า Checkout
                     showToast('กำลังไปหน้าชำระเงิน...');
                 }
-            });
-        }
-        
-        // กลับไปหน้าหลักเมื่อคลิกโลโก้
-        const brandLogoEl = document.getElementById('brandLogo');
-        if (brandLogoEl) {
-            brandLogoEl.addEventListener('click', (e) => {
-                e.preventDefault();
-                window.location.href = 'index.html';
             });
         }
 
         initializeCartSystem();
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a82cc0c95304b8e',t:'MTc2NDc2MjEwOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a910ff464e699a6',t:'MTc2NDkxMTY5MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
