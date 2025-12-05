@@ -942,7 +942,7 @@ cartItems.reduce
                     const backendId = e.target.dataset.backendId;
                     const item = cartItems.find(i => i.__backendId === backendId);
                     if (item) {
-                        await updateQuantity(backendId, item.qty - 1);
+                        await updateQuantity(backendId, item.quantity - 1);
                     }
                 });
             });
@@ -953,7 +953,7 @@ cartItems.reduce
                     const backendId = e.target.dataset.backendId;
                     const item = cartItems.find(i => i.__backendId === backendId);
                     if (item) {
-                        await updateQuantity(backendId, item.qty + 1);
+                        await updateQuantity(backendId, item.quantity + 1);
                     }
                 });
             });
