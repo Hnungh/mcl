@@ -754,8 +754,8 @@ cartItems.reduce
 
             cartItems.forEach(item => {
                 if (selectedItems.has(item.__backendId)) {
-                    total += item.price * item.qty;
-                    selectedCount += item.qty;
+                    total += item.price * item.quantity;
+                    selectedCount += item.quantity;
                 }
             });
 
@@ -796,7 +796,7 @@ cartItems.reduce
                 return;
             }
 
-            const updatedItem = { ...item, qty: newQty };
+            const updatedItem = { ...item, quantity: newQty };
             const updateResult = await window.dataSdk.update(updatedItem);
 
             hideLoading();
@@ -899,8 +899,8 @@ cartItems.reduce
                             <div class="item-price">${formatPrice(item.price)}</div>
                             <div class="item-actions">
                                 <div class="qty-control">
-                                    <button class="qty-btn qty-decrease" data-backend-id="${item.__backendId}" ${item.qty <= 1 ? 'disabled' : ''}>−</button>
-                                    <div class="qty-display">${item.qty}</div>
+                                    <button class="qty-btn qty-decrease" data-backend-id="${item.__backendId}" ${item.quantity <= 1 ? 'disabled' : ''}>−</button>
+                                    <div class="qty-display">${item.quantity}</div>
                                     <button class="qty-btn qty-increase" data-backend-id="${item.__backendId}">+</button>
                                 </div>
                                 <button class="remove-btn" data-backend-id="${item.__backendId}">Delete</button>
