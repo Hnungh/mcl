@@ -32,6 +32,7 @@
       if (idx > -1) {
         cart[idx].quantity += item.quantity || 1;
       } else {
+       const backendId = `${item.product_id}_${item.size}_${item.color}`; 
         cart.push({ ...item, quantity: item.quantity || 1 });
       }
       _saveCart(cart);
