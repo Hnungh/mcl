@@ -846,7 +846,7 @@ cartItems.reduce
             
             if (!cartItemsListEl) return;
 
-            const totalItems = cartItems.reduce((total, item) => total + item.qty, 0);
+            const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
             
             if (countTextEl) {
                 countTextEl.textContent = `${totalItems} items`;
