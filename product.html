@@ -727,17 +727,27 @@
    </main>
   </div>
   <script>
+   
         // ============================================
         // URL PARAMETER PARSING
         // ============================================
         
         function getProductIdFromURL() {
             const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('product') || 'default-product';
+            return urlParams.get('id') || 'default-product';
         }
 
         const currentProductId = getProductIdFromURL();
+        let currentProduct = null;
+   
+       // ============================================
+       // STATE MANAGEMENT
+       // ============================================
 
+       let selectedSize = 'One Size'; // Default size
+       let selectedColor = null;      // Default color
+       let quantity = 1;
+   
         // ============================================
         // DATA SDK INITIALIZATION
         // ============================================
@@ -786,7 +796,7 @@
         }
 
         async function addToCart() {
-            if (!isDataSdkReady) {
+            if !isDataSdkReady || !currentProduct || !selectedSize || !selectedColor) {
                 showToast('กรุณารอสักครู่...', 'error');
                 return;
             }
@@ -805,14 +815,15 @@
 
             const productName = document.getElementById('productName')?.textContent || 'Product';
             const productPrice = document.getElementById('productPrice')?.textContent || '฿0.00';
-
+ 
             const cartItem = {
-                product_id: currentProductId,
-                name: productName,
-                price: productPrice,
+                product_id: currentProduct.id
+                name: currentProduct.name
+                price: currentProduct.price,
                 size: selectedSize,
                 color: selectedColor,
                 quantity: quantity,
+                image: currentProduct.image
                 timestamp: new Date().toISOString()
             };
 
@@ -831,13 +842,114 @@
         }
 
         // ============================================
+// PRODUCT DISPLAY LOGIC (NEW)
+// ============================================
+
+function formatPrice(price) {
+    // ฟังก์ชันแปลงราคากลับเป็นรูปแบบเงินบาท
+    return `฿${price.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+/**
+ * โหลดข้อมูลสินค้าตาม ID และอัปเดต UI
+ */
+function loadProductDataAndRender() {
+    // 1. ค้นหาสินค้าจาก Mock Data
+    const product = MOCK_PRODUCTS_DATA.find(p => p.id === currentProductId);
+
+    if (!product) {
+        document.querySelector('.product-container').innerHTML = 
+            `<h1 style="text-align: center; padding: 100px;">404: สินค้าไม่พบ</h1>`;
+        return;
+    }
+
+    currentProduct = product;
+
+    // 2. อัปเดตข้อมูล Text
+    document.getElementById('productName').textContent = product.name;
+    document.getElementById('productPrice').textContent = formatPrice(product.price);
+    document.getElementById('productDescription').textContent = product.description;
+    
+    // 3. อัปเดตรูปภาพ (ใช้ image URL เดียวกันสำหรับ Main Image และ Thumbnail แรก)
+    const mainImageEl = document.getElementById('mainProductImage');
+    const firstThumbnailEl = document.querySelector('.thumbnail[data-image="1"]');
+
+    if (mainImageEl) {
+        mainImageEl.innerHTML = `<img src="${product.image}" alt="${product.name}" 
+                                      style="width: 100%; height: 100%; object-fit: cover;">`;
+    }
+    if (firstThumbnailEl) {
+        firstThumbnailEl.innerHTML = `<img src="${product.image}" alt="${product.name}" 
+                                         style="width: 100%; height: 100%; object-fit: cover;">`;
+    }
+    
+    // 4. อัปเดตตัวเลือกสีและขนาด
+    renderSizeOptions(product.available_sizes || []);
+    renderColorOptions(product.available_colors || []);
+
+    // ตั้งค่า Selected Defaults (ใช้ค่าแรกที่มี)
+    selectedSize = product.available_sizes?.[0] || 'One Size';
+    selectedColor = product.available_colors?.[0]?.name || 'Black';
+
+    // (*** ต้องเรียก Initialize Selectors หลัง Render ***)
+    initializeSizeSelector();
+    initializeColorSelector();
+    initializeQuantityControl(); 
+}
+
+/**
+ * สร้างตัวเลือกขนาดแบบ Dynamic
+ */
+function renderSizeOptions(sizes) {
+    const sizeOptionsEl = document.getElementById('sizeOptions');
+    if (!sizeOptionsEl) return;
+    
+    sizeOptionsEl.innerHTML = sizes.map(size => 
+        `<div class="size-option" data-size="${size}">${size}</div>`
+    ).join('');
+    
+    // ตั้งค่า Active ให้กับตัวแรก (หรือ M ถ้ามี)
+    const defaultSize = sizes.includes('M') ? 'M' : sizes[0];
+    selectedSize = defaultSize;
+
+    const defaultEl = sizeOptionsEl.querySelector(`[data-size="${defaultSize}"]`);
+    if (defaultEl) defaultEl.classList.add('active');
+}
+
+/**
+ * สร้างตัวเลือกสีแบบ Dynamic
+ */
+function renderColorOptions(colors) {
+    const colorOptionsEl = document.getElementById('colorOptions');
+    if (!colorOptionsEl) return;
+    
+    colorOptionsEl.innerHTML = colors.map(color => 
+        `<div class="color-option" data-color="${color.name}" style="background: ${color.hex};"></div>`
+    ).join('');
+    
+    // ตั้งค่า Active ให้กับตัวแรก
+    const defaultColorName = colors[0]?.name;
+    selectedColor = defaultColorName;
+
+    const defaultEl = colorOptionsEl.querySelector(`[data-color="${defaultColorName}"]`);
+    if (defaultEl) {
+        defaultEl.classList.add('active');
+        // ต้องตรวจสอบสีพื้นหลังเพื่อให้ทำเครื่องหมายถูกสีขาว/ดำให้เห็น
+        if (defaultColorName.toLowerCase() === 'white' || defaultColorName.toLowerCase() === 'gray') {
+            // (Mocking the color check logic for active state visibility)
+            // ใน CSS ของคุณ color-option.active::after เป็นสีขาว (✓)
+            // เราจะใช้สีดำสำหรับเครื่องหมายถูกเมื่อพื้นหลังสว่าง
+            // แต่สำหรับตอนนี้ใช้ CSS เดิมไปก่อน 
+        }
+    }
+}
+
+   
+
+        // ============================================
         // PRODUCT STATE MANAGEMENT
         // ============================================
         
-        let selectedSize = 'M';
-        let selectedColor = 'Black';
-        let quantity = 1;
-
         // Show toast message
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
@@ -857,12 +969,13 @@
         
         function initializeSizeSelector() {
             const sizeOptions = document.querySelectorAll('.size-option');
-            
+    
             sizeOptions.forEach(option => {
                 option.addEventListener('click', () => {
-                    sizeOptions.forEach(opt => opt.classList.remove('active'));
-                    option.classList.add('active');
-                    selectedSize = option.dataset.size;
+                sizeOptions.forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+                selectedSize = option.dataset.size;
+            // console.log('Selected Size:', selectedSize);
                 });
             });
         }
@@ -873,12 +986,13 @@
         
         function initializeColorSelector() {
             const colorOptions = document.querySelectorAll('.color-option');
-            
+    
             colorOptions.forEach(option => {
                 option.addEventListener('click', () => {
-                    colorOptions.forEach(opt => opt.classList.remove('active'));
-                    option.classList.add('active');
-                    selectedColor = option.dataset.color;
+                colorOptions.forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+                selectedColor = option.dataset.color;
+            // console.log('Selected Color:', selectedColor);
                 });
             });
         }
@@ -1178,6 +1292,7 @@
         // ============================================
         
         initializeDataSdk();
+        loadProductDataAndRender();
         initializeSizeSelector();
         initializeColorSelector();
         initializeQuantityControl();
