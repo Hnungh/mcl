@@ -1,3 +1,4 @@
+```javascript
 // data_utility.js
 
 /**
@@ -9,11 +10,11 @@ const MOCK_PRODUCTS_DATA = [
         id: 'oversized-tee-black',
         name: 'Classic Black Oversized Tee',
         price: 790,
-        description: 'เสื้อยืดโอเวอร์ไซส์สีดำคลาสสิก ผลิตจากผ้าคอตตอน 100% ทรงหลวมสบายสไตล์สตรีท',
+        description: 'เสื้อยืดโอเวอร์ไซส์สีดำคลาสสิก ผลิตจากผ้าคอตตอน 100% ทรงหลวมสบาย เหมาะสำหรับลุคสตรีทและสวมใส่ประจำวัน',
         qty: 1,
         size: 'M', 
         color: 'Black',
-        image: 'https://hnungh.github.io/mcl/img/oversized-tee-black.jpg', // ตัวอย่าง URL จริง
+        image: 'https://hnungh.github.io/mcl/img/oversized-tee-black.jpg',
         category: 'OVERSIZED TEE',
         available_sizes: ['XS', 'S', 'M', 'L', 'XL'],
         available_colors: [{ name: 'Black', hex: '#000000' }, { name: 'White', hex: '#FFFFFF' }]
@@ -22,7 +23,7 @@ const MOCK_PRODUCTS_DATA = [
         id: 'cargo-pants-olive',
         name: 'Military Olive Cargo Pants',
         price: 1590,
-        description: 'กางเกงคาร์โก้สีเขียวมะกอก ดีไซน์สไตล์ทหาร Y2K กระเป๋าเยอะ เนื้อผ้าทนทานเหมาะสำหรับกิจกรรมในเมือง',
+        description: 'กางเกงคาร์โก้สีเขียวมะกอก ดีไซน์สไตล์ทหาร Y2K กระเป๋าเยอะ ให้ความทนทานและเท่ห์ในการแต่งตัว',
         qty: 1,
         size: 'L',
         color: 'Olive',
@@ -35,7 +36,7 @@ const MOCK_PRODUCTS_DATA = [
         id: 'hoodie-grey',
         name: 'Stone Grey Pullover Hoodie',
         price: 1290,
-        description: 'เสื้อฮู้ดดี้สีเทาหิน ทรงคลาสสิก ผ้านุ่มพิเศษ ให้ความอบอุ่นและสวมใส่สบายในทุกสภาพอากาศ',
+        description: 'เสื้อฮู้ดดี้สีเทาหิน ทรงคลาสสิก ผ้านุ่มพิเศษ ให้ความอบอุ่นและสวมใส่ได้ทุกฤดู',
         qty: 1,
         size: 'XL',
         color: 'Grey',
@@ -48,7 +49,7 @@ const MOCK_PRODUCTS_DATA = [
         id: 'sunglasses-retro',
         name: 'Retro Square Sunglasses',
         price: 890,
-        description: 'แว่นตากันแดดทรงสี่เหลี่ยมสไตล์ย้อนยุค Y2K เฟรมหนาและเลนส์คุณภาพดี ป้องกัน UV ได้ 100%',
+        description: 'แว่นตากันแดดทรงสี่เหลี่ยมสไตล์ย้อนยุค Y2K เฟรมหนาและเลนส์คุณภาพสูง เหมาะกับลุคสตรีท',
         qty: 1,
         size: 'One Size',
         color: 'Black',
@@ -57,5 +58,4 @@ const MOCK_PRODUCTS_DATA = [
         available_sizes: ['One Size'],
         available_colors: [{ name: 'Black', hex: '#000000' }, { name: 'Tortoise', hex: '#824510' }]
     }
-    // เพิ่มสินค้าอื่นๆ จาก MOCK_PRODUCTS_DATA เดิมของคุณที่นี่
 ];
