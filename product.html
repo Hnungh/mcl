@@ -726,579 +726,287 @@
     </div>
    </main>
   </div>
-  <script>
-   
-        // ============================================
-        // URL PARAMETER PARSING
-        // ============================================
-        
-        function getProductIdFromURL() {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('id') || 'default-product';
-        }
 
-        const currentProductId = getProductIdFromURL();
-        let currentProduct = null;
-   
-       // ============================================
-       // STATE MANAGEMENT
-       // ============================================
+   <script>
+    // ============================================
+    // PRODUCT PAGE SCRIPT (แก้ไขให้ถูกต้อง)
+    // ============================================
 
-       let selectedSize = 'One Size'; // Default size
-       let selectedColor = null;      // Default color
-       let quantity = 1;
-   
-        // ============================================
-        // DATA SDK INITIALIZATION
-        // ============================================
-        
-        let cartData = [];
-        let isDataSdkReady = false;
+    function getProductIdFromURL() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('id') || 'oversized-tee-black';
+    }
 
-        const dataHandler = {
-            onDataChanged(data) {
-                cartData = data || [];
-                updateCartBadge();
-            }
-        };
+    const currentProductId = getProductIdFromURL();
+    let currentProduct = null;
 
-        async function initializeDataSdk() {
-            if (!window.dataSdk) {
-                console.error('Data SDK not available');
-                return;
-            }
+    // state
+    let selectedSize = null;
+    let selectedColor = null;
+    let quantity = 1;
 
-            const result = await window.dataSdk.init(dataHandler);
-            if (result.isOk) {
-                isDataSdkReady = true;
-            } else {
-                console.error('Failed to initialize Data SDK');
-                showToast('เกิดข้อผิดพลาดในการเชื่อมต่อระบบตะกร้า', 'error');
-            }
-        }
+    // Data SDK
+    let cartData = [];
+    let isDataSdkReady = false;
 
-        // ============================================
-        // CART MANAGEMENT
-        // ============================================
+    const dataHandler = {
+      onDataChanged(data) {
+        cartData = data || [];
+        updateCartBadge();
+      }
+    };
 
-        function updateCartBadge() {
-            const badge = document.getElementById('cartBadge');
-            if (!badge) return;
-
-            const totalItems = cartData.reduce((sum, item) => sum + (item.quantity || 0), 0);
-            
-            if (totalItems > 0) {
-                badge.textContent = totalItems;
-                badge.style.display = 'flex';
-            } else {
-                badge.style.display = 'none';
-            }
-        }
-
-        async function addToCart() {
-            if !isDataSdkReady || !currentProduct || !selectedSize || !selectedColor) {
-                showToast('กรุณารอสักครู่...', 'error');
-                return;
-            }
-
-            // Check if limit reached
-            if (cartData.length >= 999) {
-                showToast('ตะกร้าเต็ม! กรุณาลบสินค้าบางรายการก่อน', 'error');
-                return;
-            }
-
-            const addToCartBtn = document.getElementById('addToCartBtn');
-            if (addToCartBtn) {
-                addToCartBtn.disabled = true;
-                addToCartBtn.style.opacity = '0.6';
-            }
-
-            const productName = document.getElementById('productName')?.textContent || 'Product';
-            const productPrice = document.getElementById('productPrice')?.textContent || '฿0.00';
- 
-            const cartItem = {
-                product_id: currentProduct.id
-                name: currentProduct.name
-                price: currentProduct.price,
-                size: selectedSize,
-                color: selectedColor,
-                quantity: quantity,
-                image: currentProduct.image
-                timestamp: new Date().toISOString()
-            };
-
-            const result = await window.dataSdk.create(cartItem);
-
-            if (addToCartBtn) {
-                addToCartBtn.disabled = false;
-                addToCartBtn.style.opacity = '1';
-            }
-
-            if (result.isOk) {
-                showToast(`เพิ่ม ${quantity} รายการลงในตะกร้า ✓`, 'success');
-            } else {
-                showToast('ไม่สามารถเพิ่มสินค้าได้ กรุณาลองอีกครั้ง', 'error');
-            }
-        }
-
-        // ============================================
-// PRODUCT DISPLAY LOGIC (NEW)
-// ============================================
-
-function formatPrice(price) {
-    // ฟังก์ชันแปลงราคากลับเป็นรูปแบบเงินบาท
-    return `฿${price.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-}
-
-/**
- * โหลดข้อมูลสินค้าตาม ID และอัปเดต UI
- */
-function loadProductDataAndRender() {
-    // 1. ค้นหาสินค้าจาก Mock Data
-    const product = MOCK_PRODUCTS_DATA.find(p => p.id === currentProductId);
-
-    if (!product) {
-        document.querySelector('.product-container').innerHTML = 
-            `<h1 style="text-align: center; padding: 100px;">404: สินค้าไม่พบ</h1>`;
+    async function initializeDataSdk() {
+      if (!window.dataSdk) {
+        console.error('Data SDK not available');
         return;
+      }
+      try {
+        const result = await window.dataSdk.init(dataHandler);
+        if (result && result.isOk) {
+          isDataSdkReady = true;
+        } else {
+          console.error('Failed to initialize Data SDK');
+          showToast('เกิดข้อผิดพลาดในการเชื่อมต่อระบบตะกร้า', 'error');
+        }
+      } catch (err) {
+        console.error('Data SDK init error', err);
+        showToast('เกิดข้อผิดพลาดในการเชื่อมต่อระบบตะกร้า', 'error');
+      }
     }
 
-    currentProduct = product;
-
-    // 2. อัปเดตข้อมูล Text
-    document.getElementById('productName').textContent = product.name;
-    document.getElementById('productPrice').textContent = formatPrice(product.price);
-    document.getElementById('productDescription').textContent = product.description;
-    
-    // 3. อัปเดตรูปภาพ (ใช้ image URL เดียวกันสำหรับ Main Image และ Thumbnail แรก)
-    const mainImageEl = document.getElementById('mainProductImage');
-    const firstThumbnailEl = document.querySelector('.thumbnail[data-image="1"]');
-
-    if (mainImageEl) {
-        mainImageEl.innerHTML = `<img src="${product.image}" alt="${product.name}" 
-                                      style="width: 100%; height: 100%; object-fit: cover;">`;
+    function updateCartBadge() {
+      const badge = document.getElementById('cartBadge');
+      if (!badge) return;
+      const totalItems = cartData.reduce((sum, item) => sum + (item.quantity || 0), 0);
+      if (totalItems > 0) {
+        badge.textContent = totalItems;
+        badge.style.display = 'flex';
+      } else {
+        badge.style.display = 'none';
+      }
     }
-    if (firstThumbnailEl) {
-        firstThumbnailEl.innerHTML = `<img src="${product.image}" alt="${product.name}" 
-                                         style="width: 100%; height: 100%; object-fit: cover;">`;
+
+    async function addToCart() {
+      if (!isDataSdkReady || !currentProduct || !selectedSize || !selectedColor) {
+        showToast('กรุณารอสักครู่ และเลือกขนาด/สีให้ครบถ้วน', 'error');
+        return;
+      }
+
+      // Check if limit reached
+      if (cartData.length >= 999) {
+        showToast('ตะกร้าเต็ม! กรุณาลบสินค้าบางรายการก่อน', 'error');
+        return;
+      }
+
+      const addToCartBtn = document.getElementById('addToCartBtn');
+      if (addToCartBtn) {
+        addToCartBtn.disabled = true;
+        addToCartBtn.style.opacity = '0.6';
+      }
+
+      const cartItem = {
+        product_id: currentProduct.id,
+        name: currentProduct.name,
+        price: currentProduct.price,
+        size: selectedSize,
+        color: selectedColor,
+        quantity: quantity,
+        image: currentProduct.image,
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        const result = await window.dataSdk.create(cartItem);
+        if (addToCartBtn) {
+          addToCartBtn.disabled = false;
+          addToCartBtn.style.opacity = '1';
+        }
+
+        if (result && result.isOk) {
+          showToast(`เพิ่ม ${quantity} รายการลงในตะกร้า ✓`, 'success');
+        } else {
+          showToast('ไม่สามารถเพิ่มสินค้าได้ กรุณาลองอีกครั้ง', 'error');
+        }
+      } catch (err) {
+        console.error('addToCart error', err);
+        if (addToCartBtn) {
+          addToCartBtn.disabled = false;
+          addToCartBtn.style.opacity = '1';
+        }
+        showToast('เกิดข้อผิดพลาด กรุณาลองอีกครั้ง', 'error');
+      }
     }
-    
-    // 4. อัปเดตตัวเลือกสีและขนาด
-    renderSizeOptions(product.available_sizes || []);
-    renderColorOptions(product.available_colors || []);
 
-    // ตั้งค่า Selected Defaults (ใช้ค่าแรกที่มี)
-    selectedSize = product.available_sizes?.[0] || 'One Size';
-    selectedColor = product.available_colors?.[0]?.name || 'Black';
-
-    // (*** ต้องเรียก Initialize Selectors หลัง Render ***)
-    initializeSizeSelector();
-    initializeColorSelector();
-    initializeQuantityControl(); 
-}
-
-/**
- * สร้างตัวเลือกขนาดแบบ Dynamic
- */
-function renderSizeOptions(sizes) {
-    const sizeOptionsEl = document.getElementById('sizeOptions');
-    if (!sizeOptionsEl) return;
-    
-    sizeOptionsEl.innerHTML = sizes.map(size => 
-        `<div class="size-option" data-size="${size}">${size}</div>`
-    ).join('');
-    
-    // ตั้งค่า Active ให้กับตัวแรก (หรือ M ถ้ามี)
-    const defaultSize = sizes.includes('M') ? 'M' : sizes[0];
-    selectedSize = defaultSize;
-
-    const defaultEl = sizeOptionsEl.querySelector(`[data-size="${defaultSize}"]`);
-    if (defaultEl) defaultEl.classList.add('active');
-}
-
-/**
- * สร้างตัวเลือกสีแบบ Dynamic
- */
-function renderColorOptions(colors) {
-    const colorOptionsEl = document.getElementById('colorOptions');
-    if (!colorOptionsEl) return;
-    
-    colorOptionsEl.innerHTML = colors.map(color => 
-        `<div class="color-option" data-color="${color.name}" style="background: ${color.hex};"></div>`
-    ).join('');
-    
-    // ตั้งค่า Active ให้กับตัวแรก
-    const defaultColorName = colors[0]?.name;
-    selectedColor = defaultColorName;
-
-    const defaultEl = colorOptionsEl.querySelector(`[data-color="${defaultColorName}"]`);
-    if (defaultEl) {
-        defaultEl.classList.add('active');
-        // ต้องตรวจสอบสีพื้นหลังเพื่อให้ทำเครื่องหมายถูกสีขาว/ดำให้เห็น
-        if (defaultColorName.toLowerCase() === 'white' || defaultColorName.toLowerCase() === 'gray') {
-            // (Mocking the color check logic for active state visibility)
-            // ใน CSS ของคุณ color-option.active::after เป็นสีขาว (✓)
-            // เราจะใช้สีดำสำหรับเครื่องหมายถูกเมื่อพื้นหลังสว่าง
-            // แต่สำหรับตอนนี้ใช้ CSS เดิมไปก่อน 
-        }
+    // Toast
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      if (!toast) return;
+      toast.textContent = message;
+      toast.className = `toast show ${type}`;
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
     }
-}
 
-   
+    // Price formatter
+    function formatPrice(price) {
+      return `฿${price.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
 
-        // ============================================
-        // PRODUCT STATE MANAGEMENT
-        // ============================================
-        
-        // Show toast message
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            if (!toast) return;
+    // Load product data and render UI
+    function loadProductDataAndRender() {
+      const product = (typeof MOCK_PRODUCTS_DATA !== 'undefined') ? MOCK_PRODUCTS_DATA.find(p => p.id === currentProductId) : null;
 
-            toast.textContent = message;
-            toast.className = `toast show ${type}`;
-
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+      if (!product) {
+        const container = document.querySelector('.product-container');
+        if (container) {
+          container.innerHTML = `<h1 style="text-align: center; padding: 100px;">404: สินค้าไม่พบ</h1>`;
         }
+        return;
+      }
 
-        // ============================================
-        // SIZE SELECTION
-        // ============================================
-        
-        function initializeSizeSelector() {
-            const sizeOptions = document.querySelectorAll('.size-option');
-    
-            sizeOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                sizeOptions.forEach(opt => opt.classList.remove('active'));
-                option.classList.add('active');
-                selectedSize = option.dataset.size;
-            // console.log('Selected Size:', selectedSize);
-                });
-            });
-        }
+      currentProduct = product;
 
-        // ============================================
-        // COLOR SELECTION
-        // ============================================
-        
-        function initializeColorSelector() {
-            const colorOptions = document.querySelectorAll('.color-option');
-    
-            colorOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                colorOptions.forEach(opt => opt.classList.remove('active'));
-                option.classList.add('active');
-                selectedColor = option.dataset.color;
-            // console.log('Selected Color:', selectedColor);
-                });
-            });
-        }
+      document.getElementById('productName').textContent = product.name;
+      document.getElementById('productPrice').textContent = formatPrice(product.price);
+      document.getElementById('productDescription').textContent = product.description || '';
 
-        // ============================================
-        // QUANTITY CONTROL
-        // ============================================
-        
-        function initializeQuantityControl() {
-            const qtyDisplay = document.getElementById('qtyDisplay');
-            const qtyDecrease = document.getElementById('qtyDecrease');
-            const qtyIncrease = document.getElementById('qtyIncrease');
+      // main image and first thumbnail
+      const mainImageEl = document.getElementById('mainProductImage');
+      const firstThumbImg = document.querySelector('.thumbnail[data-image="1"] img');
+      if (mainImageEl) {
+        mainImageEl.src = product.image;
+        mainImageEl.alt = product.name;
+      }
+      if (firstThumbImg) {
+        firstThumbImg.src = product.image;
+        firstThumbImg.alt = product.name;
+      }
 
-            qtyDecrease.addEventListener('click', () => {
-                if (quantity > 1) {
-                    quantity--;
-                    qtyDisplay.textContent = quantity;
-                    updateButtonState();
-                }
-            });
+      // sizes and colors
+      renderSizeOptions(product.available_sizes || []);
+      renderColorOptions(product.available_colors || []);
 
-            qtyIncrease.addEventListener('click', () => {
-                if (quantity < 99) {
-                    quantity++;
-                    qtyDisplay.textContent = quantity;
-                    updateButtonState();
-                }
-            });
+      // set defaults
+      selectedSize = product.available_sizes?.[0] || 'One Size';
+      selectedColor = product.available_colors?.[0]?.name || 'Black';
 
-            updateButtonState();
-        }
+      initializeSizeSelector();
+      initializeColorSelector();
+      initializeQuantityControl();
+      initializeThumbnailListeners();
+    }
 
-        function updateButtonState() {
-            const qtyDecrease = document.getElementById('qtyDecrease');
-            if (qtyDecrease) {
-                qtyDecrease.disabled = quantity <= 1;
-            }
-        }
+    function renderSizeOptions(sizes) {
+      const el = document.getElementById('sizeOptions');
+      if (!el) return;
+      if (!Array.isArray(sizes) || sizes.length === 0) {
+        el.innerHTML = `<div class="size-option active" data-size="One Size">One Size</div>`;
+        selectedSize = 'One Size';
+        return;
+      }
+      el.innerHTML = sizes.map(size => `<div class="size-option" data-size="${size}">${size}</div>`).join('');
+      // mark default
+      const defaultSize = sizes.includes('M') ? 'M' : sizes[0];
+      const defaultEl = el.querySelector(`[data-size="${defaultSize}"]`);
+      if (defaultEl) defaultEl.classList.add('active');
+      selectedSize = defaultSize;
+    }
 
-        // ============================================
-        // IMAGE GALLERY
-        // ============================================
-        
-        function initializeImageGallery() {
-            const thumbnails = document.querySelectorAll('.thumbnail');
-            const mainImage = document.getElementById('mainProductImage');
+    function renderColorOptions(colors) {
+      const el = document.getElementById('colorOptions');
+      if (!el) return;
+      if (!Array.isArray(colors) || colors.length === 0) {
+        el.innerHTML = `<div class="color-option active" data-color="Black" style="background:#000;"></div>`;
+        selectedColor = 'Black';
+        return;
+      }
+      el.innerHTML = colors.map(c => `<div class="color-option" data-color="${c.name}" style="background:${c.hex};"></div>`).join('');
+      const defaultName = colors[0].name;
+      const defaultEl = el.querySelector(`[data-color="${defaultName}"]`);
+      if (defaultEl) defaultEl.classList.add('active');
+      selectedColor = defaultName;
+    }
 
-            thumbnails.forEach(thumbnail => {
-                thumbnail.addEventListener('click', () => {
-                    thumbnails.forEach(t => t.classList.remove('active'));
-                    thumbnail.classList.add('active');
-                    
-                    // Clone the clicked thumbnail's SVG to main image
-                    const thumbnailSVG = thumbnail.querySelector('svg');
-                    if (thumbnailSVG && mainImage) {
-                        mainImage.innerHTML = thumbnailSVG.innerHTML;
-                    }
-                });
-            });
-        }
+    function initializeSizeSelector() {
+      const sizeOptions = document.querySelectorAll('.size-option');
+      sizeOptions.forEach(opt => {
+        opt.addEventListener('click', () => {
+          sizeOptions.forEach(o => o.classList.remove('active'));
+          opt.classList.add('active');
+          selectedSize = opt.dataset.size;
+        });
+      });
+    }
 
-        // ============================================
-        // DETAILS ACCORDION
-        // ============================================
-        
-        function initializeDetailsAccordion() {
-            const detailHeaders = document.querySelectorAll('.detail-header');
-            
-            detailHeaders.forEach(header => {
-                header.addEventListener('click', () => {
-                    const detailItem = header.parentElement;
-                    const isActive = detailItem.classList.contains('active');
-                    
-                    // Close all other items
-                    document.querySelectorAll('.detail-item').forEach(item => {
-                        item.classList.remove('active');
-                    });
-                    
-                    // Toggle current item
-                    if (!isActive) {
-                        detailItem.classList.add('active');
-                    }
-                });
-            });
-        }
+    function initializeColorSelector() {
+      const colorOptions = document.querySelectorAll('.color-option');
+      colorOptions.forEach(opt => {
+        opt.addEventListener('click', () => {
+          colorOptions.forEach(o => o.classList.remove('active'));
+          opt.classList.add('active');
+          selectedColor = opt.dataset.color;
+        });
+      });
+    }
 
-        // ============================================
-        // ACTION BUTTONS
-        // ============================================
-        
-        function initializeActionButtons() {
-            const addToCartBtn = document.getElementById('addToCartBtn');
-            const buyNowBtn = document.getElementById('buyNowBtn');
+    function initializeQuantityControl() {
+      const decrease = document.getElementById('qtyDecrease');
+      const increase = document.getElementById('qtyIncrease');
+      const display = document.getElementById('qtyDisplay');
+      quantity = 1;
+      if (display) display.textContent = quantity;
 
-            if (addToCartBtn) {
-                addToCartBtn.addEventListener('click', addToCart);
-            }
+      if (decrease) {
+        decrease.addEventListener('click', () => {
+          if (quantity > 1) {
+            quantity -= 1;
+            if (display) display.textContent = quantity;
+          }
+        });
+      }
+      if (increase) {
+        increase.addEventListener('click', () => {
+          quantity += 1;
+          if (display) display.textContent = quantity;
+        });
+      }
+    }
 
-            if (buyNowBtn) {
-                buyNowBtn.addEventListener('click', () => {
-                    showToast(`กำลังไปที่หน้าชำระเงิน - ${quantity}x Size: ${selectedSize}, Color: ${selectedColor}`, 'success');
-                });
-            }
-        }
+    function initializeThumbnailListeners() {
+      document.querySelectorAll('.thumbnail').forEach(thumb => {
+        thumb.addEventListener('click', () => {
+          document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+          thumb.classList.add('active');
+          const img = thumb.querySelector('img');
+          if (img && document.getElementById('mainProductImage')) {
+            document.getElementById('mainProductImage').src = img.src;
+          }
+        });
+      });
+    }
 
-        // ============================================
-        // ELEMENT SDK - EDITABLE FEATURES
-        // ============================================
+    // hook up buttons
+    function wireUpButtons() {
+      const addBtn = document.getElementById('addToCartBtn');
+      if (addBtn) addBtn.addEventListener('click', addToCart);
+      const buyNowBtn = document.getElementById('buyNowBtn');
+      if (buyNowBtn) buyNowBtn.addEventListener('click', () => {
+        // buy now: add to cart then redirect to cart page (simple behavior)
+        addToCart().then(() => {
+          window.location.href = '/cart.html';
+        });
+      });
+    }
 
-        const defaultConfig = {
-            product_name: 'PREMIUM STREETWEAR HOODIE',
-            product_price: '฿1,290.00',
-            product_description: 'Elevate your streetwear game with our premium oversized hoodie. Crafted from 100% organic cotton for ultimate comfort and style. Features a relaxed fit, ribbed cuffs, and a spacious kangaroo pocket.',
-            brand_name: 'NEXUS WEAR',
-            add_to_cart_text: 'ADD TO CART',
-            buy_now_text: 'BUY NOW',
-            background_color: '#FFFFFF',
-            surface_color: '#F5F5F5',
-            text_color: '#000000',
-            primary_action_color: '#FF4500',
-            secondary_action_color: '#666666',
-            font_family: 'Inter',
-            font_size: 16
-        };
+    // initialize on DOM ready
+    document.addEventListener('DOMContentLoaded', async () => {
+      await initializeDataSdk();
+      loadProductDataAndRender();
+      wireUpButtons();
+    });
 
-        async function onConfigChange(config) {
-            const productName = config.product_name || defaultConfig.product_name;
-            const productPrice = config.product_price || defaultConfig.product_price;
-            const productDesc = config.product_description || defaultConfig.product_description;
-            const brandName = config.brand_name || defaultConfig.brand_name;
-            const addToCartText = config.add_to_cart_text || defaultConfig.add_to_cart_text;
-            const buyNowText = config.buy_now_text || defaultConfig.buy_now_text;
-
-            const bgColor = config.background_color || defaultConfig.background_color;
-            const surfaceColor = config.surface_color || defaultConfig.surface_color;
-            const textColor = config.text_color || defaultConfig.text_color;
-            const primaryColor = config.primary_action_color || defaultConfig.primary_action_color;
-            const secondaryColor = config.secondary_action_color || defaultConfig.secondary_action_color;
-
-            const customFont = config.font_family || defaultConfig.font_family;
-            const baseSize = config.font_size || defaultConfig.font_size;
-
-            // Update text content
-            const productNameEl = document.getElementById('productName');
-            if (productNameEl) productNameEl.textContent = productName;
-
-            const productPriceEl = document.getElementById('productPrice');
-            if (productPriceEl) productPriceEl.textContent = productPrice;
-
-            const productDescEl = document.getElementById('productDescription');
-            if (productDescEl) productDescEl.textContent = productDesc;
-
-            const brandLogoEl = document.getElementById('brandLogo');
-            if (brandLogoEl) brandLogoEl.textContent = brandName;
-
-            const addToCartTextEl = document.getElementById('addToCartText');
-            if (addToCartTextEl) addToCartTextEl.textContent = addToCartText;
-
-            const buyNowTextEl = document.getElementById('buyNowText');
-            if (buyNowTextEl) buyNowTextEl.textContent = buyNowText;
-
-            // Apply colors
-            document.body.style.background = bgColor;
-            document.body.style.color = textColor;
-
-            const mainEl = document.querySelector('main');
-            if (mainEl) mainEl.style.background = surfaceColor;
-
-            const productContainer = document.querySelector('.product-container');
-            if (productContainer) productContainer.style.background = bgColor;
-
-            const topNav = document.querySelector('.top-nav');
-            if (topNav) {
-                topNav.style.background = bgColor;
-                topNav.style.borderBottomColor = textColor;
-            }
-
-            const logoEl = document.querySelector('.logo-text');
-            if (logoEl) logoEl.style.color = textColor;
-
-            const iconBtns = document.querySelectorAll('.icon-btn svg');
-            iconBtns.forEach(icon => icon.setAttribute('stroke', textColor));
-
-            const productTitleEl = document.querySelector('.product-title');
-            if (productTitleEl) productTitleEl.style.color = textColor;
-
-            const priceEl = document.querySelector('.product-price');
-            if (priceEl) priceEl.style.color = primaryColor;
-
-            const descEl = document.querySelector('.product-description');
-            if (descEl) descEl.style.color = secondaryColor;
-
-            const labels = document.querySelectorAll('.size-label, .color-label, .quantity-label, .detail-title');
-            labels.forEach(label => label.style.color = textColor);
-
-            const detailTexts = document.querySelectorAll('.detail-text');
-            detailTexts.forEach(text => text.style.color = secondaryColor);
-
-            const primaryBtn = document.querySelector('.btn-primary');
-            if (primaryBtn) {
-                primaryBtn.style.background = textColor;
-                primaryBtn.style.color = bgColor;
-                primaryBtn.style.borderColor = textColor;
-            }
-
-            const secondaryBtn = document.querySelector('.btn-secondary');
-            if (secondaryBtn) {
-                secondaryBtn.style.background = bgColor;
-                secondaryBtn.style.color = textColor;
-                secondaryBtn.style.borderColor = textColor;
-            }
-
-            // Apply fonts
-            const baseFontStack = `-apple-system, BlinkMacSystemFont, sans-serif`;
-            const bodyFontStack = `${customFont}, ${baseFontStack}`;
-
-            document.body.style.fontFamily = bodyFontStack;
-            document.body.style.fontSize = `${baseSize}px`;
-
-            if (productTitleEl) productTitleEl.style.fontSize = `${baseSize * 3}px`;
-            if (priceEl) priceEl.style.fontSize = `${baseSize * 2.25}px`;
-            if (descEl) descEl.style.fontSize = `${baseSize}px`;
-        }
-
-        // Initialize Element SDK
-        if (window.elementSdk) {
-            window.elementSdk.init({
-                defaultConfig,
-                onConfigChange,
-                mapToCapabilities: (config) => ({
-                    recolorables: [
-                        {
-                            get: () => config.background_color || defaultConfig.background_color,
-                            set: (value) => {
-                                config.background_color = value;
-                                window.elementSdk.setConfig({ background_color: value });
-                            }
-                        },
-                        {
-                            get: () => config.surface_color || defaultConfig.surface_color,
-                            set: (value) => {
-                                config.surface_color = value;
-                                window.elementSdk.setConfig({ surface_color: value });
-                            }
-                        },
-                        {
-                            get: () => config.text_color || defaultConfig.text_color,
-                            set: (value) => {
-                                config.text_color = value;
-                                window.elementSdk.setConfig({ text_color: value });
-                            }
-                        },
-                        {
-                            get: () => config.primary_action_color || defaultConfig.primary_action_color,
-                            set: (value) => {
-                                config.primary_action_color = value;
-                                window.elementSdk.setConfig({ primary_action_color: value });
-                            }
-                        },
-                        {
-                            get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
-                            set: (value) => {
-                                config.secondary_action_color = value;
-                                window.elementSdk.setConfig({ secondary_action_color: value });
-                            }
-                        }
-                    ],
-                    borderables: [],
-                    fontEditable: {
-                        get: () => config.font_family || defaultConfig.font_family,
-                        set: (value) => {
-                            config.font_family = value;
-                            window.elementSdk.setConfig({ font_family: value });
-                        }
-                    },
-                    fontSizeable: {
-                        get: () => config.font_size || defaultConfig.font_size,
-                        set: (value) => {
-                            config.font_size = value;
-                            window.elementSdk.setConfig({ font_size: value });
-                        }
-                    }
-                }),
-                mapToEditPanelValues: (config) => new Map([
-                    ['product_name', config.product_name || defaultConfig.product_name],
-                    ['product_price', config.product_price || defaultConfig.product_price],
-                    ['product_description', config.product_description || defaultConfig.product_description],
-                    ['brand_name', config.brand_name || defaultConfig.brand_name],
-                    ['add_to_cart_text', config.add_to_cart_text || defaultConfig.add_to_cart_text],
-                    ['buy_now_text', config.buy_now_text || defaultConfig.buy_now_text]
-                ])
-            });
-        }
-
-        // ============================================
-        // PAGE INITIALIZATION
-        // ============================================
-        
-        initializeDataSdk();
-        loadProductDataAndRender();
-        initializeSizeSelector();
-        initializeColorSelector();
-        initializeQuantityControl();
-        initializeImageGallery();
-        initializeDetailsAccordion();
-        initializeActionButtons();
-    </script><a href="product-detail.html?product=cargo-pants-olive">ดูสินค้า</a>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a9116f410cb4b59',t:'MTc2NDkxMTk3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+  </script>
+ </body>
 </html>
